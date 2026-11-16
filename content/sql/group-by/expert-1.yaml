@@ -1,0 +1,42 @@
+language: sql
+topic: group-by
+difficulty: EXPERT
+type: SNIPPET
+title: Comprehensive Department Compensation Metrics
+note:
+  en: Aggregate analytics with CASE classification, HAVING filters, and joins.
+  uzl: Agregat funksiyalar, CASE toifalash va HAVING filtrlari bilan hisobot.
+  uzc: Агрегат функциялар, CASE тоифалаш ва HAVING фильтрлари билан ҳисобот.
+  ru: Агрегатные метрики с классификацией CASE и фильтрацией HAVING.
+tags: [group-by, aggregates, case, having]
+ranked_pool: false
+source: original
+code: |
+  SELECT d.department_id,
+         d.department_name,
+         COUNT(e.employee_id) AS total_employees,
+         COUNT(DISTINCT e.job_id) AS distinct_job_roles,
+         ROUND(AVG(e.salary), 2) AS average_salary,
+         MIN(e.salary) AS minimum_salary,
+         MAX(e.salary) AS maximum_salary,
+         SUM(e.salary) AS total_payroll_expenditure,
+         ROUND(AVG(COALESCE(e.commission_pct, 0.00)), 2) AS avg_commission,
+         ROUND(STDDEV_POP(e.salary), 2) AS salary_standard_deviation,
+         CASE
+           WHEN AVG(e.salary) >= 8000.00 THEN 'TIER_1_EXECUTIVE'
+           WHEN AVG(e.salary) >= 5000.00 THEN 'TIER_2_SENIOR'
+           WHEN AVG(e.salary) >= 3000.00 THEN 'TIER_3_STANDARD'
+           ELSE 'TIER_4_ENTRY'
+         END AS compensation_tier
+    FROM departments d
+   INNER JOIN employees e
+      ON e.department_id = d.department_id
+   WHERE e.hire_date >= '2020-01-01'
+     AND e.salary IS NOT NULL
+   GROUP BY d.department_id,
+            d.department_name
+  HAVING COUNT(e.employee_id) >= 2
+     AND SUM(e.salary) > 5000.00
+     AND AVG(e.salary) > 2500.00
+   ORDER BY total_payroll_expenditure DESC,
+            total_employees DESC;

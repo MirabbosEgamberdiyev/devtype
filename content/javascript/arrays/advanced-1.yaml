@@ -1,0 +1,38 @@
+language: javascript
+topic: arrays
+difficulty: ADVANCED
+type: SNIPPET
+title: Grouping and Aggregating Order Items
+note:
+  en: Reducing and grouping arrays into aggregated map structures.
+  uzl: Massiv elementlarini reduce orqali guruhlash va yigʻindi hisoblash.
+  uzc: Массив элементларини reduce орқали гуруҳлаш ва йиғинди ҳисоблаш.
+  ru: Группировка и агрегация элементов массива с помощью reduce.
+tags: [arrays, reduce, map]
+ranked_pool: false
+source: original
+code: |
+  export function summarizeCategorySales(orderItems) {
+    if (!Array.isArray(orderItems) || orderItems.length === 0) {
+      return new Map();
+    }
+
+    return orderItems.reduce((summaryMap, item) => {
+      const { category, unitPrice, quantity, discountPct = 0 } = item;
+      const existing = summaryMap.get(category) ?? {
+        totalUnits: 0,
+        grossRevenue: 0,
+        netRevenue: 0,
+      };
+
+      const lineTotal = unitPrice * quantity;
+      const effectiveTotal = lineTotal * (1 - discountPct / 100);
+
+      existing.totalUnits += quantity;
+      existing.grossRevenue += Number(lineTotal.toFixed(2));
+      existing.netRevenue += Number(effectiveTotal.toFixed(2));
+
+      summaryMap.set(category, existing);
+      return summaryMap;
+    }, new Map());
+  }

@@ -1,0 +1,32 @@
+language: plsql
+topic: block-structure
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Anonymous Block with Exception Handling
+note:
+  en: Querying database state into anchored variables with error handling.
+  uzl: Xatoliklarni ushlash va bogʻlangan turlar bilan maʻlumot tanlash.
+  uzc: Хатоликларни ушлаш ва боғланган турлар билан маълумот танлаш.
+  ru: Блок с выборкой в типизированные переменные и обработкой исключений.
+tags: [block, type, exception, select-into]
+ranked_pool: true
+source: original
+code: |
+  DECLARE
+    v_emp_id NUMBER := 101;
+    v_salary employees.salary%TYPE;
+    v_name   VARCHAR2(100);
+  BEGIN
+    SELECT first_name || ' ' || last_name,
+           salary
+      INTO v_name,
+           v_salary
+      FROM employees
+     WHERE employee_id = v_emp_id;
+
+    DBMS_OUTPUT.PUT_LINE('Employee: ' || v_name || ', Salary: ' || v_salary);
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Employee not found with id: ' || v_emp_id);
+  END;
+  /

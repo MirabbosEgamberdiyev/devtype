@@ -4,7 +4,13 @@
   "private": true,
   "description": "Developer Typing Trainer monorepo",
   "scripts": {
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "content:validate": "tsx scripts/validate-content.ts",
+    "content:compile-check": "tsx scripts/compile-check.ts"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "yaml": "^2.9.1"
+  }
 }

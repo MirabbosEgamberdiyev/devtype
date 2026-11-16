@@ -1,0 +1,18 @@
+language: javascript
+topic: variables
+difficulty: BEGINNER
+type: SNIPPET
+title: Block Scope Constants and Variables
+note:
+  en: Declaring block-scoped variables and constants in modern JavaScript.
+  uzl: Zamonaviy JavaScript tilida block-scope oʻzgaruvchilar va konstantalar.
+  uzc: Замонавий JavaScript тилида block-scope ўзгарувчилар ва константалар.
+  ru: Объявление блочных переменных и констант в современном JavaScript.
+tags: [basics, variables, es6]
+ranked_pool: false
+source: original
+code: |
+  const maxConcurrentSessions = 50;
+  let activeConnectionCount = 12;
+  const isMaintenanceMode = false;
+  let sessionTimeoutSeconds = 300;

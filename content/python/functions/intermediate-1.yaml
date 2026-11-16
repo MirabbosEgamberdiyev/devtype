@@ -1,0 +1,22 @@
+language: python
+topic: functions
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Function With Type Hints and Defaults
+note:
+  en: Defining functions with default arguments and calculated returns.
+  uzl: Standart parametrlar va hisoblangan qiymat qaytaruvchi funksiya.
+  uzc: Стандарт параметрлар ва ҳисобланган қиймат қайтарувчи функция.
+  ru: Объявление функции с параметрами по умолчанию и расчетом.
+tags: [functions, arguments, typing]
+ranked_pool: true
+source: original
+code: |
+  def calculate_net_salary(
+      gross_amount: float,
+      tax_rate: float = 0.12,
+      pension_rate: float = 0.01,
+  ) -> float:
+      total_deductions = gross_amount * (tax_rate + pension_rate)
+      net_salary = gross_amount - total_deductions
+      return round(net_salary, 2)

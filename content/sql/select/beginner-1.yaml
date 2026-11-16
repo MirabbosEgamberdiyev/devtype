@@ -1,0 +1,19 @@
+language: sql
+topic: select
+difficulty: BEGINNER
+type: SNIPPET
+title: Active Products Price List
+note:
+  en: Basic SELECT projection with column alias and WHERE predicate.
+  uzl: Ustun taxallusi va WHERE sharti bilan mahsulotlar roʻyxatini tanlash.
+  uzc: Устун тахаллуси ва WHERE шарти билан маҳсулотлар рўйхатини танлаш.
+  ru: Выборка полей с псевдонимом и базовым фильтром WHERE.
+tags: [select, alias, where]
+ranked_pool: false
+source: original
+code: |
+  SELECT product_name,
+         category,
+         unit_price AS current_price
+    FROM products
+   WHERE is_active = TRUE;

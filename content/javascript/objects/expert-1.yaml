@@ -1,0 +1,52 @@
+language: javascript
+topic: objects
+difficulty: EXPERT
+type: SNIPPET
+title: Deep Object Difference and Patch Generator
+note:
+  en: Deep comparison of nested object properties returning atomic patches.
+  uzl: Ichma-ich joylashgan obyektlarni chuqur taqqoslash va oʻzgarishlar farqini tuzish.
+  uzc: Ичма-ич жойлашган объектларни чуқур таққослаш ва ўзгаришлар фарқини тузиш.
+  ru: Глубокое сравнение вложенных объектов с генерацией патча различий.
+tags: [objects, recursion, immutability]
+ranked_pool: false
+source: original
+code: |
+  export function computeDeepObjectDiff(sourceObj, targetObj) {
+    const isObject = (val) =>
+      val !== null && typeof val === "object" && !Array.isArray(val);
+    const diffPatch = { added: {}, updated: {}, removed: {} };
+
+    const sourceKeys = Object.keys(sourceObj ?? {});
+    const targetKeys = Object.keys(targetObj ?? {});
+    const allUniqueKeys = new Set([...sourceKeys, ...targetKeys]);
+
+    for (const key of allUniqueKeys) {
+      const hasSource = Object.prototype.hasOwnProperty.call(sourceObj, key);
+      const hasTarget = Object.prototype.hasOwnProperty.call(targetObj, key);
+
+      if (hasSource && !hasTarget) {
+        diffPatch.removed[key] = sourceObj[key];
+      } else if (!hasSource && hasTarget) {
+        diffPatch.added[key] = targetObj[key];
+      } else {
+        const sourceVal = sourceObj[key];
+        const targetVal = targetObj[key];
+
+        if (isObject(sourceVal) && isObject(targetVal)) {
+          const nestedDiff = computeDeepObjectDiff(sourceVal, targetVal);
+          const hasChanges =
+            Object.keys(nestedDiff.added).length > 0 ||
+            Object.keys(nestedDiff.updated).length > 0 ||
+            Object.keys(nestedDiff.removed).length > 0;
+          if (hasChanges) {
+            diffPatch.updated[key] = nestedDiff;
+          }
+        } else if (sourceVal !== targetVal) {
+          diffPatch.updated[key] = { previous: sourceVal, current: targetVal };
+        }
+      }
+    }
+
+    return diffPatch;
+  }

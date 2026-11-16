@@ -1,0 +1,18 @@
+language: python
+topic: variables-and-types
+difficulty: BEGINNER
+type: SNIPPET
+title: Dynamic Typing and Basic Variables
+note:
+  en: Standard variable declarations and type hints in Python.
+  uzl: Python tilida standart oʻzgaruvchilar va tur belgilash (type hints).
+  uzc: Python тилида стандарт ўзгарувчилар ва тур белгилаш (type hints).
+  ru: Стандартное объявление переменных и аннотации типов в Python.
+tags: [basics, variables, types]
+ranked_pool: false
+source: original
+code: |
+  max_connections: int = 100
+  timeout_seconds: float = 3.5
+  is_cluster_active: bool = True
+  service_endpoint: str = "https://api.devtype.io"

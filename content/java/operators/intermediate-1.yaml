@@ -1,0 +1,20 @@
+language: java
+topic: operators
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Arithmetic and Relational Validation
+note:
+  en: Combining logical and relational operators for business eligibility.
+  uzl: Biznes talablariga muvofiqlikni tekshirishda mantiqiy operatorlar.
+  uzc: Бизнес талабларига мувофиқликни текширишда мантиқий операторлар.
+  ru: Логические и реляционные операторы для проверки условий.
+tags: [operators, logic, conditions]
+ranked_pool: true
+source: original
+code: |
+  public boolean isEligibleForDiscount(int orderCount, double totalSpend) {
+      boolean hasHighVolume = orderCount >= 10;
+      boolean hasHighSpend = totalSpend > 500.0;
+      double loyaltyMultiplier = hasHighSpend ? 1.25 : 1.0;
+      return (hasHighVolume || hasHighSpend) && loyaltyMultiplier > 1.1;
+  }

@@ -1,0 +1,51 @@
+language: java
+topic: loops
+difficulty: EXPERT
+type: SNIPPET
+title: Matrix Convolution and Kernel Filter
+note:
+  en: Deeply nested loops with boundary checks and 2D matrix transformation.
+  uzl: Chegara tekshiruvlari va ikki oʻlchamli massiv bilan chuqur sikllar.
+  uzc: Чегара текширувлари ва икки ўлчамли массив билан чуқур цикллар.
+  ru: Вложенные циклы с проверкой границ и обработкой матрицы.
+tags: [loops, matrix, algorithms]
+ranked_pool: false
+source: original
+code: |
+  public double[][] applyConvolution(double[][] matrix, double[][] kernel) {
+      int rows = matrix.length;
+      int cols = matrix[0].length;
+      int kRows = kernel.length;
+      int kCols = kernel[0].length;
+      int rOffset = kRows / 2;
+      int cOffset = kCols / 2;
+      double[][] result = new double[rows][cols];
+
+      for (int r = 0; r < rows; r++) {
+          for (int c = 0; c < cols; c++) {
+              double accumulatedSum = 0.0;
+              double normalizerWeight = 0.0;
+              for (int kr = 0; kr < kRows; kr++) {
+                  int targetR = r + kr - rOffset;
+                  if (targetR < 0 || targetR >= rows) {
+                      continue;
+                  }
+                  for (int kc = 0; kc < kCols; kc++) {
+                      int targetC = c + kc - cOffset;
+                      if (targetC < 0 || targetC >= cols) {
+                          continue;
+                      }
+                      double weight = kernel[kr][kc];
+                      accumulatedSum += matrix[targetR][targetC] * weight;
+                      normalizerWeight += Math.abs(weight);
+                  }
+              }
+              if (normalizerWeight > 0.0001) {
+                  result[r][c] = accumulatedSum / normalizerWeight;
+              } else {
+                  result[r][c] = accumulatedSum;
+              }
+          }
+      }
+      return result;
+  }

@@ -1,0 +1,35 @@
+language: java
+topic: conditions
+difficulty: ADVANCED
+type: SNIPPET
+title: Order Shipping Priority Dispatcher
+note:
+  en: Advanced conditional routing with guard clauses and switch expressions.
+  uzl: Shartli tarmoqlanish va switch ifodalari yordamida buyurtmani yoʻnaltirish.
+  uzc: Шартли тармоқланиш ва switch ифодалари ёрдамида буюртмани йўналтириш.
+  ru: Маршрутизация доставки с помощью условий и switch выражений.
+tags: [conditions, branching, switch]
+ranked_pool: false
+source: original
+code: |
+  public String resolveShippingPriority(
+          String status,
+          double weightKg,
+          boolean express) {
+      if (status == null || status.isBlank()) {
+          throw new IllegalArgumentException("Order status cannot be empty");
+      }
+
+      if (express && weightKg <= 5.0) {
+          return "PRIORITY_AIR";
+      } else if (express && weightKg > 5.0) {
+          return "EXPEDITED_GROUND";
+      }
+
+      return switch (status.toUpperCase()) {
+          case "PENDING", "PROCESSING" ->
+              weightKg > 20.0 ? "FREIGHT" : "STANDARD";
+          case "ON_HOLD" -> "HOLD_INSPECTION";
+          default -> "STANDARD_GROUND";
+      };
+  }

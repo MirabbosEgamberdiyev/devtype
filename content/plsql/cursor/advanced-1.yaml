@@ -1,0 +1,42 @@
+language: plsql
+topic: cursor
+difficulty: ADVANCED
+type: SNIPPET
+title: Explicit Cursor with Parameter and Rowtype
+note:
+  en: Iterating through an explicit parameterized cursor with rowtype record.
+  uzl: Parametrli aniq kursor va rowtype yozuvi yordamida qatorlarni aylanib chiqish.
+  uzc: Параметрли аниқ курсор ва rowtype ёзуви ёрдамида қаторларни айланиб чиқиш.
+  ru: Явный параметризованный курсор с записью %ROWTYPE и циклом FETCH.
+tags: [cursor, fetch, rowtype, loops]
+ranked_pool: false
+source: original
+code: |
+  DECLARE
+    CURSOR c_dept_emps (p_dept_id NUMBER) IS
+      SELECT employee_id,
+             first_name || ' ' || last_name AS full_name,
+             salary
+        FROM employees
+       WHERE department_id = p_dept_id
+       ORDER BY salary DESC;
+
+    r_emp        c_dept_emps%ROWTYPE;
+    v_dept_id    NUMBER := 20;
+    v_emp_count  PLS_INTEGER := 0;
+    v_sum_salary NUMBER(12, 2) := 0.00;
+  BEGIN
+    OPEN c_dept_emps(p_dept_id => v_dept_id);
+    LOOP
+      FETCH c_dept_emps INTO r_emp;
+      EXIT WHEN c_dept_emps%NOTFOUND;
+
+      v_emp_count := v_emp_count + 1;
+      v_sum_salary := v_sum_salary + r_emp.salary;
+      DBMS_OUTPUT.PUT_LINE(r_emp.full_name || ' -> ' || r_emp.salary);
+    END LOOP;
+    CLOSE c_dept_emps;
+
+    DBMS_OUTPUT.PUT_LINE('Total: ' || v_emp_count || ', Sum: ' || v_sum_salary);
+  END;
+  /

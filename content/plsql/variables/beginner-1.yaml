@@ -1,0 +1,22 @@
+language: plsql
+topic: variables
+difficulty: BEGINNER
+type: SNIPPET
+title: Scalar Variables and Constant Declarations
+note:
+  en: Declaring scalar variables and constants in an anonymous PL/SQL block.
+  uzl: Anonim PL/SQL blokida skalyar oʻzgaruvchilar va konstantalar eʻlon qilish.
+  uzc: Аноним PL/SQL блокида скаляр ўзгарувчилар ва константалар эълон қилиш.
+  ru: Объявление скалярных переменных и констант в блоке PL/SQL.
+tags: [basics, variables, constants]
+ranked_pool: false
+source: original
+code: |
+  DECLARE
+    v_department_id NUMBER := 10;
+    v_base_salary   NUMBER(10, 2) := 4500.00;
+    c_bonus_rate    CONSTANT NUMBER(3, 2) := 0.15;
+  BEGIN
+    v_base_salary := v_base_salary * (1 + c_bonus_rate);
+  END;
+  /

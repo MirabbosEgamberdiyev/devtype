@@ -1,0 +1,18 @@
+language: java
+topic: variables
+difficulty: BEGINNER
+type: SNIPPET
+title: Primitive Data Types and Constants
+note:
+  en: Standard variable declarations and final constants in Java.
+  uzl: Java tilida standart oʻzgaruvchilar va final konstantalar.
+  uzc: Java тилида стандарт ўзгарувчилар ва final константалар.
+  ru: Объявление стандартных переменных и констант в Java.
+tags: [basics, variables, types]
+ranked_pool: false
+source: original
+code: |
+  final int maxRetryAttempts = 3;
+  double serverResponseTimeMs = 124.5;
+  boolean isServiceHealthy = true;
+  String activeProfile = "production";
