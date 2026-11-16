@@ -5,6 +5,7 @@ import { GuestOnly } from './guards/GuestOnly';
 import { RequireAuth } from './guards/RequireAuth';
 import { LandingPage } from '../features/landing/LandingPage';
 import { TypingView } from '../features/typing/TypingView';
+import { PracticePage, SpeedTestPage, SpecialCharsPage } from '../features/practice';
 import { LanguagesPage } from '../features/languages';
 import { OnboardingPage } from '../features/onboarding';
 import { SnippetEditorPage } from '../features/admin';
@@ -32,7 +33,27 @@ export const router = createBrowserRouter([
       },
       {
         path: 'practice',
-        element: <TypingView />,
+        element: <PracticePage />,
+      },
+      {
+        path: 'practice/:lang',
+        element: <PracticePage />,
+      },
+      {
+        path: 'practice/:lang/:topic',
+        element: <PracticePage />,
+      },
+      {
+        path: 'practice/:lang/special',
+        element: <SpecialCharsPage />,
+      },
+      {
+        path: 'speed-test',
+        element: <SpeedTestPage />,
+      },
+      {
+        path: 'speed-test/:lang',
+        element: <SpeedTestPage />,
       },
       {
         path: 'typing',

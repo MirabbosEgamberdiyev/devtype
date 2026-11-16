@@ -81,8 +81,11 @@ function advanceCursor(cursor: number, targets: TargetChar[]): number {
 /**
  * Updates per-second keystroke counts for consistency calculation.
  */
-function recordPerSecondKeystroke(perSecond: number[], eventTimeMs: number): number[] {
-  const sec = Math.floor(eventTimeMs / 1000);
+function recordPerSecondKeystroke(perSecond: number[], activeMs: number): number[] {
+  const sec = Math.floor(activeMs / 1000);
+  if (sec < 0 || sec > 3600) {
+    return perSecond;
+  }
   const updated = [...perSecond];
   while (updated.length <= sec) {
     updated.push(0);
@@ -458,7 +461,7 @@ export function reduce(state: EngineState, event: KeyEvent): EngineState {
           newCursor++;
         }
 
-        const newPerSec = recordPerSecondKeystroke(state.perSecond, event.t);
+        const newPerSec = recordPerSecondKeystroke(state.perSecond, newActiveMs);
         const isFinished = newCursor >= currentLen && state.seq === state.targets.length - 1;
 
         return {
@@ -516,7 +519,7 @@ export function reduce(state: EngineState, event: KeyEvent): EngineState {
   const isMatch = inputChar === expChar.ch;
 
   const newTotalTyped = state.totalTyped + 1;
-  const newPerSec = recordPerSecondKeystroke(state.perSecond, event.t);
+  const newPerSec = recordPerSecondKeystroke(state.perSecond, newActiveMs);
 
   if (isMatch) {
     const newStates = [...state.states];

@@ -1,13 +1,13 @@
 {
   "app": {
     "name": "DevType",
-    "tagline": "Dasturchilar uchun klaviatura trenajyori"
+    "tagline": "Dasturchilar uchun yozish trenajyori"
   },
   "nav": {
     "dashboard": "Boshqaruv paneli",
-    "practice": "Mashq",
+    "practice": "Mashq qilish",
     "speedTest": "Tezlik testi",
-    "leaderboard": "Yetakchilar",
+    "leaderboard": "Yetakchilar doskasi",
     "analytics": "Tahlil",
     "coach": "AI Murabbiy",
     "settings": "Sozlamalar",
@@ -16,47 +16,110 @@
     "logout": "Chiqish"
   },
   "modes": {
-    "practice": "Mashq",
+    "practice": "Mashq qilish",
     "speedTest": "Tezlik testi",
     "accuracy": "Aniqlik",
     "challenge": "Sinov",
-    "weakness": "Zaif tomonlar mashqi",
+    "weakness": "Zaifliklar ustida ishlash",
     "specialChars": "Maxsus belgilar",
     "codeSprint": "Kod sprinti"
   },
   "levels": {
     "beginner": "Boshlangʻich",
     "intermediate": "Oʻrta",
-    "advanced": "Yuqori",
+    "advanced": "Murakkab",
     "expert": "Ekspert"
   },
   "metrics": {
     "wpm": "WPM",
+    "raw": "Xom",
     "cpm": "CPM",
     "accuracy": "Aniqlik",
-    "consistency": "Barqarorlik",
+    "consistency": "Bir xillik",
     "xp": "XP",
-    "streak": "Uzluksiz kunlar"
+    "streak": "Ketma-ketlik",
+    "time": "Vaqt",
+    "errors": "Xatolar",
+    "chars": "Belgilar"
   },
   "actions": {
     "start": "Boshlash",
-    "restart": "Qayta boshlash",
+    "restart": "Qaytadan boshlash",
     "next": "Keyingi mashq",
     "retry": "Qayta urinish",
     "save": "Saqlash",
     "cancel": "Bekor qilish"
   },
   "typing": {
-    "pressAnyKey": "Yozishni boshlash uchun istalgan tugmani bosing...",
+    "pressAnyKey": "Yozishni boshlash uchun istalgan klavishni bosing yoki shu yerga cherting...",
     "completed": "Sessiya yakunlandi!",
     "submitting": "Natijalar serverga yuborilmoqda...",
-    "serverResult": "Serverning rasmiy natijasi",
-    "clientResult": "Klient dastlabki koʻrinishi",
+    "serverResult": "Rasmiy server natijasi",
+    "clientResult": "Mijoz jonli koʻrinishi",
     "elapsed": "Vaqt",
     "status": "Holat",
     "ranked": "Reytingli",
     "notRanked": "Mashq (Reytingsiz)",
     "tryAgain": "Qayta urinish",
-    "loading": "Sessiya yuklanmoqda..."
+    "loading": "Sessiya yuklanmoqda...",
+    "sessionError": "Sessiyani yuklashda xatolik yuz berdi",
+    "noExercises": "Ushbu turkum boʻyicha mashqlar topilmadi",
+    "analyzing": "Sessiya keylogi tahlil qilinmoqda...",
+    "offlineSaved": "Sessiya oflayn saqlandi. Tarmoq tiklangach avtomatik yuboriladi.",
+    "pasteDisabled": "DevType muhitida kodni qoʻyish (paste) taqiqlangan.",
+    "paused": "Sessiya toʻxtatildi",
+    "clickToResume": "Davom ettirish uchun bosing yoki biror klavishni bosing"
+  },
+  "gamification": {
+    "level": "Daraja",
+    "days": "kun",
+    "streak": "Ketma-ketlik"
+  },
+  "result": {
+    "title": "Sessiya yakunlandi",
+    "subtitle": "Yozish koʻrsatkichingizning rasmiy server bahosi",
+    "rankedSession": "Reytingli sessiya",
+    "speedGraph": "Vaqt boʻyicha tezlik",
+    "wpmOverTime": "Vaqt boʻyicha tezlik",
+    "wpmLine": "Sof WPM",
+    "rawLine": "Xom WPM",
+    "troubleKeys": "Muammoli klavishlar va tokenlar",
+    "mistakes": "ta xato",
+    "noTroubleKeys": "Koʻp takrorlangan xatolar topilmadi! Yuqori aniqlik.",
+    "progressAndRewards": "Progress va mukofotlar",
+    "exercisesCompleted": "ta mashq bajarildi",
+    "slowLines": "Sekin qatorlar",
+    "line": "Qator",
+    "weakTokens": "Zaif tokenlar",
+    "errorRate": "Xato ulushi",
+    "coachTip": "Murabbiy maslahati",
+    "levelUp": "Yangi daraja!",
+    "level": "Daraja",
+    "streakMaintained": "Ketma-ketlik saqlandi",
+    "streakLost": "Ketma-ketlik uzildi",
+    "days": "kun",
+    "topicProgress": "Mavzu progressi",
+    "backToTopics": "Mavzularga qaytish",
+    "retry": "Qayta urinish",
+    "nextExercise": "Keyingi mashq"
+  },
+  "speedTest": {
+    "selectDuration": "Davomiylikni tanlang"
+  },
+  "specialChars": {
+    "selectCategory": "Belgilar toifasini tanlang"
+  },
+  "landing": {
+    "heroTitle": "Kodni fikr tezligida yozish mahorati",
+    "heroSubtitle": "DevType dasturchilarning mushak xotirasini 16 ta dasturlash tilidagi haqiqiy kod, sintaksis belgilari va namunalar orqali charxlaydi.",
+    "tryDemo": "30 soniyalik tezkor test",
+    "selectLanguage": "Dasturlash tili",
+    "saveResultCta": "Natijani saqlash va toʻliq tahlilni ochish",
+    "featureCodeTitle": "Haqiqiy kodlar bazasi",
+    "featureCodeDesc": "Tasodifiy soʻzlar emas, balki ochiq kodli loyihalardagi haqiqiy sintaksis, qavslar va strukturalarni yozing.",
+    "featureSymbolsTitle": "Maxsus belgilar",
+    "featureSymbolsDesc": "Dasturchilarni eng koʻp sekinlashtiradigan qavslar, koʻrsatkichlar, ajratuvchilar va operatorlarni mashq qiling.",
+    "featureAnalyticsTitle": "Chuqur tahlil",
+    "featureAnalyticsDesc": "Klavish bosishlarining batafsil tahlili, WPM oʻsish egri chiziqlari, bigram xaritalari va xatolar klasteri."
   }
 }

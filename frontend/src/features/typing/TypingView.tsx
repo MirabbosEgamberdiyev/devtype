@@ -1,60 +1,38 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  startSession,
+  completeSession,
+  StartSessionResponse,
+  CompleteSessionResponse,
+  StartSessionRequest,
+} from './api';
+import { enqueueOfflineSession } from '../offline/offlineQueue';
 import { TypingEditor } from './TypingEditor';
+import { ResultView } from './ResultView';
 
-interface SessionExercise {
-  seq: number;
-  exerciseKey: string;
-  title: string;
-  note: string;
-  difficulty: string;
-  code: string;
-  charCount: number;
+export interface TypingViewProps {
+  language?: string;
+  mode?: 'PRACTICE' | 'SPEED_TEST' | 'ACCURACY' | 'SPECIAL_CHARS';
+  topic?: string;
+  difficulty?: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
+  specialCategory?: string;
+  duration?: 30 | 60 | 120;
+  onBackToTopics?: () => void;
 }
 
-interface StartSessionResponse {
-  sessionId: string;
-  startedAt: string;
-  expiresAt: string;
-  mode: string;
-  errorMode: string;
-  durationLimitS: number | null;
-  language: {
-    slug: string;
-    grammarId: string;
-    indent: { style: string; size: number };
-    tokenPatterns: string[];
-  };
-  exercises: SessionExercise[];
-  completeToken: string;
-}
-
-interface ServerMetrics {
-  wpm: number;
-  rawWpm: number;
-  cpm: number;
-  accuracy: number;
-  consistency: number;
-  errors: number;
-  uncorrectedErrors: number;
-  backspaces: number;
-  correctChars: number;
-  elapsedMs: number;
-  completionPct: number;
-  specialAccuracy: number;
-}
-
-interface CompleteSessionResponse {
-  sessionId: string;
-  status: string;
-  ranked: boolean;
-  rankedReason: string;
-  metrics: ServerMetrics;
-}
-
-export const TypingView: React.FC = () => {
+export const TypingView: React.FC<TypingViewProps> = ({
+  language = 'java',
+  mode = 'PRACTICE',
+  topic,
+  difficulty = 'BEGINNER',
+  specialCategory,
+  duration,
+  onBackToTopics,
+}) => {
   const { t } = useTranslation();
   const [session, setSession] = useState<StartSessionResponse | null>(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [result, setResult] = useState<CompleteSessionResponse | null>(null);
@@ -64,30 +42,26 @@ export const TypingView: React.FC = () => {
     setLoading(true);
     setResult(null);
     setError(null);
+    setCurrentExerciseIndex(0);
 
     try {
-      const res = await fetch('/api/v1/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          language: 'java',
-          mode: 'PRACTICE',
-          difficulty: 'BEGINNER',
-        }),
-      });
+      const req: StartSessionRequest = {
+        language,
+        mode,
+        topic,
+        difficulty,
+        specialCategory,
+        duration,
+      };
 
-      if (!res.ok) {
-        throw new Error(`Session start failed with status ${res.status}`);
-      }
-
-      const data: StartSessionResponse = await res.json();
+      const data = await startSession(req);
       setSession(data);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to start session');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [language, mode, topic, difficulty, specialCategory, duration]);
 
   useEffect(() => {
     startNewSession();
@@ -104,25 +78,25 @@ export const TypingView: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch(`/api/v1/sessions/${session.sessionId}/complete`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const res = await completeSession(session.sessionId, {
+        completeToken: session.completeToken,
+        keylog,
+        clientElapsedMs: elapsedMs,
+        clientMetrics: { wpm, accuracy },
+      });
+      setResult(res);
+    } catch (err: unknown) {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        await enqueueOfflineSession(session.sessionId, {
           completeToken: session.completeToken,
           keylog,
           clientElapsedMs: elapsedMs,
           clientMetrics: { wpm, accuracy },
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Session completion failed with status ${res.status}`);
+        });
+        setError(t('typing.offlineSaved'));
+      } else {
+        setError(err instanceof Error ? err.message : 'Failed to submit session result');
       }
-
-      const data: CompleteSessionResponse = await res.json();
-      setResult(data);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to complete session');
     } finally {
       setSubmitting(false);
     }
@@ -130,21 +104,24 @@ export const TypingView: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20 text-text-muted">
-        {t('typing.loading')}
+      <div className="flex flex-col items-center justify-center p-16 gap-3 text-text-muted">
+        <div className="w-8 h-8 rounded-full border-2 border-accent-primary border-t-transparent animate-spin" />
+        <span className="text-sm font-mono">{t('typing.loading')}</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <div className="text-accent-danger font-semibold">{error}</div>
+      <div className="flex flex-col items-center justify-center p-12 gap-4 max-w-md mx-auto text-center">
+        <div className="p-3 rounded-full bg-red-500/10 text-red-500 text-2xl">⚠️</div>
+        <div className="text-base font-semibold text-text-primary">{t('typing.sessionError')}</div>
+        <p className="text-xs text-text-muted font-mono">{error}</p>
         <button
           onClick={startNewSession}
-          className="px-4 py-2 rounded-lg bg-accent-primary text-white hover:bg-accent-primary/90 transition-colors"
+          className="px-5 py-2 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-xs font-semibold transition-colors"
         >
-          {t('actions.retry')}
+          {t('common.retry')}
         </button>
       </div>
     );
@@ -152,102 +129,65 @@ export const TypingView: React.FC = () => {
 
   if (result) {
     return (
-      <div className="flex flex-col gap-6 max-w-2xl mx-auto p-8 rounded-2xl bg-bg-surface border border-border-default shadow-md">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-text-primary mb-1">
-            {t('typing.completed')}
-          </h2>
-          <p className="text-sm text-text-muted">{t('typing.serverResult')}</p>
-        </div>
+      <ResultView
+        result={result}
+        onRetry={startNewSession}
+        onNext={result.next ? startNewSession : undefined}
+        onBackToTopics={onBackToTopics}
+      />
+    );
+  }
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-border-muted text-center">
-          <div className="p-4 rounded-xl bg-bg-canvas/50">
-            <span className="text-xs text-text-muted uppercase tracking-wider block mb-1">
-              {t('metrics.wpm')}
-            </span>
-            <span className="text-3xl font-black text-accent-primary">
-              {result.metrics.wpm.toFixed(1)}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-xl bg-bg-canvas/50">
-            <span className="text-xs text-text-muted uppercase tracking-wider block mb-1">
-              {t('metrics.accuracy')}
-            </span>
-            <span className="text-3xl font-black text-accent-success">
-              {result.metrics.accuracy.toFixed(1)}%
-            </span>
-          </div>
-
-          <div className="p-4 rounded-xl bg-bg-canvas/50">
-            <span className="text-xs text-text-muted uppercase tracking-wider block mb-1">
-              {t('metrics.cpm')}
-            </span>
-            <span className="text-3xl font-black text-text-primary">
-              {result.metrics.cpm.toFixed(0)}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-xl bg-bg-canvas/50">
-            <span className="text-xs text-text-muted uppercase tracking-wider block mb-1">
-              {t('typing.elapsed')}
-            </span>
-            <span className="text-3xl font-black text-text-primary">
-              {(result.metrics.elapsedMs / 1000).toFixed(1)}s
-            </span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center text-sm text-text-muted">
-          <span>{t('typing.status')}: <strong className="text-accent-success">{result.status}</strong></span>
-          <span>{result.ranked ? t('typing.ranked') : t('typing.notRanked')}</span>
-        </div>
-
-        <div className="flex justify-center mt-2">
-          <button
-            onClick={startNewSession}
-            className="px-6 py-2.5 rounded-xl font-medium bg-accent-primary text-white hover:bg-accent-primary/90 transition-colors shadow-sm"
-          >
-            {t('actions.restart')}
-          </button>
-        </div>
+  if (!session || !session.exercises || session.exercises.length === 0) {
+    return (
+      <div className="text-center p-12 text-text-muted text-sm font-mono">
+        {t('typing.noExercises')}
       </div>
     );
   }
 
-  const currentExercise = session?.exercises[0];
+  const currentExercise = session.exercises[currentExerciseIndex] ?? session.exercises[0];
+  if (!currentExercise) {
+    return (
+      <div className="text-center p-12 text-text-muted text-sm font-mono">
+        {t('typing.noExercises')}
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto">
-      {/* Exercise metadata banner */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-text-primary">
-            {currentExercise?.title}
-          </h1>
-          <p className="text-sm text-text-muted">{currentExercise?.note}</p>
+    <div className="relative w-full py-6 flex flex-col gap-4">
+      {submitting && (
+        <div className="absolute inset-0 z-30 bg-bg-surface/70 backdrop-blur-sm flex flex-col items-center justify-center gap-2">
+          <div className="w-6 h-6 rounded-full border-2 border-accent-primary border-t-transparent animate-spin" />
+          <span className="text-xs font-mono text-text-muted">{t('typing.analyzing')}</span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="px-2.5 py-1 rounded text-xs font-mono font-semibold uppercase bg-accent-primary/10 text-accent-primary">
-            {session?.language.slug}
-          </span>
-          <span className="px-2.5 py-1 rounded text-xs font-semibold bg-bg-surface border border-border-default text-text-muted">
-            {currentExercise?.difficulty}
-          </span>
-        </div>
-      </div>
+      )}
 
-      {submitting ? (
-        <div className="p-12 text-center text-text-muted bg-bg-surface rounded-xl border border-border-default">
-          {t('typing.submitting')}
+      {currentExercise.title && (
+        <div className="max-w-4xl mx-auto w-full px-2 flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-bold text-text-primary">{currentExercise.title}</h2>
+            {currentExercise.note && (
+              <p className="text-xs text-text-muted mt-0.5">{currentExercise.note}</p>
+            )}
+          </div>
+          <span className="px-2.5 py-1 rounded bg-bg-subtle text-xs text-text-muted font-mono uppercase">
+            {currentExercise.difficulty}
+          </span>
         </div>
-      ) : currentExercise ? (
-        <TypingEditor
-          code={currentExercise.code}
-          language={session?.language.slug ?? 'java'}
-          onComplete={handleComplete}
-        />
-      ) : null}
+      )}
+
+      <TypingEditor
+        code={currentExercise.code}
+        language={session.language.slug}
+        mode={session.mode as 'PRACTICE' | 'SPEED_TEST' | 'ACCURACY' | 'SPECIAL_CHARS'}
+        durationLimitS={session.durationLimitS}
+        strictIndent={false}
+        stopOnError={true}
+        showKeyboard={true}
+        onComplete={handleComplete}
+      />
     </div>
   );
 };

@@ -31,8 +31,11 @@ public final class EngineReducer {
         return next;
     }
 
-    private static List<Integer> recordPerSecondKeystroke(List<Integer> perSecond, int eventTimeMs) {
-        int sec = eventTimeMs / 1000;
+    private static List<Integer> recordPerSecondKeystroke(List<Integer> perSecond, int activeTimeMs) {
+        int sec = activeTimeMs / 1000;
+        if (sec < 0 || sec > 3600) {
+            return perSecond;
+        }
         List<Integer> updated = new ArrayList<>(perSecond);
         while (updated.size() <= sec) {
             updated.add(0);
@@ -564,7 +567,7 @@ public final class EngineReducer {
                         newCursor++;
                     }
 
-                    List<Integer> newPerSec = recordPerSecondKeystroke(state.perSecond(), event.t());
+                    List<Integer> newPerSec = recordPerSecondKeystroke(state.perSecond(), newActiveMs);
                     boolean isFinished = newCursor >= currentLen && state.seq() == state.targets().size() - 1;
 
                     return new EngineState(
@@ -658,7 +661,7 @@ public final class EngineReducer {
         boolean isMatch = inputChar == expChar.ch();
 
         int newTotalTyped = state.totalTyped() + 1;
-        List<Integer> newPerSec = recordPerSecondKeystroke(state.perSecond(), event.t());
+        List<Integer> newPerSec = recordPerSecondKeystroke(state.perSecond(), newActiveMs);
 
         if (isMatch) {
             List<CharState> newStates = new ArrayList<>(state.states());

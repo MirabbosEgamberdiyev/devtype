@@ -32,11 +32,15 @@
   },
   "metrics": {
     "wpm": "WPM",
+    "raw": "Raw",
     "cpm": "CPM",
     "accuracy": "Accuracy",
     "consistency": "Consistency",
     "xp": "XP",
-    "streak": "Streak"
+    "streak": "Streak",
+    "time": "Time",
+    "errors": "Errors",
+    "chars": "Chars"
   },
   "actions": {
     "start": "Start",
@@ -57,6 +61,65 @@
     "ranked": "Ranked",
     "notRanked": "Practice (Not ranked)",
     "tryAgain": "Try Again",
-    "loading": "Loading session..."
+    "loading": "Loading session...",
+    "sessionError": "Failed to load session",
+    "noExercises": "No exercises found for this category",
+    "analyzing": "Analyzing session keylog...",
+    "offlineSaved": "Session saved offline. It will be sent automatically when online.",
+    "pasteDisabled": "Pasting code is disabled in DevType.",
+    "paused": "Session Paused",
+    "clickToResume": "Click or press any key to resume"
+  },
+  "gamification": {
+    "level": "Level",
+    "days": "days",
+    "streak": "Streak"
+  },
+  "result": {
+    "title": "Session Complete",
+    "subtitle": "Verified server evaluation of your typing performance",
+    "rankedSession": "Ranked Session",
+    "speedGraph": "Speed Over Time",
+    "wpmOverTime": "WPM Over Time",
+    "wpmLine": "Net WPM",
+    "rawLine": "Raw WPM",
+    "troubleKeys": "Trouble Keys & Tokens",
+    "mistakes": "mistakes",
+    "noTroubleKeys": "No frequent errors detected! Great accuracy.",
+    "progressAndRewards": "Progress & Rewards",
+    "exercisesCompleted": "exercises completed",
+    "slowLines": "Slow Lines",
+    "line": "Line",
+    "weakTokens": "Weak Tokens",
+    "errorRate": "Error Rate",
+    "coachTip": "Coach Tip",
+    "levelUp": "Level Up!",
+    "level": "Level",
+    "streakMaintained": "Streak Maintained",
+    "streakLost": "Streak Lost",
+    "days": "days",
+    "topicProgress": "Topic Progress",
+    "backToTopics": "Back to Topics",
+    "retry": "Try Again",
+    "nextExercise": "Next Exercise"
+  },
+  "speedTest": {
+    "selectDuration": "Select Duration"
+  },
+  "specialChars": {
+    "selectCategory": "Select Symbol Category"
+  },
+  "landing": {
+    "heroTitle": "Master Code Typing at the Speed of Thought",
+    "heroSubtitle": "DevType trains developer muscle memory on real code, syntax symbols, and production patterns across 16 programming languages.",
+    "tryDemo": "Quick 30s Speed Test",
+    "selectLanguage": "Language",
+    "saveResultCta": "Save your score & unlock full analytics",
+    "featureCodeTitle": "Real Codebases",
+    "featureCodeDesc": "Type idiomatic syntax, brackets, and patterns from real open-source libraries, not arbitrary word lists.",
+    "featureSymbolsTitle": "Special Characters",
+    "featureSymbolsDesc": "Target the brackets, arrows, delimiters, and operators that slow developers down most.",
+    "featureAnalyticsTitle": "Granular Analytics",
+    "featureAnalyticsDesc": "Detailed keystroke analysis, WPM progression curves, bigram heatmaps, and error clustering."
   }
 }

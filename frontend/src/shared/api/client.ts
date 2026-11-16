@@ -101,8 +101,8 @@ export async function apiClient<T>(endpoint: string, options: RequestOptions = {
     return null as unknown as T;
   }
 
-  const contentType = res.headers.get('content-type');
-  const isJson = contentType && contentType.includes('application/json');
+  const contentType = res.headers?.get ? res.headers.get('content-type') : null;
+  const isJson = (contentType && contentType.includes('application/json')) || (!contentType && typeof res.json === 'function');
 
   if (!res.ok) {
     if (isJson) {

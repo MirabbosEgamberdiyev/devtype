@@ -36,18 +36,19 @@ describe('TypingView Vertical Slice Integration', () => {
       completeToken: 'valid.token',
     };
 
-    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockSession,
-    } as Response);
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify(mockSession), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
 
     render(<TypingView />);
 
     await waitFor(() => {
       expect(screen.getByText('Hello World')).toBeInTheDocument();
+      expect(screen.getByText('Java intro')).toBeInTheDocument();
+      expect(screen.getByText(/java · PRACTICE/i)).toBeInTheDocument();
     });
-
-    expect(screen.getByText('Java intro')).toBeInTheDocument();
-    expect(screen.getByText('java')).toBeInTheDocument();
   });
 });
