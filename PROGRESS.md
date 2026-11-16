@@ -29,7 +29,7 @@
 ### Bosqich 1: MVP (R1) (Hafta 3–12)
 - [x] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit (2720334)
 - [x] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store (668bddc)
-- [ ] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA
+- [x] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA (607664b)
 - [ ] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
 - [ ] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
 - [ ] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
@@ -76,8 +76,8 @@
 | AC-UM-11 | GET /me/export to'liq ma'lumot, DELETE /me 30 kun anonimlashtirish | NOT STARTED | — |
 | AC-UM-12 | Bloklangan foydalanuvchi: login 403, refresh 401, reytingda yo'q | PASS | `AuthControllerIntegrationTests$UserStatusTests.blockedUserCannotLogin` |
 | AC-UM-13 | (R3) Follow idempotent, o'zini kuzatish 400, following reytingi | NOT STARTED | — |
-| AC-PL-1 | GET /languages faqat PUBLISHED to'liq, DRAFT tez orada | NOT STARTED | — |
-| AC-PL-2 | Shart bajarilmagan tilni publish 409 LANGUAGE_NOT_READY | NOT STARTED | — |
+| AC-PL-1 | GET /languages faqat PUBLISHED to'liq, DRAFT tez orada | PASS | `ContentControllerIntegrationTests$LanguageCatalogTests.getLanguagesReturnsPublishedAndDraft` |
+| AC-PL-2 | Shart bajarilmagan tilni publish 409 LANGUAGE_NOT_READY | PASS | `ContentControllerIntegrationTests$LanguageCatalogTests.publishingUnreadyLanguageFails` |
 | AC-PL-3 | PUT /me/languages: 0 til 400, 2 primary 400, olib tashlab qo'shganda progress saqlanadi | NOT STARTED | — |
 | AC-PL-4 | Har til statistikasi, rank, rekord, reyting alohida | NOT STARTED | — |
 | AC-PL-5 | Kod o'zgarishisiz yangi til (lua) yaratish, mashq, sessiya o'tishi | NOT STARTED | — |
@@ -88,7 +88,7 @@
 | AC-LS-4 | Placement: 4 natija kombinatsiyasi BL-LS-3 ga mos | NOT STARTED | — |
 | AC-LS-5 | Til progressi foizi BL-LS-4 ga teng | NOT STARTED | — |
 | AC-LS-6 | Mashq yangi versiyasi nashr qilingach tugatilgan belgisi saqlanadi | NOT STARTED | — |
-| AC-LS-7 | Mashq aynan 1 til, 1 mavzu, 1 darajaga tegishli, sort_order | NOT STARTED | — |
+| AC-LS-7 | Mashq aynan 1 til, 1 mavzu, 1 darajaga tegishli, sort_order | PASS | `ContentControllerIntegrationTests$ExerciseValidationTests.validExerciseLifecycleAndDuplicateDetection` |
 | AC-LS-8 | Mavzu sahifasi: eng yaxshi WPM/accuracy, keyingi tavsiya | NOT STARTED | — |
 | AC-SQL-1 | sql 16 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | NOT STARTED | — |
 | AC-SQL-2 | sql snippet PostgreSQL 16 PREPARE tekshiruvi, taqiqlangan tegsiz dialekt rad | NOT STARTED | — |
@@ -281,11 +281,10 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.3 — `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA
-- **Fayllar:** `backend/src/main/java/com/devtype/content/`, `backend/src/test/java/com/devtype/content/`, `V3__content.sql`
+- **Vazifa:** 1.4 — Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
+- **Fayllar:** `frontend/src/features/admin/`, `frontend/src/features/onboarding/`, `frontend/src/features/languages/`
 - **Qolgan ish:**
-  1. Domen Entity'lari: `LanguageEntity`, `TopicEntity`, `ExerciseEntity`, `ExerciseVersionEntity` (`content` sxemasi).
-  2. Mashq linter & pedagogik validatsiyasi (`BL-EM-1..4` qoidalari: 30-1000 belgi, 80 ustun, idiomatik kod, taqiqlangan tegsiz dialektlar rad).
-  3. Content use-case'lari: `ListLanguagesUseCase`, `GetTopicExercisesUseCase`, `CreateExerciseUseCase`, `PublishExerciseUseCase`, `ImportExercisesUseCase`.
-  4. REST kontrollerlar: ommaviy `/api/v1/languages`, `/api/v1/languages/{slug}/topics`, `/api/v1/exercises/{id}` va admin `/api/v1/admin/exercises`.
-  5. Content integratsiya testlari (`AC-PL-1`, `AC-PL-2`, `AC-LS-7`, `AC-SQL-2`, `AC-PLS-2`).
+  1. Til tanlash va Onboarding sahifasi (`/onboarding`, `docs/04 §1.2` 3 qadam: Tillar, Tajriba/sozlama, Placement).
+  2. Tillar katalogi va tanlash sahifalari (`/languages`, `/{locale}/languages`).
+  3. Admin mashq muharriri (`SnippetEditor`) va jonli validatsiya ogohlantirishlari (80 belgi, trailing space, taqiqlangan PL/SQL so'zlari).
+  4. 4 ta tilda (`en`, `uzl`, `uzc`, `ru`) tarjimalar, `npm test`, `npm run typecheck`, `npm run i18n:check`.
