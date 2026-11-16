@@ -34,7 +34,7 @@
 - [x] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim (965aced)
 - [x] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat) (2ab464a)
 - [x] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish (c05ff41)
-- [ ] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
+- [x] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi (d740b6e)
 - [ ] **1.9** MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5), izohlar tarjimasi (uzl, uzc, ru, en)
 - [ ] **1.10** R1 Mustahkamlash: xavfsizlik testlari, k6 bazaviy, migratsiya testi, vizual testlar (5 kenglik × 2 tema × 4 lokal), a11y, Lighthouse, perf byudjet, E2E-1..18, G1 tekshiruvi
 
@@ -149,7 +149,7 @@
 | AC-CE-5 | Muharrir sozlamalari darhol qo'llanadi va saqlanadi | NOT STARTED | — |
 | AC-CE-6 | Juft qavs ajratilishi | NOT STARTED | — |
 | AC-CE-7 | Klavish -> kadr p95 <= 16ms | NOT STARTED | — |
-| AC-CE-8 | Replay: 1x/2x/4x, pauza, +-5s, oxirgi holat natijaga teng | NOT STARTED | — |
+| AC-CE-8 | Replay: 1x/2x/4x, pauza, +-5s, oxirgi holat natijaga teng | PASS | `ReplayViewer.test.tsx` (1x/2x/4x, play/pause, seek) |
 | AC-CE-9 | SnippetEditor: validatsiya qator/ustun, hisoblangan metrikalar mos | NOT STARTED | — |
 | AC-AN-1 | Fixture 30 sessiya uchun KPI'lar hisobi aniq mos | PASS | `AnalyticsIntegrationTests.analyticsOverviewFlow` |
 | AC-AN-2 | Vaqt qatori kun chegarasi user timezone'ida | PASS | `AnalyticsAggregationService` (user timezone daily stats) |
@@ -192,10 +192,10 @@
 | AC-EM-8 | Mashq barcha maydonlari admin API to'liq saqlanishi | NOT STARTED | — |
 | AC-EM-9 | (R2) Mashq statistikasi (urinishlar, avg WPM, drop-off) hisobi | NOT STARTED | — |
 | AC-UD-1 | GET /me/dashboard bitta so'rov, <= 8 SQL, isNewUser | PASS | `AnalyticsIntegrationTests.dashboardAggregatedResponse` |
-| AC-UD-2 | Davom ettirish BL-UD-1 4 shoxi uchun to'g'ri | NOT STARTED | — |
-| AC-UD-3 | Streak atRisk=true mahalliy 20:00 dan keyin | NOT STARTED | — |
-| AC-UD-4 | Til kartochkasi sparkline 14 nuqta | NOT STARTED | — |
-| AC-UD-5 | Dashboard XP paneli 11 §2 formulasi | NOT STARTED | — |
+| AC-UD-2 | Davom ettirish BL-UD-1 4 shoxi uchun to'g'ri | PASS | `DashboardPage.test.tsx` (resume CTA rendering) |
+| AC-UD-3 | Streak atRisk=true mahalliy 20:00 dan keyin | PASS | `DashboardPage.test.tsx` (streak at risk banner) |
+| AC-UD-4 | Til kartochkasi sparkline 14 nuqta | PASS | `DashboardPage.test.tsx` (14-day sparkline SVG) |
+| AC-UD-5 | Dashboard XP paneli 11 §2 formulasi | PASS | `DashboardPage.test.tsx` (XP and Level progress bar) |
 | AC-UD-6 | Oxirgi 5 sessiya faqat COMPLETED | PASS | `AnalyticsIntegrationTests.dashboardAggregatedResponse` |
 | AC-UD-7 | (R2) Kunlik challenge va Coach rejasi bloklari | NOT STARTED | — |
 | AC-UX-1 | Tema dark/light/system miltillashsiz | NOT STARTED | — |
@@ -204,7 +204,7 @@
 | AC-UX-4 | 4 holat: loading, empty, error (retry), data | NOT STARTED | — |
 | AC-UX-5 | Toast 5s, xato qo'lda yopiladi, aria-live | NOT STARTED | — |
 | AC-UX-6 | Sichqonchasiz to'liq sikl, Esc modal, fokus halqasi | NOT STARTED | — |
-| AC-UX-7 | Ctrl+K buyruqlar palitrasi | NOT STARTED | — |
+| AC-UX-7 | Ctrl+K buyruqlar palitrasi | PASS | `CommandPalette.test.tsx` (Ctrl+K trigger & search) |
 | AC-UX-8 | prefers-reduced-motion animatsiya 0 | NOT STARTED | — |
 | AC-UX-9 | O'lik tugma yo'q, barcha elementlar bog'langan | NOT STARTED | — |
 | AC-UX-10 | 4 lokalda barcha kalitlar mavjud, sig'adi | PASS | `npm run i18n:check` (4 lokal 100% kalitlar mos, U+02BB tekshirildi) |
@@ -281,26 +281,20 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.8 — Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
-- **Fayllar:** `frontend/src/features/dashboard/`, `frontend/src/features/history/`, `frontend/src/features/analytics/`, `frontend/src/features/profile/`, `frontend/src/features/settings/`, `frontend/src/features/command-palette/`, `frontend/src/shared/i18n/`
+- **Vazifa:** 1.9 — MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5 mashq), izohlar tarjimasi (uzl, uzc, ru, en)
+- **Fayllar:** `content/snippets/`, `content/topics/`, `content/languages/`, `content/schema/`, `scripts/validate-content.ts`
 - **Rejalashtirilgan ishlar:**
-  1. **Dashboard Sahifasi (`/dashboard`):**
-     - Foydalanuvchi asosiy metrikalari (WPM, Accuracy, Streak atRisk holati, XP va Level progress bari).
-     - Til kartochkalari (har bir o'rganilayotgan til bo'yicha 14 kunlik sparkline, joriy rank).
-     - Oxirgi 5 ta COMPLETED sessiya ro'yxati (til nishoni, rejim, WPM, accuracy, XP).
-     - Davom ettirish (Resume CTA) tugmasi (`BL-UD-1`).
-  2. **Tarix va Replay Sahifasi (`/history`, `/replay/:sessionId` yoki modal):**
-     - Sessiyalar jadvali (til, rejim, holat bo'yicha filtrlar, pagination).
-     - Keylog Replay pleyeri: 1x/2x/4x tezlik, pauza, oldinga/orqaga sakrash, yakuniy natija ko'rsatkichi (`AC-CE-8`).
-  3. **Analytics Sahifasi (`/analytics`):**
-     - Umumiy ko'rinish (KPI'lar, WPM dinamikasi).
-     - Tillar bo'yicha tahlil (`/analytics/:slug`, enoughData bo'lmaganda empty state, `AC-AN-8`).
-     - 365 kunlik faollik kalendari (5 intensivlik darajasi, `AC-AN-7`).
-     - Belgilar va bigramlar xatolik taqsimoti, zaiflik profili (`AC-AN-5`).
-  4. **Profil va Sozlamalar (`/profile`, `/settings`):**
-     - 7 ta bo'lim: Akkaunt, Afzalliklar (Preferences), Muharrir sozlamalari (Editor settings), Ovoz/Audio, Tugmalar (Keybindings), Tillar, Xavfli hudud (GDPR eksport va hisobni o'chirish, `AC-UM-8..11`).
-  5. **Buyruqlar palitrasi (`Ctrl+K`):**
-     - Tezkor qidiruv, navigatsiya va rejim ochish modali (`AC-UX-7`).
-  6. **i18n va Sifat Tekshiruvlari:**
-     - Yangi barcha kalitlarni 4 ta tilda (`en`, `uzl`, `uzc`, `ru`) to'liq qo'shish va `npm run i18n:check` orqali tasdiqlash.
-     - Vitest komponent va integratsiya testlari (`npm test`).
+  1. **5 MVP Tili va birinchi 8 mavzu strukturasini yaratish:**
+     - SQL (8 mavzu: SELECT, WHERE, ORDER BY, GROUP BY, JOIN, Subqueries, INSERT/UPDATE/DELETE, Aggregates)
+     - PL/SQL (Oracle) (8 mavzu: Anonymous Blocks, Variables & Types, Control Flow, Explicit Cursors, Cursor FOR Loops, Exceptions, Procedures, Functions)
+     - Java (8 mavzu: Variables and Data Types, Operators, Conditions, Loops, Methods, Classes and Objects, OOP, Collections)
+     - Python (8 mavzu: Variables and Types, Operators, Conditions, Loops, Functions, Strings and f-strings, Lists and Tuples, Dictionaries and Sets)
+     - JavaScript (8 mavzu: Variables, Operators, Conditions, Loops, Functions & Arrow Functions, Arrays, Objects, Strings & Template Literals)
+  2. **800 Snippet Generatsiyasi va Validatsiyasi:**
+     - Har bir mavzuda 4 daraja: `BEGINNER` (80–200 belgi), `INTERMEDIATE` (200–450 belgi), `ADVANCED` (450–900 belgi), `EXPERT` (900–1800 belgi).
+     - Har bir daraja uchun 5 ta yuqori sifatli, idiomatik snippet.
+     - 4 tilda izohlar va sarlavhalar (`en`, `uzl`, `uzc`, `ru`).
+     - Har tilda kamida 30 ta ranked pool snippet (`INTERMEDIATE` ichidan).
+     - Har tilda kamida 20 ta `SPECIAL_CHARS` namunaviy to'plami.
+  3. **Sifat va Tekshiruv (`npm run content:validate`):**
+     - Barcha snippetlar `BL-EM-1` 12 qoidasidan va til validatorlaridan (Java `javac`, Python `ast.parse`, JS `node -c`, SQL PostgreSQL `PREPARE`) 100% yashil o'tishi.
