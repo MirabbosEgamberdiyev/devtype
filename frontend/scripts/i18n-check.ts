@@ -41,7 +41,7 @@ function main() {
   console.log('--- DevType i18n Verification ---');
   let hasErrors = false;
 
-  const namespaces = ['common'];
+  const namespaces = ['common', 'auth'];
 
   for (const ns of namespaces) {
     const enFile = path.join(LOCALES_DIR, 'en', `${ns}.json`);
