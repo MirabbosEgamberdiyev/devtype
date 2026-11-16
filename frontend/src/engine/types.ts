@@ -72,4 +72,5 @@ export interface EngineMetrics {
   incorrectKeys: number;
   backspaceCount: number;
   completionPct: number;
+  progressPct: number;
 }

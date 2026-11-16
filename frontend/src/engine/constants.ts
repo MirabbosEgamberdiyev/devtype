@@ -1,5 +1,6 @@
 /**
- * Typing Engine Constants — docs/00-conventions.md §4 va docs/07.
+ * Typing Engine Constants — docs/00-conventions.md §4, docs/07, docs/08.
+ * Single source of truth for all engine constants.
  */
 
 export const FREE_MODE_CONSECUTIVE_ERRORS_LIMIT = 8;
@@ -29,15 +30,33 @@ export const SUPPORTED_MODES = [
 
 export type Mode = (typeof SUPPORTED_MODES)[number];
 
-export const SPECIAL_CATEGORIES = [
+export const CHAR_CATEGORIES = [
   'BRACKETS',
-  'OPERATORS',
-  'PUNCTUATION',
-  'QUOTES',
+  'PUNCT',
+  'ASSIGN_CMP',
   'ARROWS',
   'LOGICAL',
-  'BITWISE',
+  'ARITH',
+  'IDENT',
+  'QUOTES',
+  'WHITESPACE',
   'CASE',
+  'ALNUM',
 ] as const;
 
-export type SpecialCategory = (typeof SPECIAL_CATEGORIES)[number];
+export type CharCategory = (typeof CHAR_CATEGORIES)[number];
+
+/**
+ * 8 ta maxsus turkum + CASE (Special Characters rejimida alohida mashq qilinadiganlar, docs/08 §3.1)
+ */
+export const SPECIAL_PRACTICE_CATEGORIES: CharCategory[] = [
+  'BRACKETS',
+  'PUNCT',
+  'ASSIGN_CMP',
+  'QUOTES',
+  'LOGICAL',
+  'ARITH',
+  'ARROWS',
+  'IDENT',
+  'CASE',
+];
