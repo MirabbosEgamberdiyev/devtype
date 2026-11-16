@@ -5,6 +5,9 @@ import { GuestOnly } from './guards/GuestOnly';
 import { RequireAuth } from './guards/RequireAuth';
 import { LandingPage } from '../features/landing/LandingPage';
 import { TypingView } from '../features/typing/TypingView';
+import { LanguagesPage } from '../features/languages';
+import { OnboardingPage } from '../features/onboarding';
+import { SnippetEditorPage } from '../features/admin';
 import {
   LoginPage,
   RegisterPage,
@@ -22,6 +25,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <LandingPage />,
+      },
+      {
+        path: 'languages',
+        element: <LanguagesPage />,
       },
       {
         path: 'practice',
@@ -73,6 +80,14 @@ export const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <TypingView />,
+      },
+      {
+        path: 'onboarding',
+        element: <OnboardingPage />,
+      },
+      {
+        path: 'admin/exercises',
+        element: <SnippetEditorPage />,
       },
     ],
   },
