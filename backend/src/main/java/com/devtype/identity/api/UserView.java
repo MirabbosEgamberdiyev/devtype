@@ -7,5 +7,10 @@ public record UserView(
     String role,
     boolean emailVerified,
     boolean blocked,
-    String primaryLanguage
-) {}
+    String primaryLanguage,
+    String timezone
+) {
+    public UserView(Long id, String username, String email, String role, boolean emailVerified, boolean blocked, String primaryLanguage) {
+        this(id, username, email, role, emailVerified, blocked, primaryLanguage, "UTC");
+    }
+}

@@ -18,4 +18,13 @@ public interface SessionExerciseRepository extends JpaRepository<SessionExercise
     short countBySessionId(UUID sessionId);
 
     List<SessionExerciseEntity> findBySessionIdIn(Collection<UUID> sessionIds);
+
+    @org.springframework.data.jpa.repository.Query("SELECT COUNT(se) FROM SessionExerciseEntity se " +
+            "JOIN SessionEntity s ON s.id = se.sessionId " +
+            "WHERE s.userId = :userId AND s.status = 'COMPLETED' AND se.exerciseId = :exerciseId AND s.finishedAt >= :since")
+    int countCompletedForExerciseSince(
+            @org.springframework.data.repository.query.Param("userId") Long userId,
+            @org.springframework.data.repository.query.Param("exerciseId") Long exerciseId,
+            @org.springframework.data.repository.query.Param("since") java.time.Instant since
+    );
 }

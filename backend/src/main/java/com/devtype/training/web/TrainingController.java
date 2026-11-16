@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -126,6 +128,23 @@ public class TrainingController {
     public ResponseEntity<SessionQueryService.SessionReplayDto> getSessionReplay(@PathVariable("id") UUID id) {
         SessionQueryService.SessionReplayDto result = sessionQueryService.getSessionReplay(id);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<com.devtype.training.api.SessionQuery.SessionHistoryItemView>> getSessionsHistory(
+            @RequestParam(name = "lang", required = false) String lang,
+            @RequestParam(name = "mode", required = false) String mode,
+            @RequestParam(name = "status", defaultValue = "COMPLETED") String status,
+            @RequestParam(name = "from", required = false) Instant from,
+            @RequestParam(name = "to", required = false) Instant to,
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            Authentication auth
+    ) {
+        Long userId = resolveUserId(auth);
+        if (userId == null) {
+            throw new com.devtype.shared.error.DomainException("UNAUTHORIZED", "Avtorizatsiya talab qilinadi", HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok(sessionQueryService.findSessions(userId, lang, mode, status, from, to, limit));
     }
 
     @PostMapping("/claim")

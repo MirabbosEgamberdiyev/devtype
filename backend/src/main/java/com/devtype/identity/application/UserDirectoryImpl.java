@@ -43,7 +43,8 @@ public class UserDirectoryImpl implements UserDirectory {
                 u.getRole().name(),
                 u.isEmailVerified(),
                 u.getStatus() == UserStatus.BLOCKED,
-                null
+                null,
+                u.getTimezone() != null ? u.getTimezone() : "UTC"
         );
     }
 }

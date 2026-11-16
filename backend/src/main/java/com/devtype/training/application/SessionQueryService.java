@@ -5,14 +5,17 @@ import com.devtype.content.api.ExerciseView;
 import com.devtype.content.api.LanguageCatalog;
 import com.devtype.shared.error.DomainException;
 import com.devtype.training.infrastructure.*;
+import com.devtype.training.api.SessionQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.*;
 
 @Service
-public class SessionQueryService {
+public class SessionQueryService implements SessionQuery {
 
     private final SessionRepository sessionRepository;
     private final SessionExerciseRepository sessionExerciseRepository;
@@ -159,5 +162,125 @@ public class SessionQueryService {
         );
 
         return new SessionReplayDto(session.getId(), keylogBase64, codes, metrics);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<SessionSummaryView> findSessionSummary(UUID sessionId) {
+        return sessionRepository.findFirstById(sessionId).map(s -> {
+            String langSlug = languageCatalog.getPublishedLanguageSlugs().stream()
+                    .filter(slug -> languageCatalog.findLanguageIdBySlug(slug).orElse((short) -1) == s.getLanguageId())
+                    .findFirst()
+                    .orElse("java");
+            return new SessionSummaryView(
+                    s.getId(),
+                    s.getUserId(),
+                    langSlug,
+                    s.getMode(),
+                    s.getStatus(),
+                    s.getWpm() != null ? s.getWpm().doubleValue() : 0.0,
+                    s.getAccuracy() != null ? s.getAccuracy().doubleValue() : 0.0,
+                    s.isRanked()
+            );
+        });
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long sumActiveMsBetween(Long userId, Instant from, Instant to) {
+        if (userId == null) return 0L;
+        return sessionRepository.sumActiveMsBetween(userId, from, to);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int countCompletedSessionsBetween(Long userId, Instant from, Instant to) {
+        if (userId == null) return 0;
+        return sessionRepository.countCompletedSessionsBetween(userId, from, to);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int countCompletedForExerciseSince(Long userId, Long exerciseId, Instant since) {
+        if (userId == null || exerciseId == null) return 0;
+        return sessionExerciseRepository.countCompletedForExerciseSince(userId, exerciseId, since);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Double> findRecentCoreWpms(Long userId, short languageId, int limit) {
+        if (userId == null) return List.of();
+        return sessionRepository.findRecentCoreWpms(userId, languageId, limit).stream()
+                .map(BigDecimal::doubleValue)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SessionHistoryItemView> findSessions(
+            Long userId,
+            String langSlug,
+            String mode,
+            String status,
+            Instant from,
+            Instant to,
+            int limit
+    ) {
+        if (userId == null) return List.of();
+        Short langId = (langSlug != null && !langSlug.isBlank())
+                ? languageCatalog.findLanguageIdBySlug(langSlug).orElse(null)
+                : null;
+        int maxLimit = Math.min(Math.max(1, limit), 100);
+        var pageable = org.springframework.data.domain.PageRequest.of(
+                0,
+                maxLimit,
+                org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "startedAt")
+        );
+
+        org.springframework.data.jpa.domain.Specification<SessionEntity> spec = (root, query, cb) -> {
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("userId"), userId));
+            if (langId != null) {
+                predicates.add(cb.equal(root.get("languageId"), langId));
+            }
+            if (mode != null && !mode.isBlank()) {
+                predicates.add(cb.equal(root.get("mode"), mode));
+            }
+            if (status != null && !status.isBlank()) {
+                predicates.add(cb.equal(root.get("status"), status));
+            }
+            if (from != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("finishedAt"), from));
+            }
+            if (to != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("finishedAt"), to));
+            }
+            return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
+
+        List<SessionEntity> list = sessionRepository.findAll(spec, pageable).getContent();
+        return list.stream().map(s -> {
+            String resolvedLang = languageCatalog.getPublishedLanguageSlugs().stream()
+                    .filter(slug -> languageCatalog.findLanguageIdBySlug(slug).orElse((short) -1) == s.getLanguageId())
+                    .findFirst()
+                    .orElse("java");
+            String topicName = s.getTopicId() != null ? s.getTopicId().toString() : null;
+            return new SessionHistoryItemView(
+                    s.getId(),
+                    resolvedLang,
+                    s.getMode(),
+                    topicName,
+                    s.getDifficulty(),
+                    s.getDurationLimitS() != null ? (int) s.getDurationLimitS() : null,
+                    s.getStatus(),
+                    s.getWpm() != null ? s.getWpm().doubleValue() : 0.0,
+                    s.getAccuracy() != null ? s.getAccuracy().doubleValue() : 0.0,
+                    s.getElapsedMs() != null ? s.getElapsedMs() : 0L,
+                    s.getXpAwarded(),
+                    s.isRanked(),
+                    s.getFinishedAt() != null ? s.getFinishedAt() : s.getStartedAt(),
+                    true
+            );
+        }).toList();
     }
 }
