@@ -20,8 +20,8 @@
 - [x] **0.5** CI: `pr.yml` (backend, frontend, vectors) (5deb31f)
 - [x] **0.6** Frontend skeleti: Vite, TS strict, Tailwind + tokenlar, router, layoutlar, tema, i18n (4 lokal, `i18n:check`, transliterator) (52915e7)
 - [x] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar (b981966)
-- [~] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`
-- [ ] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout)
+- [x] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator` (9aac615)
+- [~] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout)
 - [ ] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
 - [ ] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
 - [ ] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring
@@ -115,7 +115,7 @@
 | AC-TE-13 | Erkin rejimda 8 ketma-ket xatodan keyin 9-belgi bloklanadi | PASS | `reducer.test.ts` 8-error limit and backspace unblock (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
 | AC-TE-14 | Tab+Enter qayta boshlash: eski ABANDONED, yangi sessionId | NOT STARTED | — |
 | AC-TE-15 | Offline tugagan sessiya tarmoq qaytgach saqlanadi, 24h keyin SESSION_EXPIRED | NOT STARTED | — |
-| AC-TE-16 | Keylog dt server vaqtidan >2s katta bo'lsa TIMING_MISMATCH, invalid header | NOT STARTED | — |
+| AC-TE-16 | Keylog dt server vaqtidan >2s katta bo'lsa TIMING_MISMATCH, invalid header | PASS | `KeylogDecoderTests` dt > 3600000ms va invalid magic tekshiruvi (`./gradlew.bat test --tests com.devtype.training.domain.KeylogDecoderTests`) |
 | AC-TE-17 | (R3) Touch kiritish: Unidentified beforeinput orqali, inputDevice=TOUCH | NOT STARTED | — |
 | AC-TM-1 | Practice: stop-on-error, pauza, 15s avto-pauza, sozlamada erkin rejim | NOT STARTED | — |
 | AC-TM-2 | Speed Test: ranked pool, uzluksiz oqim, aynan limitda tugash | NOT STARTED | — |
@@ -227,7 +227,7 @@
 | AC-BE-8 | So'rovlar soni chegaralari (N+1 muammosi yo'q) | NOT STARTED | — |
 | AC-BE-9 | Brauzer storage oq ro'yxatga mos, maxfiy/soxta ma'lumot yo'q | NOT STARTED | — |
 | AC-SP-1..19 | Xavfsizlik testlari (JWT, refresh, mass assignment, SQLi, XSS, rate limit, fayl, CSP) | NOT STARTED | — |
-| AC-SP-20 | Tekis ritmli keylog -> suspicion >= 50, ranked=false | NOT STARTED | — |
+| AC-SP-20 | Tekis ritmli keylog -> suspicion >= 50, ranked=false | PASS | `SuspicionRulesTests.testFlatRhythmKeylog` (`./gradlew.bat test --tests com.devtype.training.domain.SuspicionRulesTests`) |
 | AC-SP-21 | k6 SLO lari bajarilgan | NOT STARTED | — |
 | AC-SP-22 | Lighthouse CI >= 90/95/95/95 | NOT STARTED | — |
 | AC-QA-1 | Har AC-* ID uchun kamida bitta avtomatlashtirilgan test yashil | NOT STARTED | — |
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.8 — Engine (Java): `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`, `SuspicionRules`.
-- **Fayllar:** `backend/src/main/java/com/devtype/training/domain/...`, `backend/src/test/java/com/devtype/training/domain/...`.
-- **Qolgan ish:** docs/07 spetsifikatsiyasi bo'yicha Java tomonida LEB128/Gzip keylog dekoderi, target tayyorlash, qayta ijro etuvchi (replayer), rasmiy metrikalar kalkulyatori va shubha (anti-cheat) qoidalari. JUnit unit testlari yashil qilish.
+- **Vazifa:** 0.9 — `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout, multi-snippet).
+- **Fayllar:** `engine-vectors/*.json`, `frontend/src/engine/__tests__/vectors.test.ts`, `backend/src/test/java/com/devtype/training/domain/VectorTests.java`.
+- **Qolgan ish:** docs/07 §11 spetsifikatsiyasi bo'yicha kamida 40 ta umumiy test vektori yaratish, Vitest va JUnit da bir xil o'tishini ta'minlash (AC-TE-1).
