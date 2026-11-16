@@ -30,7 +30,7 @@
 - [x] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit (2720334)
 - [x] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store (668bddc)
 - [x] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA (607664b)
-- [ ] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
+- [x] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash (96faf33)
 - [ ] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
 - [ ] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
 - [ ] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish
@@ -281,10 +281,11 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.4 — Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
-- **Fayllar:** `frontend/src/features/admin/`, `frontend/src/features/onboarding/`, `frontend/src/features/languages/`
+- **Vazifa:** 1.5 — `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
+- **Fayllar:** `backend/src/main/java/com/devtype/training/`, `backend/src/test/java/com/devtype/training/`, `V4__training.sql`
 - **Qolgan ish:**
-  1. Til tanlash va Onboarding sahifasi (`/onboarding`, `docs/04 §1.2` 3 qadam: Tillar, Tajriba/sozlama, Placement).
-  2. Tillar katalogi va tanlash sahifalari (`/languages`, `/{locale}/languages`).
-  3. Admin mashq muharriri (`SnippetEditor`) va jonli validatsiya ogohlantirishlari (80 belgi, trailing space, taqiqlangan PL/SQL so'zlari).
-  4. 4 ta tilda (`en`, `uzl`, `uzc`, `ru`) tarjimalar, `npm test`, `npm run typecheck`, `npm run i18n:check`.
+  1. Domen va Entity'lar: `TrainingSessionEntity`, `SessionEventEntity`, `UserTopicProgressEntity`, `PlacementResultEntity`.
+  2. Training rejimlarini kengaytirish: `Practice`, `Speed Test` (multi-snippet queue + `next`), `Accuracy`, `Special Chars`.
+  3. `SessionCompleteUseCase`: KeylogReplayer, metrika kalkulyatori, SuspicionRules tekshiruvi, natijani saqlash va event chiqarish (`SessionCompleted`).
+  4. Mehmon claim tinglovchisi: `UserRegistered` hodisasi kelganda mehmon sessiyalarini yangi foydalanuvchiga o'tkazish (`AC-UM-7`).
+  5. Training integratsiya testlari (`AC-TM-1..5`, `AC-LS-1..4`, `AC-TE-1..8`).
