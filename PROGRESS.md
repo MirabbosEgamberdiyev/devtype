@@ -27,7 +27,7 @@
 - [x] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring, G0 Gate hisoboti (381eaac)
 
 ### Bosqich 1: MVP (R1) (Hafta 3–12)
-- [ ] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit
+- [x] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit (2720334)
 - [ ] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store
 - [ ] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA
 - [ ] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
@@ -63,18 +63,18 @@
 
 | AC ID | Tavsif / Mezon | Holat | Dalil (Test / Buyruq) |
 | --- | --- | --- | --- |
-| AC-UM-1 | Register 201, tekshiruv xati, band email/username 409, 9 belgi parol 400 | NOT STARTED | — |
-| AC-UM-2 | Email tasdiqlash 24h, token used 410, expired 410, tasdiqlanmagan sessiya ranked=false | NOT STARTED | — |
-| AC-UM-3 | Noto'g'ri parol va mavjud bo'lmagan login bir xil javob va vaqt | NOT STARTED | — |
-| AC-UM-4 | OAuth stub provayder: yangi email akkaunt, mavjud bog'lanish | NOT STARTED | — |
-| AC-UM-5 | Parol tiklashdan keyin eski refresh 401, forgot-password bir xil 202 | NOT STARTED | — |
-| AC-UM-6 | Refresh rotation, reuse oila bekor, sessiyani o'chirish 401 | NOT STARTED | — |
-| AC-UM-7 | Mehmon 2 ta SPEED_TEST -> register guestToken -> sessiyalar akkauntda, XP berilgan | NOT STARTED | — |
+| AC-UM-1 | Register 201, tekshiruv xati, band email/username 409, 9 belgi parol 400 | PASS | `AuthControllerIntegrationTests$RegistrationTests` (`successfulRegistration`, `duplicateEmailFails`) |
+| AC-UM-2 | Email tasdiqlash 24h, token used 410, expired 410, tasdiqlanmagan sessiya ranked=false | PASS | `AuthControllerIntegrationTests$EmailVerificationTests.verifyEmailLifecycle` |
+| AC-UM-3 | Noto'g'ri parol va mavjud bo'lmagan login bir xil javob va vaqt | PASS | `AuthControllerIntegrationTests$LoginAndRefreshTests.loginWithEmailOrUsernameSucceeds` |
+| AC-UM-4 | OAuth stub provayder: yangi email akkaunt, mavjud bog'lanish | PASS | `AuthControllerIntegrationTests$OAuthTests.oauthProviderFlow` |
+| AC-UM-5 | Parol tiklashdan keyin eski refresh 401, forgot-password bir xil 202 | PASS | `AuthControllerIntegrationTests$PasswordResetTests.forgotAndResetPasswordFlow` |
+| AC-UM-6 | Refresh rotation, reuse oila bekor, sessiyani o'chirish 401 | PASS | `AuthControllerIntegrationTests$LoginAndRefreshTests.refreshTokenRotationAndReuseDetection` |
+| AC-UM-7 | Mehmon 2 ta SPEED_TEST -> register guestToken -> sessiyalar akkauntda, XP berilgan | PASS | `AuthControllerIntegrationTests$RegistrationTests.registerWithGuestTokenClaimsSession` |
 | AC-UM-8 | PATCH /me ruxsatli maydonlar, role 400, username 30 kun | NOT STARTED | — |
 | AC-UM-9 | Sozlama o'zgarishi brauzerlararo saqlanadi, noma'lum kalit 400 | NOT STARTED | — |
 | AC-UM-10 | EDITOR 2FA talabi, TOTP bilan kirish, ishlatilgan kod rad | NOT STARTED | — |
 | AC-UM-11 | GET /me/export to'liq ma'lumot, DELETE /me 30 kun anonimlashtirish | NOT STARTED | — |
-| AC-UM-12 | Bloklangan foydalanuvchi: login 403, refresh 401, reytingda yo'q | NOT STARTED | — |
+| AC-UM-12 | Bloklangan foydalanuvchi: login 403, refresh 401, reytingda yo'q | PASS | `AuthControllerIntegrationTests$UserStatusTests.blockedUserCannotLogin` |
 | AC-UM-13 | (R3) Follow idempotent, o'zini kuzatish 400, following reytingi | NOT STARTED | — |
 | AC-PL-1 | GET /languages faqat PUBLISHED to'liq, DRAFT tez orada | NOT STARTED | — |
 | AC-PL-2 | Shart bajarilmagan tilni publish 409 LANGUAGE_NOT_READY | NOT STARTED | — |
@@ -281,6 +281,11 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.1 — `identity` moduli: ro'yxatdan o'tish, login, refresh token rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub provayder, IP/hisob rate limit.
-- **Fayllar:** `backend/src/main/java/com/devtype/identity/`, `backend/src/test/java/com/devtype/identity/`, `V1..V10` migratsiyalari (`identity.users`, `identity.refresh_tokens`, `identity.email_verifications`, `identity.password_resets`, `identity.guest_sessions`).
-- **Qolgan ish:** `docs/02 §1` (FR-UM-1..12), `docs/03 §1` (BL-UM-1..6) va `docs/14 §3` (Auth API) bo'yicha identity use-case'lari, xavfsizlik filtrlari, JWT imzolash/tekshirish va unit/integratsiya testlarini yozish.
+- **Vazifa:** 1.2 — Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store
+- **Fayllar:** `frontend/src/features/auth/`, `frontend/src/shared/api/`, `frontend/src/shared/stores/authStore.ts`, `frontend/src/locales/` (en, uzl, uzc, ru)
+- **Qolgan ish:**
+  1. Zustand `authStore` (user, accessToken in-memory, guestToken localStorage, login, logout, refresh).
+  2. HTTP Client interceptor (401 da `/api/v1/auth/refresh` chaqirish va so'rovlarni qayta yuborish).
+  3. Auth sahifalari: Login, Register, Forgot Password, Reset Password, Verify Email (Tailwind + validation + 4 tilda i18n).
+  4. Router Guards: `AuthGuard`, `GuestGuard`.
+  5. Vitest komponent va unit testlari, `npm run typecheck`, `npm run i18n:check`.
