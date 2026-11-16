@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devtype
+    username: devtype_app
+    password: devtype_app_password
+  flyway:
+    enabled: true
+    user: devtype_migrator
+    password: devtype_migrator_password
+
+logging:
+  level:
+    com.devtype: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
