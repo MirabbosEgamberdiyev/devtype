@@ -1,0 +1,54 @@
+{
+  "name": "025-timeout-incomplete-word-excluded",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "hi world"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "i"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": "w"
+    },
+    {
+      "t": 60000,
+      "k": "timeout"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 4,
+    "seq": 0,
+    "states": "ccccpppp",
+    "metrics": {
+      "wpm": 0.6,
+      "rawWpm": 0.8,
+      "accuracy": 100,
+      "correctChars": 3,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

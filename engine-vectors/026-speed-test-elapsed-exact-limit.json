@@ -1,0 +1,64 @@
+{
+  "name": "026-speed-test-elapsed-exact-limit",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "hello world test"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "e"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "l"
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": "l"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "o"
+    },
+    {
+      "t": 250,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 60000,
+      "k": "timeout"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 6,
+    "seq": 0,
+    "states": "ccccccpppppppppp",
+    "metrics": {
+      "wpm": 1.2,
+      "rawWpm": 1.2,
+      "accuracy": 100,
+      "correctChars": 6,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

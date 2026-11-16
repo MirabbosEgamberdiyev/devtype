@@ -42,7 +42,7 @@ public final class KeylogReplayer {
         );
 
         Integer limitMs = config.limitSeconds() != null ? config.limitSeconds() * 1000 : null;
-        EngineState state = EngineState.createInitial(targets, config.mode(), config.errorMode(), limitMs);
+        EngineState state = EngineState.createInitial(targets, config.mode(), config.errorMode(), config.strictIndent(), limitMs);
 
         // Track stats
         Map<String, int[]> charStatsRaw = new HashMap<>(); // [expected, errors, totalMs]
@@ -143,6 +143,7 @@ public final class KeylogReplayer {
                     EnginePhase.FINISHED,
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),

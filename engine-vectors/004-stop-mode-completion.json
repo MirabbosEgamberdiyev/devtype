@@ -1,0 +1,40 @@
+{
+  "name": "004-stop-mode-completion",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "hi"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "i"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 2,
+    "seq": 0,
+    "states": "cc",
+    "metrics": {
+      "wpm": 240,
+      "rawWpm": 240,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

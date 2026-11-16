@@ -18,7 +18,7 @@ class EngineReducerTests {
                 LanguageConfig.defaultConfig(),
                 false
         );
-        EngineState state = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, null);
+        EngineState state = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, false, null);
         assertThat(state.phase()).isEqualTo(EnginePhase.IDLE);
 
         EngineState running = EngineReducer.reduce(state, KeyEvent.ofChar(0, 'h'));
@@ -36,7 +36,7 @@ class EngineReducerTests {
                 LanguageConfig.defaultConfig(),
                 false
         );
-        EngineState state = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, null);
+        EngineState state = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, false, null);
         EngineState s1 = EngineReducer.reduce(state, KeyEvent.ofChar(0, 'h'));
 
         EngineState wrong = EngineReducer.reduce(s1, KeyEvent.ofChar(100, 'x'));
@@ -58,7 +58,7 @@ class EngineReducerTests {
                 LanguageConfig.defaultConfig(),
                 false
         );
-        EngineState state = EngineState.createInitial(targets, EngineMode.SPEED_TEST, ErrorMode.FREE, null);
+        EngineState state = EngineState.createInitial(targets, EngineMode.SPEED_TEST, ErrorMode.FREE, false, null);
         EngineState s = state;
 
         for (int i = 0; i < 8; i++) {
@@ -92,7 +92,7 @@ class EngineReducerTests {
                 LanguageConfig.defaultConfig(),
                 false
         );
-        EngineState s = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, null);
+        EngineState s = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, false, null);
 
         String line1 = "fn() {\n";
         for (int i = 0; i < line1.length(); i++) {
@@ -113,7 +113,7 @@ class EngineReducerTests {
                 LanguageConfig.defaultConfig(),
                 false
         );
-        EngineState s = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, null);
+        EngineState s = EngineState.createInitial(targets, EngineMode.PRACTICE, ErrorMode.STOP, false, null);
 
         s = EngineReducer.reduce(s, KeyEvent.ofChar(0, 'a'));
         assertThat(s.activeMs()).isEqualTo(0);

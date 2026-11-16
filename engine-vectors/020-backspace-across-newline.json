@@ -1,0 +1,43 @@
+{
+  "name": "020-backspace-across-newline",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "a\nb"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 50,
+      "k": "enter"
+    },
+    {
+      "t": 100,
+      "k": "backspace"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cpp",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 240,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 1
+    }
+  }
+}

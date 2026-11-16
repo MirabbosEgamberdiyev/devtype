@@ -1,0 +1,65 @@
+{
+  "name": "035-special-characters-punctuation",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "; : , ."
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": ";"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": ":"
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": ","
+    },
+    {
+      "t": 250,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 300,
+      "k": "char",
+      "ch": "."
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 7,
+    "seq": 0,
+    "states": "ccccccc",
+    "metrics": {
+      "wpm": 280,
+      "rawWpm": 280,
+      "accuracy": 100,
+      "correctChars": 7,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

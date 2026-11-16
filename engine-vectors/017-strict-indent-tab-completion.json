@@ -1,0 +1,34 @@
+{
+  "name": "017-strict-indent-tab-completion",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": true,
+  "exercises": [
+    "  x"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "tab"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ccp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "024-timeout-event",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 30000,
+  "strictIndent": false,
+  "exercises": [
+    "hello world"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "e"
+    },
+    {
+      "t": 30000,
+      "k": "timeout"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ccppppppppp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0.8,
+      "accuracy": 100,
+      "correctChars": 0,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

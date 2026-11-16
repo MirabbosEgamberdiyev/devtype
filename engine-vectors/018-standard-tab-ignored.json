@@ -1,0 +1,44 @@
+{
+  "name": "018-standard-tab-ignored",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "abc"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "tab"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "b"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ccp",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 120,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

@@ -46,6 +46,7 @@ export function createInitialState(config: EngineConfig): EngineState {
     phase: 'idle',
     mode,
     errorMode,
+    strictIndent,
     targets,
     seq: 0,
     states,
@@ -410,6 +411,11 @@ export function reduce(state: EngineState, event: KeyEvent): EngineState {
 
   // Handle Tab key (docs/07 §3.3)
   if (event.k === 'tab') {
+    // Standard mode (strictIndent=false): tab is completely ignored, not written to log
+    if (!state.strictIndent) {
+      return state;
+    }
+
     // Check if cursor is at end
     if (state.cursor >= currentLen) {
       return state;

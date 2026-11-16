@@ -1,0 +1,45 @@
+{
+  "name": "037-metrics-half-up-rounding",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "abcdefgh"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "b"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "c"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 3,
+    "seq": 0,
+    "states": "cccppppp",
+    "metrics": {
+      "wpm": 360,
+      "rawWpm": 360,
+      "accuracy": 100,
+      "correctChars": 3,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "name": "010-free-mode-8-errors-unblock",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "0123456789"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 300,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 400,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 500,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 600,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 700,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 800,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 900,
+      "k": "backspace"
+    },
+    {
+      "t": 1000,
+      "k": "char",
+      "ch": "7"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 8,
+    "seq": 0,
+    "states": "iiiiiiirpp",
+    "metrics": {
+      "wpm": 12,
+      "rawWpm": 108,
+      "accuracy": 11.11,
+      "correctChars": 1,
+      "errors": 8,
+      "backspaces": 1
+    }
+  }
+}

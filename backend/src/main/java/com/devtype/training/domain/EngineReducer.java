@@ -55,6 +55,7 @@ public final class EngineReducer {
                     EnginePhase.RUNNING,
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),
@@ -84,6 +85,7 @@ public final class EngineReducer {
                         EnginePhase.RUNNING,
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -111,6 +113,7 @@ public final class EngineReducer {
                         EnginePhase.RUNNING,
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -154,6 +157,7 @@ public final class EngineReducer {
                         EnginePhase.PAUSED,
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -183,6 +187,7 @@ public final class EngineReducer {
                     EnginePhase.FINISHED,
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),
@@ -209,6 +214,7 @@ public final class EngineReducer {
                     EnginePhase.FINISHED,
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),
@@ -240,6 +246,7 @@ public final class EngineReducer {
                         EnginePhase.FINISHED,
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -283,6 +290,7 @@ public final class EngineReducer {
                     state.phase(),
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     nextSeq,
                     nextStates,
@@ -311,6 +319,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -336,6 +345,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -379,6 +389,7 @@ public final class EngineReducer {
                     state.phase(),
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     newStates,
@@ -407,6 +418,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -451,6 +463,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         newStates,
@@ -494,6 +507,7 @@ public final class EngineReducer {
                     state.phase(),
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     newStates,
@@ -514,8 +528,13 @@ public final class EngineReducer {
             );
         }
 
-        // Tab
+        // Tab (docs/07 §3.3)
         if (event.kind() == KeyKind.TAB) {
+            // Standard mode (strictIndent=false): tab is completely ignored, not written to log
+            if (!state.strictIndent()) {
+                return state;
+            }
+
             if (state.cursor() >= currentLen) {
                 return state;
             }
@@ -552,6 +571,7 @@ public final class EngineReducer {
                             isFinished ? EnginePhase.FINISHED : state.phase(),
                             state.mode(),
                             state.errorMode(),
+                            state.strictIndent(),
                             state.targets(),
                             state.seq(),
                             newStates,
@@ -583,6 +603,7 @@ public final class EngineReducer {
                     EnginePhase.FINISHED,
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),
@@ -612,6 +633,7 @@ public final class EngineReducer {
                     state.phase(),
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     state.states(),
@@ -650,6 +672,7 @@ public final class EngineReducer {
                     isFinished ? EnginePhase.FINISHED : state.phase(),
                     state.mode(),
                     state.errorMode(),
+                    state.strictIndent(),
                     state.targets(),
                     state.seq(),
                     newStates,
@@ -677,6 +700,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         state.states(),
@@ -707,6 +731,7 @@ public final class EngineReducer {
                         state.phase(),
                         state.mode(),
                         state.errorMode(),
+                        state.strictIndent(),
                         state.targets(),
                         state.seq(),
                         newStates,

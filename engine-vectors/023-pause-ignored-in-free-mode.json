@@ -1,0 +1,39 @@
+{
+  "name": "023-pause-ignored-in-free-mode",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "abc"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "pause"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cpp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

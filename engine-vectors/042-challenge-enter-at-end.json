@@ -1,0 +1,44 @@
+{
+  "name": "042-challenge-enter-at-end",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "CHALLENGE",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "ab"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 100,
+      "k": "enter"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ci",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 240,
+      "accuracy": 50,
+      "correctChars": 1,
+      "errors": 1,
+      "backspaces": 0
+    }
+  }
+}

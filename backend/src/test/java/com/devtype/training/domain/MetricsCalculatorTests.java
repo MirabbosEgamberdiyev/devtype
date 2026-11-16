@@ -26,6 +26,7 @@ class MetricsCalculatorTests {
                 EnginePhase.FINISHED,
                 EngineMode.PRACTICE,
                 ErrorMode.STOP,
+                false,
                 List.of(List.of(tc)),
                 0,
                 List.of(CharState.CORRECT),

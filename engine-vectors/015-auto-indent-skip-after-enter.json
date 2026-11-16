@@ -1,0 +1,39 @@
+{
+  "name": "015-auto-indent-skip-after-enter",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "a\n  b"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "enter"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 4,
+    "seq": 0,
+    "states": "ccaap",
+    "metrics": {
+      "wpm": 240,
+      "rawWpm": 240,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

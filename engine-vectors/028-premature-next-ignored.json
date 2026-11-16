@@ -1,0 +1,40 @@
+{
+  "name": "028-premature-next-ignored",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "ab",
+    "c"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "next"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

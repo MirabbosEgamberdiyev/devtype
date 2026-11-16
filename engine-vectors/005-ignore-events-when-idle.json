@@ -1,0 +1,43 @@
+{
+  "name": "005-ignore-events-when-idle",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "hi"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "pause"
+    },
+    {
+      "t": 100,
+      "k": "backspace"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "h"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

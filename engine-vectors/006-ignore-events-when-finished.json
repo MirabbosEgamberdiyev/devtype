@@ -1,0 +1,40 @@
+{
+  "name": "006-ignore-events-when-finished",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "a"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "b"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 1,
+    "seq": 0,
+    "states": "c",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

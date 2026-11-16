@@ -1,0 +1,39 @@
+{
+  "name": "012-stop-mode-backspace-counted-only",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "hi"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "backspace"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cp",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 120,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 1
+    }
+  }
+}

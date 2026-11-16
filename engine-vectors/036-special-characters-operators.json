@@ -1,0 +1,58 @@
+{
+  "name": "036-special-characters-operators",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": [
+      "+=",
+      "&&"
+    ]
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "+= &&"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "+"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "="
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": "&"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "&"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 5,
+    "seq": 0,
+    "states": "ccccc",
+    "metrics": {
+      "wpm": 300,
+      "rawWpm": 300,
+      "accuracy": 100,
+      "correctChars": 5,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "014-auto-indent-single-line",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "  x = 1;"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "x"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 3,
+    "seq": 0,
+    "states": "aacppppp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 100,
+      "correctChars": 1,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

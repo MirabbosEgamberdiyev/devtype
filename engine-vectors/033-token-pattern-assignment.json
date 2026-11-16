@@ -1,0 +1,63 @@
+{
+  "name": "033-token-pattern-assignment",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": [
+      ":=",
+      "=>"
+    ]
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "x := 1"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": ":"
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": "="
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 250,
+      "k": "char",
+      "ch": "1"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 6,
+    "seq": 0,
+    "states": "cccccc",
+    "metrics": {
+      "wpm": 288,
+      "rawWpm": 288,
+      "accuracy": 100,
+      "correctChars": 6,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "011-free-mode-backspace-at-snippet-start",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "hi"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "backspace"
+    },
+    {
+      "t": 200,
+      "k": "backspace"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 0,
+    "seq": 0,
+    "states": "pp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 30,
+      "accuracy": 100,
+      "correctChars": 0,
+      "errors": 0,
+      "backspaces": 1
+    }
+  }
+}

@@ -11,6 +11,7 @@ public record EngineState(
         EnginePhase phase,
         EngineMode mode,
         ErrorMode errorMode,
+        boolean strictIndent,
         List<List<TargetChar>> targets,
         int seq,
         List<CharState> states,
@@ -33,6 +34,7 @@ public record EngineState(
             List<List<TargetChar>> targets,
             EngineMode mode,
             ErrorMode errorMode,
+            boolean strictIndent,
             Integer limitMs
     ) {
         List<TargetChar> currentTargets = targets.isEmpty() ? List.of() : targets.get(0);
@@ -55,6 +57,7 @@ public record EngineState(
                 EnginePhase.IDLE,
                 mode,
                 errorMode,
+                strictIndent,
                 targets,
                 0,
                 states,

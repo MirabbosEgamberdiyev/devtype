@@ -1,0 +1,44 @@
+{
+  "name": "008-free-mode-backspace-revert",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "hello"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "x"
+    },
+    {
+      "t": 200,
+      "k": "backspace"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cpppp",
+    "metrics": {
+      "wpm": 60,
+      "rawWpm": 120,
+      "accuracy": 50,
+      "correctChars": 1,
+      "errors": 1,
+      "backspaces": 1
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "031-finish-early-in-practice",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "abcdef"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "b"
+    },
+    {
+      "t": 200,
+      "k": "finishEarly"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ccpppp",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 120,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

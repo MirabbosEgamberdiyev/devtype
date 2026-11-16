@@ -1,0 +1,48 @@
+{
+  "name": "032-token-pattern-greedy",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": [
+      "==",
+      "==="
+    ]
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "==="
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "="
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "="
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "="
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 3,
+    "seq": 0,
+    "states": "ccc",
+    "metrics": {
+      "wpm": 360,
+      "rawWpm": 360,
+      "accuracy": 100,
+      "correctChars": 3,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

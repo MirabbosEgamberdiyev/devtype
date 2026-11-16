@@ -14,6 +14,7 @@ describe('metrics — docs/00 §4.5, docs/07 §6 & AC-TE-3, AC-TE-9', () => {
       phase: 'finished',
       mode: 'PRACTICE',
       errorMode: 'stop',
+      strictIndent: false,
       targets: [
         [
           {

@@ -1,0 +1,64 @@
+{
+  "name": "013-free-mode-word-delete",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "SPEED_TEST",
+  "limitMs": 60000,
+  "strictIndent": false,
+  "exercises": [
+    "foo bar"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "f"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": "o"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "o"
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "b"
+    },
+    {
+      "t": 250,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 300,
+      "k": "wordDelete"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 4,
+    "seq": 0,
+    "states": "ccccppp",
+    "metrics": {
+      "wpm": 160,
+      "rawWpm": 240,
+      "accuracy": 100,
+      "correctChars": 4,
+      "errors": 0,
+      "backspaces": 1
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "040-zero-time-zero-metrics",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "abc"
+  ],
+  "events": [],
+  "expect": {
+    "phase": "idle",
+    "cursor": 0,
+    "seq": 0,
+    "states": "ppp",
+    "metrics": {
+      "wpm": 0,
+      "rawWpm": 0,
+      "accuracy": 0,
+      "correctChars": 0,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

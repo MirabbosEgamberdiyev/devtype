@@ -28,6 +28,7 @@ export interface EngineState {
   phase: 'idle' | 'running' | 'paused' | 'finished';
   mode: Mode;
   errorMode: 'stop' | 'free';
+  strictIndent: boolean;
   targets: TargetChar[][];
   seq: number;
   states: CharState[];

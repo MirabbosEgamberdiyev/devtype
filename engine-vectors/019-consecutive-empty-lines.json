@@ -1,0 +1,43 @@
+{
+  "name": "019-consecutive-empty-lines",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "a\n\nb"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 50,
+      "k": "enter"
+    },
+    {
+      "t": 100,
+      "k": "enter"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 3,
+    "seq": 0,
+    "states": "cccp",
+    "metrics": {
+      "wpm": 360,
+      "rawWpm": 360,
+      "accuracy": 100,
+      "correctChars": 3,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

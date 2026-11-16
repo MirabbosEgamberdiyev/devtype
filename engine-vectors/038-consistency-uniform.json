@@ -1,0 +1,130 @@
+{
+  "name": "038-consistency-uniform",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "12345678901234567890"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "1"
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "2"
+    },
+    {
+      "t": 400,
+      "k": "char",
+      "ch": "3"
+    },
+    {
+      "t": 600,
+      "k": "char",
+      "ch": "4"
+    },
+    {
+      "t": 800,
+      "k": "char",
+      "ch": "5"
+    },
+    {
+      "t": 1000,
+      "k": "char",
+      "ch": "6"
+    },
+    {
+      "t": 1200,
+      "k": "char",
+      "ch": "7"
+    },
+    {
+      "t": 1400,
+      "k": "char",
+      "ch": "8"
+    },
+    {
+      "t": 1600,
+      "k": "char",
+      "ch": "9"
+    },
+    {
+      "t": 1800,
+      "k": "char",
+      "ch": "0"
+    },
+    {
+      "t": 2000,
+      "k": "char",
+      "ch": "1"
+    },
+    {
+      "t": 2200,
+      "k": "char",
+      "ch": "2"
+    },
+    {
+      "t": 2400,
+      "k": "char",
+      "ch": "3"
+    },
+    {
+      "t": 2600,
+      "k": "char",
+      "ch": "4"
+    },
+    {
+      "t": 2800,
+      "k": "char",
+      "ch": "5"
+    },
+    {
+      "t": 3000,
+      "k": "char",
+      "ch": "6"
+    },
+    {
+      "t": 3200,
+      "k": "char",
+      "ch": "7"
+    },
+    {
+      "t": 3400,
+      "k": "char",
+      "ch": "8"
+    },
+    {
+      "t": 3600,
+      "k": "char",
+      "ch": "9"
+    },
+    {
+      "t": 3800,
+      "k": "char",
+      "ch": "0"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 20,
+    "seq": 0,
+    "states": "cccccccccccccccccccc",
+    "metrics": {
+      "wpm": 63.16,
+      "rawWpm": 63.16,
+      "accuracy": 100,
+      "correctChars": 20,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

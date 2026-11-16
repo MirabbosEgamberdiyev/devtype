@@ -1,0 +1,44 @@
+{
+  "name": "022-auto-resume-on-typing",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "abc"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "a"
+    },
+    {
+      "t": 1000,
+      "k": "pause"
+    },
+    {
+      "t": 5000,
+      "k": "char",
+      "ch": "b"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 2,
+    "seq": 0,
+    "states": "ccp",
+    "metrics": {
+      "wpm": 24,
+      "rawWpm": 24,
+      "accuracy": 100,
+      "correctChars": 2,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

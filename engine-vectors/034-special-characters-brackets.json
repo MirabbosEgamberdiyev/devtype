@@ -1,0 +1,85 @@
+{
+  "name": "034-special-characters-brackets",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "{ [ ( ) ] }"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "{"
+    },
+    {
+      "t": 50,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "["
+    },
+    {
+      "t": 150,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 200,
+      "k": "char",
+      "ch": "("
+    },
+    {
+      "t": 250,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 300,
+      "k": "char",
+      "ch": ")"
+    },
+    {
+      "t": 350,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 400,
+      "k": "char",
+      "ch": "]"
+    },
+    {
+      "t": 450,
+      "k": "char",
+      "ch": " "
+    },
+    {
+      "t": 500,
+      "k": "char",
+      "ch": "}"
+    }
+  ],
+  "expect": {
+    "phase": "finished",
+    "cursor": 11,
+    "seq": 0,
+    "states": "ccccccccccc",
+    "metrics": {
+      "wpm": 264,
+      "rawWpm": 264,
+      "accuracy": 100,
+      "correctChars": 11,
+      "errors": 0,
+      "backspaces": 0
+    }
+  }
+}

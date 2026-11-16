@@ -1,0 +1,40 @@
+{
+  "name": "002-stop-mode-single-error",
+  "language": {
+    "indentStyle": "SPACE",
+    "indentSize": 2,
+    "tokenPatterns": []
+  },
+  "mode": "PRACTICE",
+  "limitMs": null,
+  "strictIndent": false,
+  "exercises": [
+    "hello"
+  ],
+  "events": [
+    {
+      "t": 0,
+      "k": "char",
+      "ch": "h"
+    },
+    {
+      "t": 100,
+      "k": "char",
+      "ch": "x"
+    }
+  ],
+  "expect": {
+    "phase": "running",
+    "cursor": 1,
+    "seq": 0,
+    "states": "cpppp",
+    "metrics": {
+      "wpm": 120,
+      "rawWpm": 240,
+      "accuracy": 50,
+      "correctChars": 1,
+      "errors": 1,
+      "backspaces": 0
+    }
+  }
+}
