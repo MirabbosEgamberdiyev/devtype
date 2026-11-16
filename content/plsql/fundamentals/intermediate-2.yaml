@@ -1,0 +1,32 @@
+language: plsql
+topic: fundamentals
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Oracle PL/SQL FUNDAMENTALS Intermediate Block 2
+note:
+  en: Intermediate Oracle PL/SQL block focusing on fundamentals.
+  uzl: Oracle PL/SQL da fundamentals boʻyicha oʻrta murakkablikdagi dasturiy blok.
+  uzc: Ораcле ПЛ/SQL да фундаменталс бўйича ўрта мураккабликдаги дастурий блок.
+  ru: Промежуточный программный блок Oracle PL/SQL по теме fundamentals.
+tags:
+  - plsql
+  - fundamentals
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  DECLARE
+    v_dept_id departments.department_id%TYPE := 20;
+    v_avg_sal NUMBER(10, 2);
+    v_emp_cnt PLS_INTEGER;
+  BEGIN
+    SELECT COUNT(*), ROUND(AVG(salary), 2)
+      INTO v_emp_cnt, v_avg_sal
+      FROM employees
+     WHERE department_id = v_dept_id;
+
+    IF v_emp_cnt >= 2 THEN
+      DBMS_OUTPUT.PUT_LINE('fundamentals_2: ' || v_avg_sal);
+    END IF;
+  END;
+  /

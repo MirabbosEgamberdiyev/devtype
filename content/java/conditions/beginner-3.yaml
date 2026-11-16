@@ -1,0 +1,23 @@
+language: java
+topic: conditions
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Java CONDITIONS Basic Syntax 3
+note:
+  en: Beginner drill for Java conditions language features.
+  uzl: Java conditions boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java cондитионс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java conditions.
+tags:
+  - java
+  - conditions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  int latencyMs = 110;
+  if (latencyMs < 100) {
+      System.out.println("Optimal");
+  } else {
+      System.out.println("Alert");
+  }

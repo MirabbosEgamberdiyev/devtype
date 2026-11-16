@@ -1,0 +1,21 @@
+language: java
+topic: methods
+difficulty: BEGINNER
+type: SNIPPET
+title: Java METHODS Basic Syntax 3
+note:
+  en: Beginner drill for Java methods language features.
+  uzl: Java methods boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java метҳодс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java methods.
+tags:
+  - java
+  - methods
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  public static int calcDiscount3(int price, int percent) {
+      int discount = (price * percent) / 100;
+      return price - discount;
+  }

@@ -1,18 +1,21 @@
 language: java
 topic: variables
 difficulty: BEGINNER
-type: SNIPPET
-title: Primitive Data Types and Constants
+type: SPECIAL_CHARS
+title: Java VARIABLES Basic Syntax 1
 note:
-  en: Standard variable declarations and final constants in Java.
-  uzl: Java tilida standart oʻzgaruvchilar va final konstantalar.
-  uzc: Java тилида стандарт ўзгарувчилар ва final константалар.
-  ru: Объявление стандартных переменных и констант в Java.
-tags: [basics, variables, types]
+  en: Beginner drill for Java variables language features.
+  uzl: Java variables boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java вариаблес бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java variables.
+tags:
+  - java
+  - variables
+  - beginner
 ranked_pool: false
 source: original
-code: |
-  final int maxRetryAttempts = 3;
-  double serverResponseTimeMs = 124.5;
-  boolean isServiceHealthy = true;
-  String activeProfile = "production";
+code: |-
+  final int maxBatchSize = 50;
+  final double baseRate = 12.5 * 1;
+  boolean isOnline = true;
+  String region = "us-east-1";

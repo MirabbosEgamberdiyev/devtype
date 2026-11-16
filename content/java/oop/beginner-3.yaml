@@ -1,0 +1,20 @@
+language: java
+topic: oop
+difficulty: BEGINNER
+type: SNIPPET
+title: Java OOP Basic Syntax 3
+note:
+  en: Beginner drill for Java oop language features.
+  uzl: Java oop boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java ооп бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java oop.
+tags:
+  - java
+  - oop
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  public interface PaymentGateway3 {
+      boolean processTransaction(String txId, double amount);
+  }

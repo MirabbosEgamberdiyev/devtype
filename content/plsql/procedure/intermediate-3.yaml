@@ -1,0 +1,36 @@
+language: plsql
+topic: procedure
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Oracle PL/SQL PROCEDURE Intermediate Block 3
+note:
+  en: Intermediate Oracle PL/SQL block focusing on procedure.
+  uzl: Oracle PL/SQL da procedure boʻyicha oʻrta murakkablikdagi dasturiy blok.
+  uzc: Ораcле ПЛ/SQL да проcедуре бўйича ўрта мураккабликдаги дастурий блок.
+  ru: Промежуточный программный блок Oracle PL/SQL по теме procedure.
+tags:
+  - plsql
+  - procedure
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  CREATE OR REPLACE PROCEDURE update_bonus_3 (
+    p_employee_id IN employees.employee_id%TYPE,
+    p_bonus_rate  IN NUMBER DEFAULT 0.06
+  ) IS
+    v_old_salary employees.salary%TYPE;
+  BEGIN
+    SELECT salary
+      INTO v_old_salary
+      FROM employees
+     WHERE employee_id = p_employee_id
+       FOR UPDATE;
+
+    UPDATE employees
+       SET salary = v_old_salary * (1 + p_bonus_rate)
+     WHERE employee_id = p_employee_id;
+
+    COMMIT;
+  END update_bonus_3;
+  /

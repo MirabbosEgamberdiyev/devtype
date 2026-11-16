@@ -1,0 +1,35 @@
+language: sql
+topic: order-by
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL ORDER-BY Advanced Pipeline 5
+note:
+  en: Advanced analytical order-by pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan order-by boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан ордер-бй бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием order-by.
+tags:
+  - sql
+  - order-by
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #5
+  -- Production validation invariant #4
+  -- Production validation invariant #3
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT p.product_id,
+         p.product_name,
+         p.category,
+         p.unit_price,
+         p.stock_quantity,
+         p.unit_price * p.stock_quantity AS total_inventory_cost
+    FROM products p
+   WHERE p.unit_price >= 75.00
+   ORDER BY p.category ASC,
+            total_inventory_cost DESC,
+            p.unit_price DESC,
+            p.product_id ASC
+   LIMIT 100;

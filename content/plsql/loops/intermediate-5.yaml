@@ -1,0 +1,32 @@
+language: plsql
+topic: loops
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Oracle PL/SQL LOOPS Intermediate Block 5
+note:
+  en: Intermediate Oracle PL/SQL block focusing on loops.
+  uzl: Oracle PL/SQL da loops boʻyicha oʻrta murakkablikdagi dasturiy blok.
+  uzc: Ораcле ПЛ/SQL да лоопс бўйича ўрта мураккабликдаги дастурий блок.
+  ru: Промежуточный программный блок Oracle PL/SQL по теме loops.
+tags:
+  - plsql
+  - loops
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  DECLARE
+    v_dept_id departments.department_id%TYPE := 50;
+    v_avg_sal NUMBER(10, 2);
+    v_emp_cnt PLS_INTEGER;
+  BEGIN
+    SELECT COUNT(*), ROUND(AVG(salary), 2)
+      INTO v_emp_cnt, v_avg_sal
+      FROM employees
+     WHERE department_id = v_dept_id;
+
+    IF v_emp_cnt >= 5 THEN
+      DBMS_OUTPUT.PUT_LINE('loops_5: ' || v_avg_sal);
+    END IF;
+  END;
+  /

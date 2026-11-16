@@ -1,0 +1,19 @@
+language: python
+topic: lists-and-tuples
+difficulty: BEGINNER
+type: SNIPPET
+title: Python lists-and-tuples Basic Drill 5
+note:
+  en: Beginner drill for Python lists-and-tuples.
+  uzl: Python lists-and-tuples boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python листс-анд-туплес бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python lists-and-tuples.
+tags:
+  - python
+  - lists-and-tuples
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  regions: tuple[str, ...] = ("ca-central-1", "ca-central-2")
+  active_nodes: list[str] = ["node-a", "node-b", "node-5"]

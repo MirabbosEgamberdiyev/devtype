@@ -1,18 +1,21 @@
 language: python
 topic: variables-and-types
 difficulty: BEGINNER
-type: SNIPPET
-title: Dynamic Typing and Basic Variables
+type: SPECIAL_CHARS
+title: Python variables-and-types Basic Drill 1
 note:
-  en: Standard variable declarations and type hints in Python.
-  uzl: Python tilida standart oʻzgaruvchilar va tur belgilash (type hints).
-  uzc: Python тилида стандарт ўзгарувчилар ва тур белгилаш (type hints).
-  ru: Стандартное объявление переменных и аннотации типов в Python.
-tags: [basics, variables, types]
+  en: Beginner drill for Python variables-and-types.
+  uzl: Python variables-and-types boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python вариаблес-анд-тйпес бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python variables-and-types.
+tags:
+  - python
+  - variables-and-types
+  - beginner
 ranked_pool: false
 source: original
-code: |
-  max_connections: int = 100
-  timeout_seconds: float = 3.5
-  is_cluster_active: bool = True
-  service_endpoint: str = "https://api.devtype.io"
+code: |-
+  server_port: int = 8081
+  max_conns: int = 50
+  is_healthy: bool = True
+  service_name: str = "payment-auth"

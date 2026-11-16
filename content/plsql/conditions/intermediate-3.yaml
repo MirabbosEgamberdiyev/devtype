@@ -1,0 +1,32 @@
+language: plsql
+topic: conditions
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Oracle PL/SQL CONDITIONS Intermediate Block 3
+note:
+  en: Intermediate Oracle PL/SQL block focusing on conditions.
+  uzl: Oracle PL/SQL da conditions boʻyicha oʻrta murakkablikdagi dasturiy blok.
+  uzc: Ораcле ПЛ/SQL да cондитионс бўйича ўрта мураккабликдаги дастурий блок.
+  ru: Промежуточный программный блок Oracle PL/SQL по теме conditions.
+tags:
+  - plsql
+  - conditions
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  DECLARE
+    v_dept_id departments.department_id%TYPE := 30;
+    v_avg_sal NUMBER(10, 2);
+    v_emp_cnt PLS_INTEGER;
+  BEGIN
+    SELECT COUNT(*), ROUND(AVG(salary), 2)
+      INTO v_emp_cnt, v_avg_sal
+      FROM employees
+     WHERE department_id = v_dept_id;
+
+    IF v_emp_cnt >= 3 THEN
+      DBMS_OUTPUT.PUT_LINE('conditions_3: ' || v_avg_sal);
+    END IF;
+  END;
+  /

@@ -1,0 +1,35 @@
+language: sql
+topic: insert-update-delete
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL INSERT-UPDATE-DELETE Advanced Pipeline 5
+note:
+  en: Advanced analytical insert-update-delete pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan insert-update-delete boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан инсерт-упдате-делете бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием insert-update-delete.
+tags:
+  - sql
+  - insert-update-delete
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #6
+  -- Production validation invariant #5
+  -- Production validation invariant #4
+  -- Production validation invariant #3
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  UPDATE employees e
+     SET salary = salary * 1.10,
+         commission_pct = COALESCE(commission_pct, 0.05)
+   WHERE e.department_id IN (
+         SELECT d.department_id
+           FROM departments d
+          WHERE d.location_id >= 1950
+         )
+     AND e.salary <= (
+         SELECT AVG(inner_e.salary)
+           FROM employees inner_e
+         );

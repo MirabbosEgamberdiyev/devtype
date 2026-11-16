@@ -1,0 +1,30 @@
+language: plsql
+topic: function
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Oracle PL/SQL FUNCTION Intermediate Block 1
+note:
+  en: Intermediate Oracle PL/SQL block focusing on function.
+  uzl: Oracle PL/SQL da function boʻyicha oʻrta murakkablikdagi dasturiy blok.
+  uzc: Ораcле ПЛ/SQL да фунcтион бўйича ўрта мураккабликдаги дастурий блок.
+  ru: Промежуточный программный блок Oracle PL/SQL по теме function.
+tags:
+  - plsql
+  - function
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  CREATE OR REPLACE FUNCTION calc_future_sal_1 (
+    p_emp_id IN employees.employee_id%TYPE
+  ) RETURN NUMBER IS
+    v_curr_salary employees.salary%TYPE;
+  BEGIN
+    SELECT salary
+      INTO v_curr_salary
+      FROM employees
+     WHERE employee_id = p_emp_id;
+
+    RETURN ROUND(v_curr_salary * 1.05, 2);
+  END calc_future_sal_1;
+  /

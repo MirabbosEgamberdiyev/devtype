@@ -1,0 +1,21 @@
+language: javascript
+topic: functions
+difficulty: BEGINNER
+type: SNIPPET
+title: JavaScript functions Basic Drill 2
+note:
+  en: Beginner drill for JavaScript functions.
+  uzl: JavaScript functions boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript фунcтионс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript functions.
+tags:
+  - javascript
+  - functions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  function calcNetWpm_2(grossWpm, errors) {
+    const penalty = errors * 2;
+    return Math.max(0, grossWpm - penalty);
+  }

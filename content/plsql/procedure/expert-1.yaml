@@ -2,78 +2,69 @@ language: plsql
 topic: procedure
 difficulty: EXPERT
 type: SNIPPET
-title: Bulk Salary Adjustment Stored Procedure
+title: Oracle PL/SQL PROCEDURE Enterprise Package 1
 note:
-  en: Production-grade stored procedure with cursor locks and validation.
-  uzl: Qatorlarni bloklash (FOR UPDATE) va tekshiruvlarga ega saqlanuvchi protsedura.
-  uzc: Қаторларни блоклаш (FOR UPDATE) ва текширувларга эга сақланувчи процедура.
-  ru: Хранимая процедура с блокировкой строк FOR UPDATE и транзакционной логикой.
-tags: [procedure, for-update, cursor-for, transactions]
+  en: Enterprise-grade production Oracle PL/SQL package implementation.
+  uzl: Ishlab chiqarish talablariga mos toʻliq korporativ Oracle PL/SQL paketi.
+  uzc: Ишлаб чиқариш талабларига мос тўлиқ корпоратив Ораcле ПЛ/SQL пакети.
+  ru: Корпоративный пакет Oracle PL/SQL промышленного уровня.
+tags:
+  - plsql
+  - procedure
+  - expert
 ranked_pool: false
 source: original
-code: |
-  CREATE OR REPLACE PROCEDURE adjust_department_salaries (
-    p_department_id IN employees.department_id%TYPE,
-    p_pct_increase  IN NUMBER DEFAULT 5.0,
-    p_max_cap       IN NUMBER DEFAULT 15000.00,
-    p_updated_count OUT PLS_INTEGER
-  ) IS
-    v_dept_name       departments.department_name%TYPE;
-    v_current_salary  employees.salary%TYPE;
-    v_new_salary      employees.salary%TYPE;
-    e_invalid_percent EXCEPTION;
+code: |-
+  CREATE OR REPLACE PACKAGE BODY procedure_engine_pkg_1 IS
+    c_max_bonus CONSTANT NUMBER := 4000.00;
 
-    CURSOR c_dept_staff IS
-      SELECT employee_id,
-             salary
+    PROCEDURE calculate_compensation (
+      p_emp_id       IN employees.employee_id%TYPE,
+      p_perf_score   IN NUMBER,
+      p_final_payout OUT NUMBER
+    ) IS
+      v_base_salary employees.salary%TYPE;
+      v_incentive   NUMBER := 0.0;
+      e_zero_score  EXCEPTION;
+    BEGIN
+      IF p_perf_score <= 0.0 THEN
+        RAISE e_zero_score;
+      END IF;
+
+      SELECT salary
+        INTO v_base_salary
         FROM employees
-       WHERE department_id = p_department_id
-         FOR UPDATE OF salary;
-  BEGIN
-    p_updated_count := 0;
+       WHERE employee_id = p_emp_id;
 
-    IF p_pct_increase <= 0.0 OR p_pct_increase > 50.0 THEN
-      RAISE e_invalid_percent;
-    END IF;
-
-    SELECT department_name
-      INTO v_dept_name
-      FROM departments
-     WHERE department_id = p_department_id;
-
-    FOR r_staff IN c_dept_staff LOOP
-      v_current_salary := r_staff.salary;
-      v_new_salary := ROUND(v_current_salary * (1 + p_pct_increase / 100), 2);
-
-      IF v_new_salary > p_max_cap THEN
-        v_new_salary := p_max_cap;
-      END IF;
-
-      IF v_new_salary <> v_current_salary THEN
-        UPDATE employees
-           SET salary = v_new_salary
-         WHERE CURRENT OF c_dept_staff;
-
-        p_updated_count := p_updated_count + 1;
-      END IF;
-    END LOOP;
-
-    COMMIT;
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      ROLLBACK;
-      RAISE_APPLICATION_ERROR(
-        -20001,
-        'Department not found: ' || p_department_id
+      v_incentive := LEAST(
+        v_base_salary * (p_perf_score / 100),
+        c_max_bonus
       );
-    WHEN e_invalid_percent THEN
-      ROLLBACK;
-      RAISE_APPLICATION_ERROR(
-        -20002,
-        'Percentage must be between 0.1 and 50.0'
-      );
-    WHEN OTHERS THEN
-      ROLLBACK;
-      RAISE;
-  END adjust_department_salaries;
+      p_final_payout := v_base_salary + v_incentive;
+
+      INSERT INTO audit_log (
+        entity_name, entity_id, action, performed_by
+      )
+      VALUES ('PROCEDURE', p_emp_id, 'CALCULATE', 'SYSTEM');
+      COMMIT;
+    EXCEPTION
+      WHEN e_zero_score THEN
+        p_final_payout := 0.0;
+        RAISE_APPLICATION_ERROR(
+          -20050,
+          'Performance evaluation score must be positive'
+        );
+      WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(
+          -20051,
+          'Employee profile not registered: ' || p_emp_id
+        );
+      WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(
+          -20052,
+          'Critical error executing payroll batch job'
+        );
+    END calculate_compensation;
+  END procedure_engine_pkg_1;
   /

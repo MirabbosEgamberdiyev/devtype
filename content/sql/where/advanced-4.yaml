@@ -1,0 +1,36 @@
+language: sql
+topic: where
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL WHERE Advanced Pipeline 4
+note:
+  en: Advanced analytical where pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan where boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан wҳере бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием where.
+tags:
+  - sql
+  - where
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #3
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT o.order_id,
+         o.customer_id,
+         o.total_amount,
+         o.order_date,
+         o.status
+    FROM orders o
+   WHERE o.total_amount BETWEEN 4000.00 AND 10000.00
+     AND o.order_date >= '2022-01-01'
+     AND (o.status = 'COMPLETED' OR o.status = 'PROCESSING')
+     AND EXISTS (
+         SELECT 1
+           FROM order_items oi
+          WHERE oi.order_id = o.order_id
+            AND oi.quantity >= 2
+         )
+   ORDER BY o.total_amount DESC;

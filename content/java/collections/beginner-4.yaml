@@ -1,0 +1,21 @@
+language: java
+topic: collections
+difficulty: BEGINNER
+type: SNIPPET
+title: Java COLLECTIONS Basic Syntax 4
+note:
+  en: Beginner drill for Java collections language features.
+  uzl: Java collections boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java cоллеcтионс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java collections.
+tags:
+  - java
+  - collections
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  List<String> tags = new ArrayList<>();
+  tags.add("java");
+  tags.add("caching");
+  tags.add("performance-4");

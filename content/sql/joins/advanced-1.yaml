@@ -2,30 +2,35 @@ language: sql
 topic: joins
 difficulty: ADVANCED
 type: SNIPPET
-title: Department Staffing and Salary Breakdown
+title: SQL JOINS Advanced Pipeline 1
 note:
-  en: Multi-table joins with string concatenation and manager self-joins.
-  uzl: Matnlarni birlashtirish va xodim-rahbar bogʻlanishiga ega jadvallar join'i.
-  uzc: Матнларни бирлаштириш ва ходим-раҳбар боғланишига эга жадваллар join'и.
-  ru: Объединение таблиц, конкатенация строк и связь сотрудник-руководитель.
-tags: [joins, inner-join, left-join]
+  en: Advanced analytical joins pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan joins boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан жоинс бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием joins.
+tags:
+  - sql
+  - joins
+  - advanced
 ranked_pool: false
 source: original
-code: |
-  SELECT d.department_name,
-         e.first_name || ' ' || e.last_name AS employee_name,
-         e.email AS corporate_email,
-         e.job_id,
-         e.salary AS monthly_salary,
-         e.hire_date,
-         m.first_name || ' ' || m.last_name AS manager_name
-    FROM departments d
-   INNER JOIN employees e
-      ON e.department_id = d.department_id
-    LEFT JOIN employees m
-      ON e.manager_id = m.employee_id
-   WHERE e.salary >= 3000.00
-     AND e.commission_pct IS NOT NULL
-     AND d.location_id IS NOT NULL
-   ORDER BY d.department_name ASC,
-            e.salary DESC;
+code: |-
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT o.order_id,
+         c.full_name AS customer_name,
+         c.email AS customer_email,
+         p.product_name,
+         oi.quantity,
+         oi.unit_price,
+         ROUND(oi.quantity * oi.unit_price, 2) AS item_total
+    FROM orders o
+    JOIN customers c
+      ON c.customer_id = o.customer_id
+    JOIN order_items oi
+      ON oi.order_id = o.order_id
+    JOIN products p
+      ON p.product_id = oi.product_id
+   WHERE o.order_id >= 100
+     AND c.tier IN ('GOLD', 'PLATINUM')
+   ORDER BY item_total DESC;

@@ -2,34 +2,42 @@ language: java
 topic: conditions
 difficulty: ADVANCED
 type: SNIPPET
-title: Order Shipping Priority Dispatcher
+title: Java CONDITIONS Enterprise Architecture 1
 note:
-  en: Advanced conditional routing with guard clauses and switch expressions.
-  uzl: Shartli tarmoqlanish va switch ifodalari yordamida buyurtmani yoʻnaltirish.
-  uzc: Шартли тармоқланиш ва switch ифодалари ёрдамида буюртмани йўналтириш.
-  ru: Маршрутизация доставки с помощью условий и switch выражений.
-tags: [conditions, branching, switch]
+  en: Advanced robust class structure showcasing clean OOP and collections.
+  uzl: Toza arxitektura va kolleksiyalar bilan murakkab Java sinfi.
+  uzc: Тоза архитектура ва коллексиялар билан мураккаб Java синфи.
+  ru: Продвинутая структура классов Java с надежной обработкой данных.
+tags:
+  - java
+  - conditions
+  - advanced
 ranked_pool: false
 source: original
-code: |
-  public String resolveShippingPriority(
-          String status,
-          double weightKg,
-          boolean express) {
-      if (status == null || status.isBlank()) {
-          throw new IllegalArgumentException("Order status cannot be empty");
+code: |-
+  public final class ConditionsManager1 {
+      private final Map<String, Double> settledLedger =
+          new ConcurrentHashMap<>(500);
+      private final AtomicInteger processedCounter =
+          new AtomicInteger(0);
+
+      public boolean recordSettlement(String txId, double grossAmount) {
+          Objects.requireNonNull(txId, "Transaction ID required");
+          if (grossAmount <= 0.0) {
+              throw new IllegalArgumentException(
+                  "Settlement amount must be positive"
+              );
+          }
+
+          settledLedger.put(txId, grossAmount);
+          int currentTotal = processedCounter.incrementAndGet();
+          return currentTotal > 0;
       }
 
-      if (express && weightKg <= 5.0) {
-          return "PRIORITY_AIR";
-      } else if (express && weightKg > 5.0) {
-          return "EXPEDITED_GROUND";
+      public OptionalDouble fetchSettlement(String txId) {
+          Double amount = settledLedger.get(txId);
+          return amount != null
+              ? OptionalDouble.of(amount)
+              : OptionalDouble.empty();
       }
-
-      return switch (status.toUpperCase()) {
-          case "PENDING", "PROCESSING" ->
-              weightKg > 20.0 ? "FREIGHT" : "STANDARD";
-          case "ON_HOLD" -> "HOLD_INSPECTION";
-          default -> "STANDARD_GROUND";
-      };
   }

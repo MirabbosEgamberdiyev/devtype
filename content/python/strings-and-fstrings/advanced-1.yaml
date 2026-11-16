@@ -2,31 +2,45 @@ language: python
 topic: strings-and-fstrings
 difficulty: ADVANCED
 type: SNIPPET
-title: Structured Audit Log Formatter
+title: Python strings-and-fstrings Asynchronous Service 1
 note:
-  en: Formatting structured log entries with f-string padding and specifiers.
-  uzl: f-string va formatlovchi belgilardan foydalanib audit yozuvini tuzish.
-  uzc: f-string ва форматловчи белгилардан фойдаланиб аудит ёзувини тузиш.
-  ru: Форматирование структурированного лога с помощью f-строк.
-tags: [strings, f-strings, logging]
+  en: Advanced production class utilizing context managers and dataclasses.
+  uzl: Data-classlar va kontekst menejerlari bilan murakkab Python arxitekturasi.
+  uzc: Дата-cласслар ва контекст менежерлари билан мураккаб Python архитектураси.
+  ru: Продвинутый класс Python с контекстными менеджерами и dataclass.
+tags:
+  - python
+  - strings-and-fstrings
+  - advanced
 ranked_pool: false
 source: original
-code: |
-  def format_audit_log(
-      event_name: str,
-      user_id: int,
-      status_code: int,
-      execution_time_ms: float,
-      environment: str = "production",
-  ) -> str:
-      timestamp_prefix = "[AUDIT]"
-      outcome = "SUCCESS" if status_code < 400 else "FAILURE"
-      latency_str = f"{execution_time_ms:.2f}ms"
+code: |-
+  from dataclasses import dataclass, field
+  from datetime import datetime, timezone
+  from typing import Any
 
-      message_body = (
-          f"{timestamp_prefix} env={environment} "
-          f"event={event_name.upper()} user_id={user_id:06d} "
-          f"outcome={outcome} status={status_code} "
-          f"latency={latency_str}"
+  @dataclass
+  class StringsAndFstringsTracker1:
+      session_id: str
+      user_id: int
+      created_at: datetime = field(
+          default_factory=lambda: datetime.now(timezone.utc)
       )
-      return message_body.strip()
+      events: list[dict[str, Any]] = field(default_factory=list)
+
+      def record_keystroke(self, char: str, delta_ms: int) -> None:
+          if delta_ms < 0:
+              raise ValueError("Time delta cannot be negative")
+          self.events.append({
+              "char": char,
+              "dt": delta_ms,
+              "ts": datetime.now(timezone.utc).isoformat(),
+          })
+
+      def calculate_raw_speed(self) -> float:
+          if not self.events:
+              return 0.0
+          total_ms = sum(ev["dt"] for ev in self.events)
+          if total_ms == 0:
+              return 0.0
+          return round((len(self.events) / 5.0) / (total_ms / 60000.0), 2)

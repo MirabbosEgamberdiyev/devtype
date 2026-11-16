@@ -2,22 +2,24 @@ language: sql
 topic: where
 difficulty: INTERMEDIATE
 type: SNIPPET
-title: High Value Pending Orders Filter
+title: SQL WHERE Intermediate Query 1
 note:
-  en: Combining range checks, sets, and sorting on filtered orders.
-  uzl: Buyurtmalarni qiymat oraligʻi, toʻplam va sana boʻyicha saralash.
-  uzc: Буюртмаларни қиймат оралиғи, тўплам ва сана бўйича саралаш.
-  ru: Фильтрация заказов по диапазону, множеству и дате с сортировкой.
-tags: [where, between, in, order-by]
+  en: Intermediate real-world where pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida where boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида wҳере бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием where.
+tags:
+  - sql
+  - where
+  - intermediate
 ranked_pool: true
 source: original
-code: |
+code: |-
   SELECT o.order_id,
          o.customer_id,
-         o.order_date,
-         o.total_amount AS invoice_total
+         o.total_amount,
+         o.status
     FROM orders o
-   WHERE o.status IN ('PENDING', 'PROCESSING')
-     AND o.total_amount BETWEEN 250.00 AND 5000.00
-     AND o.order_date >= '2026-01-01'
+   WHERE (o.status = 'PENDING' AND o.total_amount >= 500.00)
+      OR (o.status = 'REVIEW' AND o.order_date >= '2026-01-01')
    ORDER BY o.total_amount DESC;

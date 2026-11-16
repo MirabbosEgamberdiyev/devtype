@@ -1,0 +1,46 @@
+language: python
+topic: conditions
+difficulty: ADVANCED
+type: SNIPPET
+title: Python conditions Asynchronous Service 4
+note:
+  en: Advanced production class utilizing context managers and dataclasses.
+  uzl: Data-classlar va kontekst menejerlari bilan murakkab Python arxitekturasi.
+  uzc: Дата-cласслар ва контекст менежерлари билан мураккаб Python архитектураси.
+  ru: Продвинутый класс Python с контекстными менеджерами и dataclass.
+tags:
+  - python
+  - conditions
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  from dataclasses import dataclass, field
+  from datetime import datetime, timezone
+  from typing import Any
+
+  @dataclass
+  class ConditionsTracker4:
+      session_id: str
+      user_id: int
+      created_at: datetime = field(
+          default_factory=lambda: datetime.now(timezone.utc)
+      )
+      events: list[dict[str, Any]] = field(default_factory=list)
+
+      def record_keystroke(self, char: str, delta_ms: int) -> None:
+          if delta_ms < 0:
+              raise ValueError("Time delta cannot be negative")
+          self.events.append({
+              "char": char,
+              "dt": delta_ms,
+              "ts": datetime.now(timezone.utc).isoformat(),
+          })
+
+      def calculate_raw_speed(self) -> float:
+          if not self.events:
+              return 0.0
+          total_ms = sum(ev["dt"] for ev in self.events)
+          if total_ms == 0:
+              return 0.0
+          return round((len(self.events) / 5.0) / (total_ms / 60000.0), 2)

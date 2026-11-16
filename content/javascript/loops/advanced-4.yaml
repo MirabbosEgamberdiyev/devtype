@@ -1,0 +1,54 @@
+language: javascript
+topic: loops
+difficulty: ADVANCED
+type: SNIPPET
+title: JavaScript loops Reactive Store Manager 4
+note:
+  en: Advanced JavaScript async telemetry aggregator with listeners.
+  uzl: Asinxron telemetriya va hodisalar boshqaruviga ega murakkab JavaScript moduli.
+  uzc: Асинхрон телеметрия ва ҳодисалар бошқарувига эга мураккаб JavaScript модули.
+  ru: Продвинутый асинхронный модуль JavaScript для агрегации телеметрии.
+tags:
+  - javascript
+  - loops
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  export class LoopsEmitter4 {
+    #subscribers = new Map();
+    #bufferedEvents = [];
+    #maxBatchSize = 100;
+
+    subscribe(eventType, callback) {
+      if (typeof callback !== "function") {
+        throw new TypeError(
+          "Subscriber listener must be an executable function"
+        );
+      }
+      if (!this.#subscribers.has(eventType)) {
+        this.#subscribers.set(eventType, new Set());
+      }
+      this.#subscribers.get(eventType).add(callback);
+      return () => this.#subscribers.get(eventType)?.delete(callback);
+    }
+
+    emit(eventType, payload) {
+      const eventObject = {
+        type: eventType,
+        data: payload,
+        timestamp: Date.now(),
+      };
+      this.#bufferedEvents.push(eventObject);
+      const listeners = this.#subscribers.get(eventType);
+      if (listeners) {
+        for (const listener of listeners) {
+          try {
+            listener(eventObject);
+          } catch (err) {
+            console.error("Telemetry error:", err);
+          }
+        }
+      }
+    }
+  }

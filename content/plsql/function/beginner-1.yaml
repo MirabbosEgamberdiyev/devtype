@@ -1,0 +1,24 @@
+language: plsql
+topic: function
+difficulty: BEGINNER
+type: SNIPPET
+title: Oracle PL/SQL FUNCTION Drill 1
+note:
+  en: Beginner drill for Oracle PL/SQL function.
+  uzl: Oracle PL/SQL function boʻyicha boshlangʻich amaliy mashq.
+  uzc: Ораcле ПЛ/SQL фунcтион бўйича бошланғич амалий машқ.
+  ru: Базовое упражнение по Oracle PL/SQL function.
+tags:
+  - plsql
+  - function
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  CREATE OR REPLACE FUNCTION get_rate_1 (
+    p_base IN NUMBER
+  ) RETURN NUMBER IS
+  BEGIN
+    RETURN p_base * 0.10;
+  END get_rate_1;
+  /

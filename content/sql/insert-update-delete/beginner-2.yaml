@@ -1,0 +1,21 @@
+language: sql
+topic: insert-update-delete
+difficulty: BEGINNER
+type: SNIPPET
+title: SQL INSERT-UPDATE-DELETE Basic Drill 2
+note:
+  en: Beginner drill for SQL insert-update-delete statements.
+  uzl: SQL insert-update-delete ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL инсерт-упдате-делете ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений insert-update-delete.
+tags:
+  - sql
+  - insert-update-delete
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  UPDATE employees
+     SET salary = salary * 1.05
+   WHERE department_id = 40;

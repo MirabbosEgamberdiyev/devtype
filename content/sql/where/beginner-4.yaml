@@ -1,0 +1,21 @@
+language: sql
+topic: where
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: SQL WHERE Basic Drill 4
+note:
+  en: Beginner drill for SQL where statements.
+  uzl: SQL where ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL wҳере ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений where.
+tags:
+  - sql
+  - where
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT *
+    FROM products
+   WHERE is_active = TRUE AND stock_quantity > 0;

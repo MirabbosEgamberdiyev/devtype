@@ -1,0 +1,24 @@
+language: python
+topic: conditions
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Python conditions Basic Drill 2
+note:
+  en: Beginner drill for Python conditions.
+  uzl: Python conditions boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python cондитионс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python conditions.
+tags:
+  - python
+  - conditions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  latency_ms: float = 68
+  if latency_ms < 50.0:
+      status = "EXCELLENT"
+  elif latency_ms < 150.0:
+      status = "ACCEPTABLE"
+  else:
+      status = "DEGRADED"

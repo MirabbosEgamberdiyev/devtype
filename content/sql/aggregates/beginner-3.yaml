@@ -1,0 +1,21 @@
+language: sql
+topic: aggregates
+difficulty: BEGINNER
+type: SNIPPET
+title: SQL AGGREGATES Basic Drill 3
+note:
+  en: Beginner drill for SQL aggregates statements.
+  uzl: SQL aggregates ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL аггрегатес ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений aggregates.
+tags:
+  - sql
+  - aggregates
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT SUM(total_amount) AS aggregate_metric,
+         COUNT(1) AS row_frequency
+    FROM orders;

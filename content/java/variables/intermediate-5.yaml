@@ -1,0 +1,29 @@
+language: java
+topic: variables
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Java VARIABLES Idiomatic Pattern 5
+note:
+  en: Intermediate production pattern utilizing Java variables.
+  uzl: Java variables imkoniyatlaridan foydalanuvchi oʻrta darajadagi amaliy shablon.
+  uzc: Java вариаблес имкониятларидан фойдаланувчи ўрта даражадаги амалий шаблон.
+  ru: Промежуточный практический шаблон на Java по теме variables.
+tags:
+  - java
+  - variables
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  public class VariablesService5 {
+      private final int maxRetries = 6;
+      private final double minimumOrderValue = 60.00;
+
+      public boolean validateAndExecute(double amount, String tier) {
+          if (amount < minimumOrderValue) {
+              return false;
+          }
+          boolean hasPriority = "DIAMOND".equalsIgnoreCase(tier);
+          return hasPriority || amount >= 100.00;
+      }
+  }

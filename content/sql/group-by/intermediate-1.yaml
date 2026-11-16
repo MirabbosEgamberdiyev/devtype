@@ -1,0 +1,27 @@
+language: sql
+topic: group-by
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL GROUP-BY Intermediate Query 1
+note:
+  en: Intermediate real-world group-by pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida group-by boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида гроуп-бй бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием group-by.
+tags:
+  - sql
+  - group-by
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  SELECT d.department_name,
+         COUNT(e.employee_id) AS employee_count,
+         ROUND(AVG(e.salary), 2) AS avg_salary,
+         MAX(e.salary) AS peak_salary
+    FROM departments d
+    JOIN employees e
+      ON e.department_id = d.department_id
+   GROUP BY d.department_name
+  HAVING COUNT(e.employee_id) >= 1
+   ORDER BY avg_salary DESC;

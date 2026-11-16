@@ -1,0 +1,32 @@
+language: javascript
+topic: functions
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: JavaScript functions Functional Utility 2
+note:
+  en: Intermediate ES6+ modern JavaScript pattern using functions.
+  uzl: Zamonaviy ES6+ uslubidagi functions boʻyicha oʻrta murakkablikdagi kod.
+  uzc: Замонавий ES6+ услубидаги фунcтионс бўйича ўрта мураккабликдаги код.
+  ru: Промежуточный паттерн современного JavaScript ES6+ по теме functions.
+tags:
+  - javascript
+  - functions
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  export function sanitizeFunctions_2(payload) {
+    const { wpm = 0, accuracy = 100, durationMs = 0 } = payload;
+    if (durationMs < 0 || wpm < 0) {
+      throw new Error(
+        "Invalid negative telemetry dimensions"
+      );
+    }
+    const isPassable = wpm >= 40 && accuracy >= 95.0;
+    return {
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(1)),
+      duration: Math.round(durationMs / 1000),
+      isPassable,
+    };
+  }

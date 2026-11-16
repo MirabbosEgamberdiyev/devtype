@@ -1,0 +1,56 @@
+language: plsql
+topic: loops
+difficulty: ADVANCED
+type: SNIPPET
+title: Oracle PL/SQL LOOPS Advanced Subprogram 1
+note:
+  en: Advanced Oracle PL/SQL subprogram demonstrating robust exception handling.
+  uzl: Mustahkam xatoliklarni qayta ishlashga ega murakkab PL/SQL dasturi.
+  uzc: Мустаҳкам хатоликларни қайта ишлашга эга мураккаб ПЛ/SQL дастури.
+  ru: Продвинутая подпрограмма Oracle PL/SQL с обработкой исключительных ситуаций.
+tags:
+  - plsql
+  - loops
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  CREATE OR REPLACE PROCEDURE exec_loops_hike_1 (
+    p_department_id IN departments.department_id%TYPE,
+    p_percentage    IN NUMBER
+  ) IS
+    v_updated_rows PLS_INTEGER := 0;
+    e_invalid_rate EXCEPTION;
+  BEGIN
+    IF p_percentage <= 0 OR p_percentage > 30 THEN
+      RAISE e_invalid_rate;
+    END IF;
+
+    UPDATE employees
+       SET salary = salary * (1 + p_percentage / 100)
+     WHERE department_id = p_department_id;
+
+    v_updated_rows := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('loops rows: ' || v_updated_rows);
+    COMMIT;
+  EXCEPTION
+    WHEN e_invalid_rate THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20010,
+        'Percentage increment out of acceptable range'
+      );
+    WHEN NO_DATA_FOUND THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20011,
+        'Department ID does not exist: ' || p_department_id
+      );
+    WHEN OTHERS THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20099,
+        'Unexpected exception in payroll routine'
+      );
+  END exec_loops_hike_1;
+  /

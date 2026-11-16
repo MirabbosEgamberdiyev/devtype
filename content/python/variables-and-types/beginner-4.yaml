@@ -1,0 +1,21 @@
+language: python
+topic: variables-and-types
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Python variables-and-types Basic Drill 4
+note:
+  en: Beginner drill for Python variables-and-types.
+  uzl: Python variables-and-types boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python вариаблес-анд-тйпес бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python variables-and-types.
+tags:
+  - python
+  - variables-and-types
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  server_port: int = 8084
+  max_conns: int = 200
+  is_healthy: bool = True
+  service_name: str = "audit-logger"

@@ -1,0 +1,28 @@
+language: sql
+topic: order-by
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL ORDER-BY Intermediate Query 5
+note:
+  en: Intermediate real-world order-by pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida order-by boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида ордер-бй бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием order-by.
+tags:
+  - sql
+  - order-by
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT p.product_id,
+         p.product_name,
+         p.category,
+         p.unit_price,
+         p.stock_quantity
+    FROM products p
+   WHERE p.category = 'HARDWARE'
+   ORDER BY p.unit_price DESC,
+            p.stock_quantity ASC
+   LIMIT 100;

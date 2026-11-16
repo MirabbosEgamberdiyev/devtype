@@ -1,0 +1,22 @@
+language: sql
+topic: order-by
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: SQL ORDER-BY Basic Drill 3
+note:
+  en: Beginner drill for SQL order-by statements.
+  uzl: SQL order-by ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL ордер-бй ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений order-by.
+tags:
+  - sql
+  - order-by
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT *
+    FROM products
+   ORDER BY unit_price ASC, product_name ASC
+   LIMIT 50;

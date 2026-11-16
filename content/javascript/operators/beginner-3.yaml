@@ -1,0 +1,21 @@
+language: javascript
+topic: operators
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: JavaScript operators Basic Drill 3
+note:
+  en: Beginner drill for JavaScript operators.
+  uzl: JavaScript operators boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript операторс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript operators.
+tags:
+  - javascript
+  - operators
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const baseScore = 250;
+  const bonus = 25 * 3;
+  const isQualified = (baseScore + bonus >= 200) && (bonus < 300);
+  const ratio = baseScore / 10;

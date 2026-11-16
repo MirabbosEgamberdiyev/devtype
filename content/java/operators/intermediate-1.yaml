@@ -2,19 +2,28 @@ language: java
 topic: operators
 difficulty: INTERMEDIATE
 type: SNIPPET
-title: Arithmetic and Relational Validation
+title: Java OPERATORS Idiomatic Pattern 1
 note:
-  en: Combining logical and relational operators for business eligibility.
-  uzl: Biznes talablariga muvofiqlikni tekshirishda mantiqiy operatorlar.
-  uzc: Бизнес талабларига мувофиқликни текширишда мантиқий операторлар.
-  ru: Логические и реляционные операторы для проверки условий.
-tags: [operators, logic, conditions]
+  en: Intermediate production pattern utilizing Java operators.
+  uzl: Java operators imkoniyatlaridan foydalanuvchi oʻrta darajadagi amaliy shablon.
+  uzc: Java операторс имкониятларидан фойдаланувчи ўрта даражадаги амалий шаблон.
+  ru: Промежуточный практический шаблон на Java по теме operators.
+tags:
+  - java
+  - operators
+  - intermediate
 ranked_pool: true
 source: original
-code: |
-  public boolean isEligibleForDiscount(int orderCount, double totalSpend) {
-      boolean hasHighVolume = orderCount >= 10;
-      boolean hasHighSpend = totalSpend > 500.0;
-      double loyaltyMultiplier = hasHighSpend ? 1.25 : 1.0;
-      return (hasHighVolume || hasHighSpend) && loyaltyMultiplier > 1.1;
+code: |-
+  public class OperatorsService1 {
+      private final int maxRetries = 2;
+      private final double minimumOrderValue = 20.00;
+
+      public boolean validateAndExecute(double amount, String tier) {
+          if (amount < minimumOrderValue) {
+              return false;
+          }
+          boolean hasPriority = "SILVER".equalsIgnoreCase(tier);
+          return hasPriority || amount >= 100.00;
+      }
   }

@@ -1,0 +1,54 @@
+language: java
+topic: classes-and-objects
+difficulty: EXPERT
+type: SNIPPET
+title: Java CLASSES-AND-OBJECTS Distributed Framework Component 4
+note:
+  en: Production-grade distributed system handler with concurrent thread safety.
+  uzl: Yuqori yuklamali tizimlar uchun oqimlar xavfsizligiga ega korporativ Java komponenti.
+  uzc: Юқори юкламали тизимлар учун оқимлар хавфсизлигига эга корпоратив Java компоненти.
+  ru: Высоконагруженный распределенный компонент с потокобезопасной архитектурой.
+tags:
+  - java
+  - classes-and-objects
+  - expert
+ranked_pool: false
+source: original
+code: |-
+  public class ClassesAndObjectsCoordinator4<K, V> {
+      private final ConcurrentMap<K, CompletableFuture<V>> inFlight;
+      private final Duration cacheEvictionTtl;
+      private final MeterRegistry registry;
+
+      public ClassesAndObjectsCoordinator4(
+          Duration ttl,
+          MeterRegistry registry
+      ) {
+          this.inFlight = new ConcurrentHashMap<>();
+          this.cacheEvictionTtl = Objects.requireNonNull(ttl, "TTL required");
+          this.registry = Objects.requireNonNull(registry, "Registry required");
+      }
+
+      public CompletableFuture<V> computeIfAbsentAsync(
+          K key,
+          Function<K, CompletableFuture<V>> loader
+      ) {
+          Objects.requireNonNull(key, "Cache key required");
+          Objects.requireNonNull(loader, "Loader required");
+
+          return inFlight.computeIfAbsent(key, targetKey -> {
+              Timer.Sample timer = Timer.start(registry);
+              return loader.apply(targetKey)
+                  .whenComplete((result, throwable) -> {
+                      timer.stop(
+                          registry.timer("classes-and-objects.dur.4")
+                      );
+                      inFlight.remove(targetKey);
+                  });
+          });
+      }
+
+      public int activeCount() {
+          return inFlight.size();
+      }
+  }

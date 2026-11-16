@@ -1,0 +1,22 @@
+language: javascript
+topic: loops
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: JavaScript loops Basic Drill 5
+note:
+  en: Beginner drill for JavaScript loops.
+  uzl: JavaScript loops boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript лоопс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript loops.
+tags:
+  - javascript
+  - loops
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const sequence = [];
+  for (let i = 1; i <= 5; i++) {
+    sequence.push(i * 25);
+  }
+  console.log("Generated count:", sequence.length);

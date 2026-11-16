@@ -1,0 +1,21 @@
+language: python
+topic: loops
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Python loops Basic Drill 4
+note:
+  en: Beginner drill for Python loops.
+  uzl: Python loops boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python лоопс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python loops.
+tags:
+  - python
+  - loops
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  processed_items: list[int] = []
+  for item_id in range(1, 6):
+      processed_items.append(item_id * 40)
+  print(f"Total: {len(processed_items)}")

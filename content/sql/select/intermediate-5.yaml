@@ -1,0 +1,25 @@
+language: sql
+topic: select
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL SELECT Intermediate Query 5
+note:
+  en: Intermediate real-world select pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida select boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида селеcт бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием select.
+tags:
+  - sql
+  - select
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  SELECT e.employee_id,
+         e.first_name || ' ' || e.last_name AS employee_name,
+         e.salary,
+         ROUND(e.salary * 12, 2) AS annual_salary,
+         COALESCE(e.commission_pct, 0.0) AS commission_rate
+    FROM employees e
+   WHERE e.salary >= 5000
+   ORDER BY annual_salary DESC;

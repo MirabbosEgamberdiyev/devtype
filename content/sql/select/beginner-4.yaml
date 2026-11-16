@@ -1,0 +1,21 @@
+language: sql
+topic: select
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: SQL SELECT Basic Drill 4
+note:
+  en: Beginner drill for SQL select statements.
+  uzl: SQL select ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL селеcт ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений select.
+tags:
+  - sql
+  - select
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT order_id, customer_id, order_date, total_amount
+    FROM orders
+   LIMIT 20;

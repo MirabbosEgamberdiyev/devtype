@@ -1,0 +1,23 @@
+language: javascript
+topic: objects
+difficulty: BEGINNER
+type: SNIPPET
+title: JavaScript objects Basic Drill 3
+note:
+  en: Beginner drill for JavaScript objects.
+  uzl: JavaScript objects boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript обжеcтс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript objects.
+tags:
+  - javascript
+  - objects
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const userPreferences = {
+    theme: "nord",
+    fontSize: 20,
+    caretStyle: "line",
+    strictIndent: false,
+  };

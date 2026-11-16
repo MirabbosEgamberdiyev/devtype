@@ -1,0 +1,19 @@
+language: javascript
+topic: arrays
+difficulty: BEGINNER
+type: SNIPPET
+title: JavaScript arrays Basic Drill 4
+note:
+  en: Beginner drill for JavaScript arrays.
+  uzl: JavaScript arrays boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript аррайс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript arrays.
+tags:
+  - javascript
+  - arrays
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const locales = ["uzl", "uzc", "ru", "en"];
+  const activeTags = ["core", "focus", "batch_4"];

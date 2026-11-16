@@ -1,0 +1,21 @@
+language: java
+topic: variables
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Java VARIABLES Basic Syntax 4
+note:
+  en: Beginner drill for Java variables language features.
+  uzl: Java variables boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java вариаблес бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java variables.
+tags:
+  - java
+  - variables
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  final int maxBatchSize = 200;
+  final double baseRate = 12.5 * 4;
+  boolean isOnline = true;
+  String region = "ap-south-1";

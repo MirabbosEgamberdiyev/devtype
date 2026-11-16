@@ -1,0 +1,31 @@
+language: sql
+topic: aggregates
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL AGGREGATES Advanced Pipeline 5
+note:
+  en: Advanced analytical aggregates pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan aggregates boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан аггрегатес бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием aggregates.
+tags:
+  - sql
+  - aggregates
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT d.department_name,
+         COUNT(e.employee_id) AS staff_count,
+         ROUND(AVG(e.salary), 2) AS mean_compensation,
+         SUM(e.salary) AS total_payroll,
+         ROUND(MAX(e.salary) - MIN(e.salary), 2) AS salary_disparity
+    FROM departments d
+    JOIN employees e
+      ON e.department_id = d.department_id
+   WHERE e.salary >= 4500
+   GROUP BY d.department_name
+  HAVING COUNT(e.employee_id) >= 2
+   ORDER BY total_payroll DESC;

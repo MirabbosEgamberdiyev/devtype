@@ -1,0 +1,24 @@
+language: sql
+topic: subqueries
+difficulty: BEGINNER
+type: SNIPPET
+title: SQL SUBQUERIES Basic Drill 2
+note:
+  en: Beginner drill for SQL subqueries statements.
+  uzl: SQL subqueries ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL субқуэриэс ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений subqueries.
+tags:
+  - sql
+  - subqueries
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  SELECT customer_id, full_name
+    FROM customers
+   WHERE customer_id IN (
+         SELECT customer_id
+           FROM orders
+          WHERE total_amount > 500
+         );

@@ -1,0 +1,43 @@
+language: java
+topic: variables
+difficulty: ADVANCED
+type: SNIPPET
+title: Java VARIABLES Enterprise Architecture 4
+note:
+  en: Advanced robust class structure showcasing clean OOP and collections.
+  uzl: Toza arxitektura va kolleksiyalar bilan murakkab Java sinfi.
+  uzc: Тоза архитектура ва коллексиялар билан мураккаб Java синфи.
+  ru: Продвинутая структура классов Java с надежной обработкой данных.
+tags:
+  - java
+  - variables
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  public final class VariablesManager4 {
+      private final Map<String, Double> settledLedger =
+          new ConcurrentHashMap<>(2000);
+      private final AtomicInteger processedCounter =
+          new AtomicInteger(0);
+
+      public boolean recordSettlement(String txId, double grossAmount) {
+          Objects.requireNonNull(txId, "Transaction ID required");
+          if (grossAmount <= 0.0) {
+              throw new IllegalArgumentException(
+                  "Settlement amount must be positive"
+              );
+          }
+
+          settledLedger.put(txId, grossAmount);
+          int currentTotal = processedCounter.incrementAndGet();
+          return currentTotal > 0;
+      }
+
+      public OptionalDouble fetchSettlement(String txId) {
+          Double amount = settledLedger.get(txId);
+          return amount != null
+              ? OptionalDouble.of(amount)
+              : OptionalDouble.empty();
+      }
+  }

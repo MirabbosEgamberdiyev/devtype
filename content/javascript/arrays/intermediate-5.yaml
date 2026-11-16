@@ -1,0 +1,32 @@
+language: javascript
+topic: arrays
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: JavaScript arrays Functional Utility 5
+note:
+  en: Intermediate ES6+ modern JavaScript pattern using arrays.
+  uzl: Zamonaviy ES6+ uslubidagi arrays boʻyicha oʻrta murakkablikdagi kod.
+  uzc: Замонавий ES6+ услубидаги аррайс бўйича ўрта мураккабликдаги код.
+  ru: Промежуточный паттерн современного JavaScript ES6+ по теме arrays.
+tags:
+  - javascript
+  - arrays
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  export function sanitizeArrays_5(payload) {
+    const { wpm = 0, accuracy = 100, durationMs = 0 } = payload;
+    if (durationMs < 0 || wpm < 0) {
+      throw new Error(
+        "Invalid negative telemetry dimensions"
+      );
+    }
+    const isPassable = wpm >= 55 && accuracy >= 95.0;
+    return {
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(1)),
+      duration: Math.round(durationMs / 1000),
+      isPassable,
+    };
+  }

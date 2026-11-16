@@ -1,0 +1,21 @@
+language: javascript
+topic: variables
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: JavaScript variables Basic Drill 4
+note:
+  en: Beginner drill for JavaScript variables.
+  uzl: JavaScript variables boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript вариаблес бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript variables.
+tags:
+  - javascript
+  - variables
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const maxRetries = 6;
+  const timeoutMs = 10000;
+  let isConnected = true;
+  let sessionToken = "tok_prod_4094";

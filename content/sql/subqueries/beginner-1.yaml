@@ -1,0 +1,23 @@
+language: sql
+topic: subqueries
+difficulty: BEGINNER
+type: SNIPPET
+title: SQL SUBQUERIES Basic Drill 1
+note:
+  en: Beginner drill for SQL subqueries statements.
+  uzl: SQL subqueries ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL субқуэриэс ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений subqueries.
+tags:
+  - sql
+  - subqueries
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  SELECT employee_id, salary
+    FROM employees
+   WHERE salary > (
+         SELECT AVG(salary)
+           FROM employees
+         );

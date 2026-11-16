@@ -1,0 +1,27 @@
+language: plsql
+topic: cursor
+difficulty: BEGINNER
+type: SNIPPET
+title: Oracle PL/SQL CURSOR Drill 2
+note:
+  en: Beginner drill for Oracle PL/SQL cursor.
+  uzl: Oracle PL/SQL cursor boʻyicha boshlangʻich amaliy mashq.
+  uzc: Ораcле ПЛ/SQL cурсор бўйича бошланғич амалий машқ.
+  ru: Базовое упражнение по Oracle PL/SQL cursor.
+tags:
+  - plsql
+  - cursor
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  DECLARE
+    v_name VARCHAR2(100);
+  BEGIN
+    SELECT first_name
+      INTO v_name
+      FROM employees
+     WHERE employee_id = 202;
+    DBMS_OUTPUT.PUT_LINE(v_name);
+  END;
+  /

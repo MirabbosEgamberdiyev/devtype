@@ -2,51 +2,63 @@ language: javascript
 topic: objects
 difficulty: EXPERT
 type: SNIPPET
-title: Deep Object Difference and Patch Generator
+title: JavaScript objects High-Performance Engine Worker 1
 note:
-  en: Deep comparison of nested object properties returning atomic patches.
-  uzl: Ichma-ich joylashgan obyektlarni chuqur taqqoslash va oʻzgarishlar farqini tuzish.
-  uzc: Ичма-ич жойлашган объектларни чуқур таққослаш ва ўзгаришлар фарқини тузиш.
-  ru: Глубокое сравнение вложенных объектов с генерацией патча различий.
-tags: [objects, recursion, immutability]
+  en: Production-grade real-time keystroke replayer and state machine.
+  uzl: Yuqori tezlikdagi real-vaqt rejimida klavishlar ijrosi va holatlar mashinasi.
+  uzc: Юқори тезликдаги реал-вақт режимида клавишлар ижроси ва ҳолатлар машинаси.
+  ru: Высокопроизводительный движок воспроизведения нажатий клавиш промышленного уровня.
+tags:
+  - javascript
+  - objects
+  - expert
 ranked_pool: false
 source: original
-code: |
-  export function computeDeepObjectDiff(sourceObj, targetObj) {
-    const isObject = (val) =>
-      val !== null && typeof val === "object" && !Array.isArray(val);
-    const diffPatch = { added: {}, updated: {}, removed: {} };
+code: |-
+  export class ObjectsReplayer1 {
+    #events = [];
+    #cursor = 0;
+    #playbackRate = 1.0;
+    #timerId = null;
+    #onTickCallback = null;
 
-    const sourceKeys = Object.keys(sourceObj ?? {});
-    const targetKeys = Object.keys(targetObj ?? {});
-    const allUniqueKeys = new Set([...sourceKeys, ...targetKeys]);
-
-    for (const key of allUniqueKeys) {
-      const hasSource = Object.prototype.hasOwnProperty.call(sourceObj, key);
-      const hasTarget = Object.prototype.hasOwnProperty.call(targetObj, key);
-
-      if (hasSource && !hasTarget) {
-        diffPatch.removed[key] = sourceObj[key];
-      } else if (!hasSource && hasTarget) {
-        diffPatch.added[key] = targetObj[key];
-      } else {
-        const sourceVal = sourceObj[key];
-        const targetVal = targetObj[key];
-
-        if (isObject(sourceVal) && isObject(targetVal)) {
-          const nestedDiff = computeDeepObjectDiff(sourceVal, targetVal);
-          const hasChanges =
-            Object.keys(nestedDiff.added).length > 0 ||
-            Object.keys(nestedDiff.updated).length > 0 ||
-            Object.keys(nestedDiff.removed).length > 0;
-          if (hasChanges) {
-            diffPatch.updated[key] = nestedDiff;
-          }
-        } else if (sourceVal !== targetVal) {
-          diffPatch.updated[key] = { previous: sourceVal, current: targetVal };
-        }
-      }
+    constructor(events, options = {}) {
+      this.#events = Array.isArray(events) ? [...events] : [];
+      this.#playbackRate = options.speed ?? 1.0;
+      this.#onTickCallback = options.onTick ?? (() => {});
     }
 
-    return diffPatch;
+    start() {
+      if (this.#timerId !== null || this.#events.length === 0) return;
+      let lastTimestamp = performance.now();
+
+      const tick = (now) => {
+        const elapsedDelta = (now - lastTimestamp) * this.#playbackRate;
+        while (
+          this.#cursor < this.#events.length &&
+          (this.#events[this.#cursor]?.t ?? 0) <= elapsedDelta
+        ) {
+          this.#onTickCallback(
+            this.#events[this.#cursor],
+            this.#cursor
+          );
+          this.#cursor += 1;
+        }
+
+        if (this.#cursor < this.#events.length) {
+          this.#timerId = requestAnimationFrame(tick);
+        } else {
+          this.stop();
+        }
+      };
+
+      this.#timerId = requestAnimationFrame(tick);
+    }
+
+    stop() {
+      if (this.#timerId !== null) {
+        cancelAnimationFrame(this.#timerId);
+        this.#timerId = null;
+      }
+    }
   }

@@ -1,0 +1,29 @@
+language: sql
+topic: subqueries
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL SUBQUERIES Intermediate Query 3
+note:
+  en: Intermediate real-world subqueries pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida subqueries boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида субқуэриэс бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием subqueries.
+tags:
+  - sql
+  - subqueries
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT c.customer_id,
+         c.full_name,
+         c.balance
+    FROM customers c
+   WHERE c.tier = 'GOLD'
+     AND c.customer_id IN (
+         SELECT o.customer_id
+           FROM orders o
+          WHERE o.status = 'COMPLETED'
+         )
+   ORDER BY c.balance DESC;

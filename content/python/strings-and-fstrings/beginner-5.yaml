@@ -1,0 +1,20 @@
+language: python
+topic: strings-and-fstrings
+difficulty: BEGINNER
+type: SNIPPET
+title: Python strings-and-fstrings Basic Drill 5
+note:
+  en: Beginner drill for Python strings-and-fstrings.
+  uzl: Python strings-and-fstrings boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python стрингс-анд-фстрингс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python strings-and-fstrings.
+tags:
+  - python
+  - strings-and-fstrings
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  user_id: int = 1045
+  role: str = "ENGINEER"
+  log_entry: str = f"AUDIT: user={user_id} role={role} status=OK"

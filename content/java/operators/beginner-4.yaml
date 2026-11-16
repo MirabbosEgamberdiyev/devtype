@@ -1,0 +1,21 @@
+language: java
+topic: operators
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Java OPERATORS Basic Syntax 4
+note:
+  en: Beginner drill for Java operators language features.
+  uzl: Java operators boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java операторс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java operators.
+tags:
+  - java
+  - operators
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  int counter = 60;
+  counter += 10;
+  boolean isValid = (counter >= 20) && (counter <= 200);
+  double ratio = (double) counter / 4.0;

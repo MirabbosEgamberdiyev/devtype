@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { SettingsPage } from '../SettingsPage';
-import { devtypeApi } from '../../../shared/api/devtypeApi';
+import { devtypeApi, type UserSettings } from '../../../shared/api/devtypeApi';
 
 vi.mock('../../../shared/api/devtypeApi', () => ({
   devtypeApi: {
@@ -99,7 +99,7 @@ describe('SettingsPage (AC-UM-8, AC-UM-9, AC-UM-11)', () => {
   });
 
   it('triggers delete account confirmation dialog', async () => {
-    vi.mocked(devtypeApi.getUserSettings).mockResolvedValueOnce({} as any);
+    vi.mocked(devtypeApi.getUserSettings).mockResolvedValueOnce({} as unknown as UserSettings);
     vi.mocked(devtypeApi.getMe).mockResolvedValueOnce({
       id: 1,
       username: 'dev_user',

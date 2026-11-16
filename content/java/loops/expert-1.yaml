@@ -2,50 +2,53 @@ language: java
 topic: loops
 difficulty: EXPERT
 type: SNIPPET
-title: Matrix Convolution and Kernel Filter
+title: Java LOOPS Distributed Framework Component 1
 note:
-  en: Deeply nested loops with boundary checks and 2D matrix transformation.
-  uzl: Chegara tekshiruvlari va ikki oʻlchamli massiv bilan chuqur sikllar.
-  uzc: Чегара текширувлари ва икки ўлчамли массив билан чуқур цикллар.
-  ru: Вложенные циклы с проверкой границ и обработкой матрицы.
-tags: [loops, matrix, algorithms]
+  en: Production-grade distributed system handler with concurrent thread safety.
+  uzl: Yuqori yuklamali tizimlar uchun oqimlar xavfsizligiga ega korporativ Java komponenti.
+  uzc: Юқори юкламали тизимлар учун оқимлар хавфсизлигига эга корпоратив Java компоненти.
+  ru: Высоконагруженный распределенный компонент с потокобезопасной архитектурой.
+tags:
+  - java
+  - loops
+  - expert
 ranked_pool: false
 source: original
-code: |
-  public double[][] applyConvolution(double[][] matrix, double[][] kernel) {
-      int rows = matrix.length;
-      int cols = matrix[0].length;
-      int kRows = kernel.length;
-      int kCols = kernel[0].length;
-      int rOffset = kRows / 2;
-      int cOffset = kCols / 2;
-      double[][] result = new double[rows][cols];
+code: |-
+  public class LoopsCoordinator1<K, V> {
+      private final ConcurrentMap<K, CompletableFuture<V>> inFlight;
+      private final Duration cacheEvictionTtl;
+      private final MeterRegistry registry;
 
-      for (int r = 0; r < rows; r++) {
-          for (int c = 0; c < cols; c++) {
-              double accumulatedSum = 0.0;
-              double normalizerWeight = 0.0;
-              for (int kr = 0; kr < kRows; kr++) {
-                  int targetR = r + kr - rOffset;
-                  if (targetR < 0 || targetR >= rows) {
-                      continue;
-                  }
-                  for (int kc = 0; kc < kCols; kc++) {
-                      int targetC = c + kc - cOffset;
-                      if (targetC < 0 || targetC >= cols) {
-                          continue;
-                      }
-                      double weight = kernel[kr][kc];
-                      accumulatedSum += matrix[targetR][targetC] * weight;
-                      normalizerWeight += Math.abs(weight);
-                  }
-              }
-              if (normalizerWeight > 0.0001) {
-                  result[r][c] = accumulatedSum / normalizerWeight;
-              } else {
-                  result[r][c] = accumulatedSum;
-              }
-          }
+      public LoopsCoordinator1(
+          Duration ttl,
+          MeterRegistry registry
+      ) {
+          this.inFlight = new ConcurrentHashMap<>();
+          this.cacheEvictionTtl = Objects.requireNonNull(ttl, "TTL required");
+          this.registry = Objects.requireNonNull(registry, "Registry required");
       }
-      return result;
+
+      public CompletableFuture<V> computeIfAbsentAsync(
+          K key,
+          Function<K, CompletableFuture<V>> loader
+      ) {
+          Objects.requireNonNull(key, "Cache key required");
+          Objects.requireNonNull(loader, "Loader required");
+
+          return inFlight.computeIfAbsent(key, targetKey -> {
+              Timer.Sample timer = Timer.start(registry);
+              return loader.apply(targetKey)
+                  .whenComplete((result, throwable) -> {
+                      timer.stop(
+                          registry.timer("loops.dur.1")
+                      );
+                      inFlight.remove(targetKey);
+                  });
+          });
+      }
+
+      public int activeCount() {
+          return inFlight.size();
+      }
   }

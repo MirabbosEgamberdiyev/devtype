@@ -1,0 +1,34 @@
+language: sql
+topic: select
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL SELECT Advanced Pipeline 3
+note:
+  en: Advanced analytical select pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan select boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан селеcт бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием select.
+tags:
+  - sql
+  - select
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  SELECT e.employee_id,
+         e.first_name || ' ' || e.last_name AS employee_name,
+         e.salary,
+         ROUND(e.salary * 1.12, 2) AS projected_salary,
+         CASE
+           WHEN e.salary >= 6000 THEN 'SENIOR_BAND'
+           WHEN e.salary >= 3500 THEN 'MID_BAND'
+           ELSE 'ENTRY_BAND'
+         END AS compensation_tier,
+         d.department_name,
+         COALESCE(d.location_id, 1000) AS resolved_location
+    FROM employees e
+    LEFT JOIN departments d
+      ON d.department_id = e.department_id
+   WHERE e.salary >= 3500
+   ORDER BY projected_salary DESC,
+            e.employee_id ASC;

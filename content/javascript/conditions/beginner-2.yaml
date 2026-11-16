@@ -1,0 +1,23 @@
+language: javascript
+topic: conditions
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: JavaScript conditions Basic Drill 2
+note:
+  en: Beginner drill for JavaScript conditions.
+  uzl: JavaScript conditions boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript cондитионс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript conditions.
+tags:
+  - javascript
+  - conditions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  const responseTime = 88;
+  if (responseTime < 100) {
+    console.log("Status: OPTIMAL");
+  } else {
+    console.log("Status: SLOW");
+  }

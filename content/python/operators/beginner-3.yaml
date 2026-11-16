@@ -1,0 +1,21 @@
+language: python
+topic: operators
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Python operators Basic Drill 3
+note:
+  en: Beginner drill for Python operators.
+  uzl: Python operators boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python операторс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python operators.
+tags:
+  - python
+  - operators
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  base_score: int = 100
+  bonus: int = 15 * 3
+  total: int = base_score + bonus
+  is_valid: bool = (total >= 100) and (total < 500)

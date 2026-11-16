@@ -1,0 +1,29 @@
+language: java
+topic: loops
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Java LOOPS Idiomatic Pattern 3
+note:
+  en: Intermediate production pattern utilizing Java loops.
+  uzl: Java loops imkoniyatlaridan foydalanuvchi oʻrta darajadagi amaliy shablon.
+  uzc: Java лоопс имкониятларидан фойдаланувчи ўрта даражадаги амалий шаблон.
+  ru: Промежуточный практический шаблон на Java по теме loops.
+tags:
+  - java
+  - loops
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  public class LoopsService3 {
+      private final int maxRetries = 4;
+      private final double minimumOrderValue = 40.00;
+
+      public boolean validateAndExecute(double amount, String tier) {
+          if (amount < minimumOrderValue) {
+              return false;
+          }
+          boolean hasPriority = "PLATINUM".equalsIgnoreCase(tier);
+          return hasPriority || amount >= 100.00;
+      }
+  }

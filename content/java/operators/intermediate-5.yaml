@@ -1,0 +1,29 @@
+language: java
+topic: operators
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Java OPERATORS Idiomatic Pattern 5
+note:
+  en: Intermediate production pattern utilizing Java operators.
+  uzl: Java operators imkoniyatlaridan foydalanuvchi oʻrta darajadagi amaliy shablon.
+  uzc: Java операторс имкониятларидан фойдаланувчи ўрта даражадаги амалий шаблон.
+  ru: Промежуточный практический шаблон на Java по теме operators.
+tags:
+  - java
+  - operators
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  public class OperatorsService5 {
+      private final int maxRetries = 6;
+      private final double minimumOrderValue = 60.00;
+
+      public boolean validateAndExecute(double amount, String tier) {
+          if (amount < minimumOrderValue) {
+              return false;
+          }
+          boolean hasPriority = "DIAMOND".equalsIgnoreCase(tier);
+          return hasPriority || amount >= 100.00;
+      }
+  }

@@ -1,0 +1,20 @@
+language: python
+topic: functions
+difficulty: BEGINNER
+type: SNIPPET
+title: Python functions Basic Drill 3
+note:
+  en: Beginner drill for Python functions.
+  uzl: Python functions boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python фунcтионс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python functions.
+tags:
+  - python
+  - functions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  def calculate_discount_3(price: float, rate: float) -> float:
+      discount_amount = price * rate
+      return round(price - discount_amount, 2)

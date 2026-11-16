@@ -1,0 +1,29 @@
+language: java
+topic: oop
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Java OOP Idiomatic Pattern 5
+note:
+  en: Intermediate production pattern utilizing Java oop.
+  uzl: Java oop imkoniyatlaridan foydalanuvchi oʻrta darajadagi amaliy shablon.
+  uzc: Java ооп имкониятларидан фойдаланувчи ўрта даражадаги амалий шаблон.
+  ru: Промежуточный практический шаблон на Java по теме oop.
+tags:
+  - java
+  - oop
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  public class OopService5 {
+      private final int maxRetries = 6;
+      private final double minimumOrderValue = 60.00;
+
+      public boolean validateAndExecute(double amount, String tier) {
+          if (amount < minimumOrderValue) {
+              return false;
+          }
+          boolean hasPriority = "DIAMOND".equalsIgnoreCase(tier);
+          return hasPriority || amount >= 100.00;
+      }
+  }

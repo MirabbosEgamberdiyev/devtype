@@ -1,0 +1,32 @@
+language: javascript
+topic: strings-and-template-literals
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: JavaScript strings-and-template-literals Functional Utility 4
+note:
+  en: Intermediate ES6+ modern JavaScript pattern using strings-and-template-literals.
+  uzl: Zamonaviy ES6+ uslubidagi strings-and-template-literals boʻyicha oʻrta murakkablikdagi kod.
+  uzc: Замонавий ES6+ услубидаги стрингс-анд-темплате-литералс бўйича ўрта мураккабликдаги код.
+  ru: Промежуточный паттерн современного JavaScript ES6+ по теме strings-and-template-literals.
+tags:
+  - javascript
+  - strings-and-template-literals
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  export function sanitizeStringsAndTemplateLiterals_4(payload) {
+    const { wpm = 0, accuracy = 100, durationMs = 0 } = payload;
+    if (durationMs < 0 || wpm < 0) {
+      throw new Error(
+        "Invalid negative telemetry dimensions"
+      );
+    }
+    const isPassable = wpm >= 50 && accuracy >= 95.0;
+    return {
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(1)),
+      duration: Math.round(durationMs / 1000),
+      isPassable,
+    };
+  }

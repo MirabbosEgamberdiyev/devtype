@@ -1,0 +1,22 @@
+language: python
+topic: dictionaries-and-sets
+difficulty: BEGINNER
+type: SNIPPET
+title: Python dictionaries-and-sets Basic Drill 3
+note:
+  en: Beginner drill for Python dictionaries-and-sets.
+  uzl: Python dictionaries-and-sets boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: Python диcтионариэс-анд-сетс бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по Python dictionaries-and-sets.
+tags:
+  - python
+  - dictionaries-and-sets
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  user_roles: dict[str, str] = {
+      "admin": "READ_AUDIT",
+      "editor": "CONTENT_WRITE",
+      "tier_3": "STANDARD_ACCESS",
+  }

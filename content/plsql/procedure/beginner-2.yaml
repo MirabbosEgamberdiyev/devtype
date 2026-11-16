@@ -1,0 +1,24 @@
+language: plsql
+topic: procedure
+difficulty: BEGINNER
+type: SNIPPET
+title: Oracle PL/SQL PROCEDURE Drill 2
+note:
+  en: Beginner drill for Oracle PL/SQL procedure.
+  uzl: Oracle PL/SQL procedure boʻyicha boshlangʻich amaliy mashq.
+  uzc: Ораcле ПЛ/SQL проcедуре бўйича бошланғич амалий машқ.
+  ru: Базовое упражнение по Oracle PL/SQL procedure.
+tags:
+  - plsql
+  - procedure
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  CREATE OR REPLACE PROCEDURE log_audit_2 (
+    p_msg IN VARCHAR2
+  ) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('AUDIT [2]: ' || p_msg);
+  END log_audit_2;
+  /

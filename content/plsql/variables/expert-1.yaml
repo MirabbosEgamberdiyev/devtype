@@ -1,0 +1,70 @@
+language: plsql
+topic: variables
+difficulty: EXPERT
+type: SNIPPET
+title: Oracle PL/SQL VARIABLES Enterprise Package 1
+note:
+  en: Enterprise-grade production Oracle PL/SQL package implementation.
+  uzl: Ishlab chiqarish talablariga mos toʻliq korporativ Oracle PL/SQL paketi.
+  uzc: Ишлаб чиқариш талабларига мос тўлиқ корпоратив Ораcле ПЛ/SQL пакети.
+  ru: Корпоративный пакет Oracle PL/SQL промышленного уровня.
+tags:
+  - plsql
+  - variables
+  - expert
+ranked_pool: false
+source: original
+code: |-
+  CREATE OR REPLACE PACKAGE BODY variables_engine_pkg_1 IS
+    c_max_bonus CONSTANT NUMBER := 4000.00;
+
+    PROCEDURE calculate_compensation (
+      p_emp_id       IN employees.employee_id%TYPE,
+      p_perf_score   IN NUMBER,
+      p_final_payout OUT NUMBER
+    ) IS
+      v_base_salary employees.salary%TYPE;
+      v_incentive   NUMBER := 0.0;
+      e_zero_score  EXCEPTION;
+    BEGIN
+      IF p_perf_score <= 0.0 THEN
+        RAISE e_zero_score;
+      END IF;
+
+      SELECT salary
+        INTO v_base_salary
+        FROM employees
+       WHERE employee_id = p_emp_id;
+
+      v_incentive := LEAST(
+        v_base_salary * (p_perf_score / 100),
+        c_max_bonus
+      );
+      p_final_payout := v_base_salary + v_incentive;
+
+      INSERT INTO audit_log (
+        entity_name, entity_id, action, performed_by
+      )
+      VALUES ('VARIABLES', p_emp_id, 'CALCULATE', 'SYSTEM');
+      COMMIT;
+    EXCEPTION
+      WHEN e_zero_score THEN
+        p_final_payout := 0.0;
+        RAISE_APPLICATION_ERROR(
+          -20050,
+          'Performance evaluation score must be positive'
+        );
+      WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(
+          -20051,
+          'Employee profile not registered: ' || p_emp_id
+        );
+      WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(
+          -20052,
+          'Critical error executing payroll batch job'
+        );
+    END calculate_compensation;
+  END variables_engine_pkg_1;
+  /

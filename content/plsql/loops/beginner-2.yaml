@@ -1,0 +1,26 @@
+language: plsql
+topic: loops
+difficulty: BEGINNER
+type: SNIPPET
+title: Oracle PL/SQL LOOPS Drill 2
+note:
+  en: Beginner drill for Oracle PL/SQL loops.
+  uzl: Oracle PL/SQL loops boʻyicha boshlangʻich amaliy mashq.
+  uzc: Ораcле ПЛ/SQL лоопс бўйича бошланғич амалий машқ.
+  ru: Базовое упражнение по Oracle PL/SQL loops.
+tags:
+  - plsql
+  - loops
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  DECLARE
+    v_idx NUMBER := 1;
+  BEGIN
+    WHILE v_idx <= 4 LOOP
+      DBMS_OUTPUT.PUT_LINE('Loop count: ' || v_idx);
+      v_idx := v_idx + 1;
+    END LOOP;
+  END;
+  /

@@ -2,41 +2,55 @@ language: plsql
 topic: cursor
 difficulty: ADVANCED
 type: SNIPPET
-title: Explicit Cursor with Parameter and Rowtype
+title: Oracle PL/SQL CURSOR Advanced Subprogram 1
 note:
-  en: Iterating through an explicit parameterized cursor with rowtype record.
-  uzl: Parametrli aniq kursor va rowtype yozuvi yordamida qatorlarni aylanib chiqish.
-  uzc: Параметрли аниқ курсор ва rowtype ёзуви ёрдамида қаторларни айланиб чиқиш.
-  ru: Явный параметризованный курсор с записью %ROWTYPE и циклом FETCH.
-tags: [cursor, fetch, rowtype, loops]
+  en: Advanced Oracle PL/SQL subprogram demonstrating robust exception handling.
+  uzl: Mustahkam xatoliklarni qayta ishlashga ega murakkab PL/SQL dasturi.
+  uzc: Мустаҳкам хатоликларни қайта ишлашга эга мураккаб ПЛ/SQL дастури.
+  ru: Продвинутая подпрограмма Oracle PL/SQL с обработкой исключительных ситуаций.
+tags:
+  - plsql
+  - cursor
+  - advanced
 ranked_pool: false
 source: original
-code: |
-  DECLARE
-    CURSOR c_dept_emps (p_dept_id NUMBER) IS
-      SELECT employee_id,
-             first_name || ' ' || last_name AS full_name,
-             salary
-        FROM employees
-       WHERE department_id = p_dept_id
-       ORDER BY salary DESC;
-
-    r_emp        c_dept_emps%ROWTYPE;
-    v_dept_id    NUMBER := 20;
-    v_emp_count  PLS_INTEGER := 0;
-    v_sum_salary NUMBER(12, 2) := 0.00;
+code: |-
+  CREATE OR REPLACE PROCEDURE exec_cursor_hike_1 (
+    p_department_id IN departments.department_id%TYPE,
+    p_percentage    IN NUMBER
+  ) IS
+    v_updated_rows PLS_INTEGER := 0;
+    e_invalid_rate EXCEPTION;
   BEGIN
-    OPEN c_dept_emps(p_dept_id => v_dept_id);
-    LOOP
-      FETCH c_dept_emps INTO r_emp;
-      EXIT WHEN c_dept_emps%NOTFOUND;
+    IF p_percentage <= 0 OR p_percentage > 30 THEN
+      RAISE e_invalid_rate;
+    END IF;
 
-      v_emp_count := v_emp_count + 1;
-      v_sum_salary := v_sum_salary + r_emp.salary;
-      DBMS_OUTPUT.PUT_LINE(r_emp.full_name || ' -> ' || r_emp.salary);
-    END LOOP;
-    CLOSE c_dept_emps;
+    UPDATE employees
+       SET salary = salary * (1 + p_percentage / 100)
+     WHERE department_id = p_department_id;
 
-    DBMS_OUTPUT.PUT_LINE('Total: ' || v_emp_count || ', Sum: ' || v_sum_salary);
-  END;
+    v_updated_rows := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('cursor rows: ' || v_updated_rows);
+    COMMIT;
+  EXCEPTION
+    WHEN e_invalid_rate THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20010,
+        'Percentage increment out of acceptable range'
+      );
+    WHEN NO_DATA_FOUND THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20011,
+        'Department ID does not exist: ' || p_department_id
+      );
+    WHEN OTHERS THEN
+      ROLLBACK;
+      RAISE_APPLICATION_ERROR(
+        -20099,
+        'Unexpected exception in payroll routine'
+      );
+  END exec_cursor_hike_1;
   /

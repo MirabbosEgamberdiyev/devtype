@@ -1,0 +1,26 @@
+language: sql
+topic: insert-update-delete
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL INSERT-UPDATE-DELETE Intermediate Query 3
+note:
+  en: Intermediate real-world insert-update-delete pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida insert-update-delete boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида инсерт-упдате-делете бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием insert-update-delete.
+tags:
+  - sql
+  - insert-update-delete
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  UPDATE employees e
+     SET salary = salary * 1.08,
+         commission_pct = COALESCE(commission_pct, 0.05)
+   WHERE e.department_id IN (
+         SELECT d.department_id
+           FROM departments d
+          WHERE d.location_id = 1900
+         )
+     AND e.salary <= 6000;

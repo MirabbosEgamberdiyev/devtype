@@ -1,0 +1,27 @@
+language: plsql
+topic: conditions
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Oracle PL/SQL CONDITIONS Drill 3
+note:
+  en: Beginner drill for Oracle PL/SQL conditions.
+  uzl: Oracle PL/SQL conditions boʻyicha boshlangʻich amaliy mashq.
+  uzc: Ораcле ПЛ/SQL cондитионс бўйича бошланғич амалий машқ.
+  ru: Базовое упражнение по Oracle PL/SQL conditions.
+tags:
+  - plsql
+  - conditions
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  DECLARE
+    v_score NUMBER := 75 + 3;
+  BEGIN
+    IF v_score >= 80 THEN
+      DBMS_OUTPUT.PUT_LINE('Status: PASSED');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Status: RETRY');
+    END IF;
+  END;
+  /

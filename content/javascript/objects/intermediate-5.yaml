@@ -1,0 +1,32 @@
+language: javascript
+topic: objects
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: JavaScript objects Functional Utility 5
+note:
+  en: Intermediate ES6+ modern JavaScript pattern using objects.
+  uzl: Zamonaviy ES6+ uslubidagi objects boʻyicha oʻrta murakkablikdagi kod.
+  uzc: Замонавий ES6+ услубидаги обжеcтс бўйича ўрта мураккабликдаги код.
+  ru: Промежуточный паттерн современного JavaScript ES6+ по теме objects.
+tags:
+  - javascript
+  - objects
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  export function sanitizeObjects_5(payload) {
+    const { wpm = 0, accuracy = 100, durationMs = 0 } = payload;
+    if (durationMs < 0 || wpm < 0) {
+      throw new Error(
+        "Invalid negative telemetry dimensions"
+      );
+    }
+    const isPassable = wpm >= 55 && accuracy >= 95.0;
+    return {
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(1)),
+      duration: Math.round(durationMs / 1000),
+      isPassable,
+    };
+  }

@@ -1,0 +1,22 @@
+language: java
+topic: loops
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: Java LOOPS Basic Syntax 1
+note:
+  en: Beginner drill for Java loops language features.
+  uzl: Java loops boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java лоопс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java loops.
+tags:
+  - java
+  - loops
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  int totalSum = 0;
+  for (int i = 1; i <= 5; i++) {
+      totalSum += (i * 10);
+  }
+  System.out.println("Sum: " + totalSum);

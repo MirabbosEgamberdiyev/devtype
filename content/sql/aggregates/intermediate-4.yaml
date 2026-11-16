@@ -1,0 +1,26 @@
+language: sql
+topic: aggregates
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL AGGREGATES Intermediate Query 4
+note:
+  en: Intermediate real-world aggregates pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida aggregates boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида аггрегатес бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием aggregates.
+tags:
+  - sql
+  - aggregates
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  SELECT p.category,
+         COUNT(p.product_id) AS total_products,
+         ROUND(AVG(p.unit_price), 2) AS average_price,
+         SUM(p.stock_quantity * p.unit_price) AS inventory_value
+    FROM products p
+   WHERE p.is_active = TRUE
+   GROUP BY p.category
+  HAVING SUM(p.stock_quantity) > 40
+   ORDER BY inventory_value DESC;

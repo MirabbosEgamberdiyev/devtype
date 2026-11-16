@@ -1,18 +1,21 @@
 language: javascript
 topic: variables
 difficulty: BEGINNER
-type: SNIPPET
-title: Block Scope Constants and Variables
+type: SPECIAL_CHARS
+title: JavaScript variables Basic Drill 1
 note:
-  en: Declaring block-scoped variables and constants in modern JavaScript.
-  uzl: Zamonaviy JavaScript tilida block-scope oʻzgaruvchilar va konstantalar.
-  uzc: Замонавий JavaScript тилида block-scope ўзгарувчилар ва константалар.
-  ru: Объявление блочных переменных и констант в современном JavaScript.
-tags: [basics, variables, es6]
+  en: Beginner drill for JavaScript variables.
+  uzl: JavaScript variables boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: JavaScript вариаблес бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение по JavaScript variables.
+tags:
+  - javascript
+  - variables
+  - beginner
 ranked_pool: false
 source: original
-code: |
-  const maxConcurrentSessions = 50;
-  let activeConnectionCount = 12;
-  const isMaintenanceMode = false;
-  let sessionTimeoutSeconds = 300;
+code: |-
+  const maxRetries = 3;
+  const timeoutMs = 2500;
+  let isConnected = true;
+  let sessionToken = "tok_prod_4091";

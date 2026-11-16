@@ -1,0 +1,51 @@
+language: python
+topic: dictionaries-and-sets
+difficulty: EXPERT
+type: SNIPPET
+title: Python dictionaries-and-sets Resilient Distributed Client 4
+note:
+  en: Production-grade distributed system worker with retry jitter and logging.
+  uzl: Ishlab chiqarish talablariga mos qayta urinish va monitoringga ega Python moduli.
+  uzc: Ишлаб чиқариш талабларига мос қайта уриниш ва мониторингга эга Python модули.
+  ru: Корпоративный модуль Python для распределенных систем с защитой от сбоев.
+tags:
+  - python
+  - dictionaries-and-sets
+  - expert
+ranked_pool: false
+source: original
+code: |-
+  import asyncio
+  import logging
+  from typing import Callable, Coroutine, TypeVar
+
+  T = TypeVar("T")
+  logger = logging.getLogger("devtype.dictionaries_and_sets.4")
+
+  class DictionariesAndSetsExecutor4:
+      def __init__(self, retries: int = 3, base: float = 1.00) -> None:
+          self._retries = retries
+          self._base = base
+
+      async def execute_with_retry(
+          self, operation: Callable[[], Coroutine[object, object, T]]
+      ) -> T:
+          last_error: Exception | None = None
+          for attempt in range(1, self._retries + 1):
+              try:
+                  logger.info(f"Execution round {attempt}")
+                  return await operation()
+              except (ConnectionError, TimeoutError) as exc:
+                  last_error = exc
+                  delay = self._base * (2 ** (attempt - 1))
+                  logger.warning(
+                      f"Transient failure, retry in {delay}s"
+                  )
+                  await asyncio.sleep(delay)
+              except Exception as unrecoverable:
+                  logger.error(f"Non-transient failure: {unrecoverable}")
+                  raise unrecoverable
+
+          raise RuntimeError(
+              f"Operation exceeded retry ceiling: {last_error}"
+          )

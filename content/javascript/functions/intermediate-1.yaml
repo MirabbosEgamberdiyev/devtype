@@ -2,25 +2,31 @@ language: javascript
 topic: functions
 difficulty: INTERMEDIATE
 type: SNIPPET
-title: Higher-Order Retry Wrapper
+title: JavaScript functions Functional Utility 1
 note:
-  en: Asynchronous higher-order function with exponential retry logic.
-  uzl: Takroriy urinishlar (retry) mantiqiga ega asinxron yuqori tartibli funksiya.
-  uzc: Такрорий уринишлар (retry) мантиқига эга асинхрон юқори тартибли функция.
-  ru: Асинхронная функция высшего порядка с механизмом повторных попыток.
-tags: [functions, async, promises]
+  en: Intermediate ES6+ modern JavaScript pattern using functions.
+  uzl: Zamonaviy ES6+ uslubidagi functions boʻyicha oʻrta murakkablikdagi kod.
+  uzc: Замонавий ES6+ услубидаги фунcтионс бўйича ўрта мураккабликдаги код.
+  ru: Промежуточный паттерн современного JavaScript ES6+ по теме functions.
+tags:
+  - javascript
+  - functions
+  - intermediate
 ranked_pool: true
 source: original
-code: |
-  const executeWithRetry = async (taskFn, maxAttempts = 3, delayMs = 200) => {
-    let lastError;
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      try {
-        return await taskFn(attempt);
-      } catch (error) {
-        lastError = error;
-        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
-      }
+code: |-
+  export function sanitizeFunctions_1(payload) {
+    const { wpm = 0, accuracy = 100, durationMs = 0 } = payload;
+    if (durationMs < 0 || wpm < 0) {
+      throw new Error(
+        "Invalid negative telemetry dimensions"
+      );
     }
-    throw lastError;
-  };
+    const isPassable = wpm >= 35 && accuracy >= 95.0;
+    return {
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(1)),
+      duration: Math.round(durationMs / 1000),
+      isPassable,
+    };
+  }

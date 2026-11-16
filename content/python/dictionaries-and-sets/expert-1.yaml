@@ -2,57 +2,50 @@ language: python
 topic: dictionaries-and-sets
 difficulty: EXPERT
 type: SNIPPET
-title: Inverted Index and Term Aggregation
+title: Python dictionaries-and-sets Resilient Distributed Client 1
 note:
-  en: Building an inverted index from document tokens with set filtering.
-  uzl: Hujjat tokenlaridan set filtri yordamida teskari indeks (inverted index) tuzish.
-  uzc: Ҳужжат токенларидан set фильтри ёрдамида тескари индекс (inverted index) тузиш.
-  ru: Построение инвертированного индекса с фильтрацией множествами.
-tags: [dictionaries, sets, data-structures]
+  en: Production-grade distributed system worker with retry jitter and logging.
+  uzl: Ishlab chiqarish talablariga mos qayta urinish va monitoringga ega Python moduli.
+  uzc: Ишлаб чиқариш талабларига мос қайта уриниш ва мониторингга эга Python модули.
+  ru: Корпоративный модуль Python для распределенных систем с защитой от сбоев.
+tags:
+  - python
+  - dictionaries-and-sets
+  - expert
 ranked_pool: false
 source: original
-code: |
-  def build_inverted_index(
-      documents: dict[str, list[str]],
-      stop_words: set[str],
-      min_term_length: int = 3,
-  ) -> dict[str, dict[str, float]]:
-      raw_index: dict[str, dict[str, int]] = {}
-      total_docs = len(documents)
-      valid_documents = {
-          doc_id: tokens
-          for doc_id, tokens in documents.items()
-          if tokens and not doc_id.startswith("_")
-      }
+code: |-
+  import asyncio
+  import logging
+  from typing import Callable, Coroutine, TypeVar
 
-      for doc_id, token_list in valid_documents.items():
-          cleaned_tokens = [
-              tok.lower().strip()
-              for tok in token_list
-              if len(tok.strip()) >= min_term_length
-          ]
-          unique_terms = set(cleaned_tokens) - stop_words
+  T = TypeVar("T")
+  logger = logging.getLogger("devtype.dictionaries_and_sets.1")
 
-          for term in unique_terms:
-              term_frequency = cleaned_tokens.count(term)
-              if term not in raw_index:
-                  raw_index[term] = {}
+  class DictionariesAndSetsExecutor1:
+      def __init__(self, retries: int = 3, base: float = 0.25) -> None:
+          self._retries = retries
+          self._base = base
 
-              raw_index[term][doc_id] = term_frequency
+      async def execute_with_retry(
+          self, operation: Callable[[], Coroutine[object, object, T]]
+      ) -> T:
+          last_error: Exception | None = None
+          for attempt in range(1, self._retries + 1):
+              try:
+                  logger.info(f"Execution round {attempt}")
+                  return await operation()
+              except (ConnectionError, TimeoutError) as exc:
+                  last_error = exc
+                  delay = self._base * (2 ** (attempt - 1))
+                  logger.warning(
+                      f"Transient failure, retry in {delay}s"
+                  )
+                  await asyncio.sleep(delay)
+              except Exception as unrecoverable:
+                  logger.error(f"Non-transient failure: {unrecoverable}")
+                  raise unrecoverable
 
-      weighted_index: dict[str, dict[str, float]] = {}
-      for term, postings in raw_index.items():
-          doc_frequency = len(postings)
-          inverse_doc_frequency = round(total_docs / (1 + doc_frequency), 4)
-          weighted_index[term] = {}
-
-          for doc_id, tf in postings.items():
-              tf_idf_score = round(tf * inverse_doc_frequency, 4)
-              weighted_index[term][doc_id] = tf_idf_score
-
-      sorted_index = {
-          term: weighted_index[term]
-          for term in sorted(weighted_index.keys())
-          if len(weighted_index[term]) > 0
-      }
-      return sorted_index
+          raise RuntimeError(
+              f"Operation exceeded retry ceiling: {last_error}"
+          )

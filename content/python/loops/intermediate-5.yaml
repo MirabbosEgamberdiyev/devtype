@@ -1,0 +1,34 @@
+language: python
+topic: loops
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Python loops Production Utility 5
+note:
+  en: Intermediate Python snippet applying idiomatic typing and pattern matching.
+  uzl: Python tip annotatsiyalari va funksional uslubdagi oʻrta darajadagi dastur.
+  uzc: Python тип аннотатсиялари ва функсионал услубдаги ўрта даражадаги дастур.
+  ru: Промежуточный сниппет на Python с типизацией и обработкой структур.
+tags:
+  - python
+  - loops
+  - intermediate
+ranked_pool: false
+source: original
+code: |-
+  from typing import Optional
+
+  def configure_loops_5(
+      env_name: str = "canary",
+      replica_count: int = 6,
+      debug_mode: bool = False
+  ) -> dict[str, object]:
+      normalized_env = env_name.strip().lower()
+      if replica_count <= 0:
+          raise ValueError("Replica count must be strictly positive")
+
+      return {
+          "environment": normalized_env,
+          "replicas": replica_count,
+          "debug": debug_mode,
+          "is_prod": normalized_env == "production",
+      }

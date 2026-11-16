@@ -1,0 +1,25 @@
+language: sql
+topic: where
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: SQL WHERE Intermediate Query 4
+note:
+  en: Intermediate real-world where pattern with multi-column expressions.
+  uzl: Haqiqiy biznes vazifalarida where boʻyicha oʻrta darajadagi soʻrov.
+  uzc: Ҳақиқий бизнес вазифаларида wҳере бўйича ўрта даражадаги сўров.
+  ru: Промежуточный практический запрос с использованием where.
+tags:
+  - sql
+  - where
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  SELECT o.order_id,
+         o.customer_id,
+         o.total_amount,
+         o.status
+    FROM orders o
+   WHERE (o.status = 'PENDING' AND o.total_amount >= 1250.00)
+      OR (o.status = 'REVIEW' AND o.order_date >= '2026-01-01')
+   ORDER BY o.total_amount DESC;

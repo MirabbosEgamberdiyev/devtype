@@ -1,0 +1,64 @@
+language: javascript
+topic: arrays
+difficulty: EXPERT
+type: SNIPPET
+title: JavaScript arrays High-Performance Engine Worker 3
+note:
+  en: Production-grade real-time keystroke replayer and state machine.
+  uzl: Yuqori tezlikdagi real-vaqt rejimida klavishlar ijrosi va holatlar mashinasi.
+  uzc: Юқори тезликдаги реал-вақт режимида клавишлар ижроси ва ҳолатлар машинаси.
+  ru: Высокопроизводительный движок воспроизведения нажатий клавиш промышленного уровня.
+tags:
+  - javascript
+  - arrays
+  - expert
+ranked_pool: false
+source: original
+code: |-
+  export class ArraysReplayer3 {
+    #events = [];
+    #cursor = 0;
+    #playbackRate = 1.0;
+    #timerId = null;
+    #onTickCallback = null;
+
+    constructor(events, options = {}) {
+      this.#events = Array.isArray(events) ? [...events] : [];
+      this.#playbackRate = options.speed ?? 1.0;
+      this.#onTickCallback = options.onTick ?? (() => {});
+    }
+
+    start() {
+      if (this.#timerId !== null || this.#events.length === 0) return;
+      let lastTimestamp = performance.now();
+
+      const tick = (now) => {
+        const elapsedDelta = (now - lastTimestamp) * this.#playbackRate;
+        while (
+          this.#cursor < this.#events.length &&
+          (this.#events[this.#cursor]?.t ?? 0) <= elapsedDelta
+        ) {
+          this.#onTickCallback(
+            this.#events[this.#cursor],
+            this.#cursor
+          );
+          this.#cursor += 1;
+        }
+
+        if (this.#cursor < this.#events.length) {
+          this.#timerId = requestAnimationFrame(tick);
+        } else {
+          this.stop();
+        }
+      };
+
+      this.#timerId = requestAnimationFrame(tick);
+    }
+
+    stop() {
+      if (this.#timerId !== null) {
+        cancelAnimationFrame(this.#timerId);
+        this.#timerId = null;
+      }
+    }
+  }

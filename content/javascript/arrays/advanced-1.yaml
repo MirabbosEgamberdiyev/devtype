@@ -2,37 +2,53 @@ language: javascript
 topic: arrays
 difficulty: ADVANCED
 type: SNIPPET
-title: Grouping and Aggregating Order Items
+title: JavaScript arrays Reactive Store Manager 1
 note:
-  en: Reducing and grouping arrays into aggregated map structures.
-  uzl: Massiv elementlarini reduce orqali guruhlash va yigʻindi hisoblash.
-  uzc: Массив элементларини reduce орқали гуруҳлаш ва йиғинди ҳисоблаш.
-  ru: Группировка и агрегация элементов массива с помощью reduce.
-tags: [arrays, reduce, map]
+  en: Advanced JavaScript async telemetry aggregator with listeners.
+  uzl: Asinxron telemetriya va hodisalar boshqaruviga ega murakkab JavaScript moduli.
+  uzc: Асинхрон телеметрия ва ҳодисалар бошқарувига эга мураккаб JavaScript модули.
+  ru: Продвинутый асинхронный модуль JavaScript для агрегации телеметрии.
+tags:
+  - javascript
+  - arrays
+  - advanced
 ranked_pool: false
 source: original
-code: |
-  export function summarizeCategorySales(orderItems) {
-    if (!Array.isArray(orderItems) || orderItems.length === 0) {
-      return new Map();
+code: |-
+  export class ArraysEmitter1 {
+    #subscribers = new Map();
+    #bufferedEvents = [];
+    #maxBatchSize = 25;
+
+    subscribe(eventType, callback) {
+      if (typeof callback !== "function") {
+        throw new TypeError(
+          "Subscriber listener must be an executable function"
+        );
+      }
+      if (!this.#subscribers.has(eventType)) {
+        this.#subscribers.set(eventType, new Set());
+      }
+      this.#subscribers.get(eventType).add(callback);
+      return () => this.#subscribers.get(eventType)?.delete(callback);
     }
 
-    return orderItems.reduce((summaryMap, item) => {
-      const { category, unitPrice, quantity, discountPct = 0 } = item;
-      const existing = summaryMap.get(category) ?? {
-        totalUnits: 0,
-        grossRevenue: 0,
-        netRevenue: 0,
+    emit(eventType, payload) {
+      const eventObject = {
+        type: eventType,
+        data: payload,
+        timestamp: Date.now(),
       };
-
-      const lineTotal = unitPrice * quantity;
-      const effectiveTotal = lineTotal * (1 - discountPct / 100);
-
-      existing.totalUnits += quantity;
-      existing.grossRevenue += Number(lineTotal.toFixed(2));
-      existing.netRevenue += Number(effectiveTotal.toFixed(2));
-
-      summaryMap.set(category, existing);
-      return summaryMap;
-    }, new Map());
+      this.#bufferedEvents.push(eventObject);
+      const listeners = this.#subscribers.get(eventType);
+      if (listeners) {
+        for (const listener of listeners) {
+          try {
+            listener(eventObject);
+          } catch (err) {
+            console.error("Telemetry error:", err);
+          }
+        }
+      }
+    }
   }

@@ -1,0 +1,22 @@
+language: sql
+topic: joins
+difficulty: BEGINNER
+type: SNIPPET
+title: SQL JOINS Basic Drill 1
+note:
+  en: Beginner drill for SQL joins statements.
+  uzl: SQL joins ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL жоинс ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений joins.
+tags:
+  - sql
+  - joins
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  SELECT *
+    FROM employees e
+    JOIN departments d
+      ON d.department_id = e.department_id
+   LIMIT 25;

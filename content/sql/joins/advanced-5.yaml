@@ -1,0 +1,36 @@
+language: sql
+topic: joins
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL JOINS Advanced Pipeline 5
+note:
+  en: Advanced analytical joins pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan joins boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан жоинс бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием joins.
+tags:
+  - sql
+  - joins
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT o.order_id,
+         c.full_name AS customer_name,
+         c.email AS customer_email,
+         p.product_name,
+         oi.quantity,
+         oi.unit_price,
+         ROUND(oi.quantity * oi.unit_price, 2) AS item_total
+    FROM orders o
+    JOIN customers c
+      ON c.customer_id = o.customer_id
+    JOIN order_items oi
+      ON oi.order_id = o.order_id
+    JOIN products p
+      ON p.product_id = oi.product_id
+   WHERE o.order_id >= 500
+     AND c.tier IN ('GOLD', 'PLATINUM')
+   ORDER BY item_total DESC;

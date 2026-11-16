@@ -1,0 +1,21 @@
+language: java
+topic: classes-and-objects
+difficulty: BEGINNER
+type: SNIPPET
+title: Java CLASSES-AND-OBJECTS Basic Syntax 5
+note:
+  en: Beginner drill for Java classes-and-objects language features.
+  uzl: Java classes-and-objects boʻyicha boshlangʻich darajadagi sintaktik mashq.
+  uzc: Java cлассес-анд-обжеcтс бўйича бошланғич даражадаги синтактик машқ.
+  ru: Базовое упражнение по синтаксису Java classes-and-objects.
+tags:
+  - java
+  - classes-and-objects
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  public class ServerNode5 {
+      private final String hostname = "node-5.prod";
+      private int connectionCount = 50;
+  }

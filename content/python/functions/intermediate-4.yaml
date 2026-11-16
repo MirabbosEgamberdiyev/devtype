@@ -1,0 +1,34 @@
+language: python
+topic: functions
+difficulty: INTERMEDIATE
+type: SNIPPET
+title: Python functions Production Utility 4
+note:
+  en: Intermediate Python snippet applying idiomatic typing and pattern matching.
+  uzl: Python tip annotatsiyalari va funksional uslubdagi oʻrta darajadagi dastur.
+  uzc: Python тип аннотатсиялари ва функсионал услубдаги ўрта даражадаги дастур.
+  ru: Промежуточный сниппет на Python с типизацией и обработкой структур.
+tags:
+  - python
+  - functions
+  - intermediate
+ranked_pool: true
+source: original
+code: |-
+  from typing import Optional
+
+  def configure_functions_4(
+      env_name: str = "sandbox",
+      replica_count: int = 5,
+      debug_mode: bool = False
+  ) -> dict[str, object]:
+      normalized_env = env_name.strip().lower()
+      if replica_count <= 0:
+          raise ValueError("Replica count must be strictly positive")
+
+      return {
+          "environment": normalized_env,
+          "replicas": replica_count,
+          "debug": debug_mode,
+          "is_prod": normalized_env == "production",
+      }

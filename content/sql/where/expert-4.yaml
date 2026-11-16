@@ -1,0 +1,56 @@
+language: sql
+topic: where
+difficulty: EXPERT
+type: SNIPPET
+title: SQL WHERE Enterprise Query 4
+note:
+  en: Production-scale enterprise analytics report leveraging where.
+  uzl: Ishlab chiqarish darajasidagi keng qamrovli korporativ tahliliy hisobot soʻrovi.
+  uzc: Ишлаб чиқариш даражасидаги кенг қамровли корпоратив таҳлилий ҳисобот сўрови.
+  ru: Корпоративный аналитический запрос уровня промышленной эксплуатации.
+tags:
+  - sql
+  - where
+  - expert
+ranked_pool: false
+source: original
+code: |-
+  SELECT d.department_name,
+         e.job_id,
+         e.employee_id AS supervisor_id,
+         COUNT(DISTINCT e.employee_id) AS active_headcount,
+         ROUND(AVG(e.salary), 2) AS department_mean_salary,
+         SUM(e.salary) AS gross_salary_budget,
+         ROUND(
+           SUM(e.salary * COALESCE(e.commission_pct, 0.02)),
+           2
+         ) AS estimated_incentive_pool,
+         COUNT(DISTINCT o.order_id) AS attributed_order_volume,
+         COALESCE(SUM(o.total_amount), 0.00) AS merchandise_revenue,
+         ROUND(AVG(COALESCE(pmt.amount, 0.00)), 2) AS average_settlement
+    FROM departments d
+    JOIN employees e
+      ON e.department_id = d.department_id
+    LEFT JOIN customers c
+      ON c.tier = 'ENTERPRISE'
+    LEFT JOIN orders o
+      ON o.customer_id = c.customer_id
+     AND o.status = 'COMPLETED'
+    LEFT JOIN payments pmt
+      ON pmt.order_id = o.order_id
+     AND pmt.status = 'SETTLED'
+   WHERE d.location_id IS NOT NULL
+     AND e.job_id LIKE '%WHE%'
+     AND e.salary >= (
+         SELECT ROUND(AVG(benchmark.salary) * 0.75, 2)
+           FROM employees benchmark
+          WHERE benchmark.department_id = d.department_id
+         )
+   GROUP BY d.department_name,
+            e.job_id,
+            e.employee_id
+  HAVING COUNT(DISTINCT e.employee_id) >= 1
+     AND SUM(e.salary) > 8000
+   ORDER BY merchandise_revenue DESC,
+            gross_salary_budget DESC,
+            active_headcount ASC;

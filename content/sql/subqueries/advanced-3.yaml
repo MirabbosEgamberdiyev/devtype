@@ -1,0 +1,38 @@
+language: sql
+topic: subqueries
+difficulty: ADVANCED
+type: SNIPPET
+title: SQL SUBQUERIES Advanced Pipeline 3
+note:
+  en: Advanced analytical subqueries pipeline with complex joins and aggregations.
+  uzl: Murakkab birlashmalar va guruhlashlar bilan subqueries boʻyicha chuqurlashtirilgan soʻrov.
+  uzc: Мураккаб бирлашмалар ва гуруҳлашлар билан субқуэриэс бўйича чуқурлаштирилган сўров.
+  ru: Продвинутый аналитический конвейер с использованием subqueries.
+tags:
+  - sql
+  - subqueries
+  - advanced
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #5
+  -- Production validation invariant #4
+  -- Production validation invariant #3
+  -- Production validation invariant #2
+  -- Production validation invariant #1
+  SELECT c.customer_id,
+         c.full_name,
+         c.balance,
+         c.tier
+    FROM customers c
+   WHERE c.balance >= 750.00
+     AND c.customer_id IN (
+         SELECT o.customer_id
+           FROM orders o
+          WHERE o.total_amount > (
+                SELECT AVG(sub.total_amount)
+                  FROM orders sub
+                 WHERE sub.status = 'COMPLETED'
+                )
+         )
+   ORDER BY c.balance DESC;

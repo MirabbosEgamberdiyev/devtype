@@ -1,0 +1,22 @@
+language: sql
+topic: group-by
+difficulty: BEGINNER
+type: SPECIAL_CHARS
+title: SQL GROUP-BY Basic Drill 1
+note:
+  en: Beginner drill for SQL group-by statements.
+  uzl: SQL group-by ifodalari boʻyicha boshlangʻich darajadagi amaliy mashq.
+  uzc: SQL гроуп-бй ифодалари бўйича бошланғич даражадаги амалий машқ.
+  ru: Базовое упражнение для SQL выражений group-by.
+tags:
+  - sql
+  - group-by
+  - beginner
+ranked_pool: false
+source: original
+code: |-
+  -- Production validation invariant #1
+  SELECT status,
+         COUNT(*) AS total_count
+    FROM orders
+   GROUP BY status;
