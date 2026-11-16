@@ -28,7 +28,7 @@
 
 ### Bosqich 1: MVP (R1) (Hafta 3–12)
 - [x] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit (2720334)
-- [ ] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store
+- [x] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store (668bddc)
 - [ ] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA
 - [ ] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash
 - [ ] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
@@ -281,11 +281,11 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.2 — Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store
-- **Fayllar:** `frontend/src/features/auth/`, `frontend/src/shared/api/`, `frontend/src/shared/stores/authStore.ts`, `frontend/src/locales/` (en, uzl, uzc, ru)
+- **Vazifa:** 1.3 — `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA
+- **Fayllar:** `backend/src/main/java/com/devtype/content/`, `backend/src/test/java/com/devtype/content/`, `V3__content.sql`
 - **Qolgan ish:**
-  1. Zustand `authStore` (user, accessToken in-memory, guestToken localStorage, login, logout, refresh).
-  2. HTTP Client interceptor (401 da `/api/v1/auth/refresh` chaqirish va so'rovlarni qayta yuborish).
-  3. Auth sahifalari: Login, Register, Forgot Password, Reset Password, Verify Email (Tailwind + validation + 4 tilda i18n).
-  4. Router Guards: `AuthGuard`, `GuestGuard`.
-  5. Vitest komponent va unit testlari, `npm run typecheck`, `npm run i18n:check`.
+  1. Domen Entity'lari: `LanguageEntity`, `TopicEntity`, `ExerciseEntity`, `ExerciseVersionEntity` (`content` sxemasi).
+  2. Mashq linter & pedagogik validatsiyasi (`BL-EM-1..4` qoidalari: 30-1000 belgi, 80 ustun, idiomatik kod, taqiqlangan tegsiz dialektlar rad).
+  3. Content use-case'lari: `ListLanguagesUseCase`, `GetTopicExercisesUseCase`, `CreateExerciseUseCase`, `PublishExerciseUseCase`, `ImportExercisesUseCase`.
+  4. REST kontrollerlar: ommaviy `/api/v1/languages`, `/api/v1/languages/{slug}/topics`, `/api/v1/exercises/{id}` va admin `/api/v1/admin/exercises`.
+  5. Content integratsiya testlari (`AC-PL-1`, `AC-PL-2`, `AC-LS-7`, `AC-SQL-2`, `AC-PLS-2`).
