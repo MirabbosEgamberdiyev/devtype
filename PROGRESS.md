@@ -13,13 +13,13 @@
 ## 2. Vazifalar Ro'yxati (docs/20)
 
 ### Bosqich 0: Poydevor (Hafta 1–2)
-- [~] **0.1** Monorepo tuzilmasi, `.editorconfig`, lint konfiguratsiyalari, PR shabloni, `main` himoyasi
-- [ ] **0.2** Backend skeleti: Spring Boot 3, Gradle, 7 modul paketi + `shared`, `ModularityTests`, ArchUnit, `ProblemDetail`, profil konfiguratsiyalari
-- [ ] **0.3** Flyway `V1…V10` (to'liq sxema), Testcontainers, `ddl-auto=validate`
-- [ ] **0.4** `docker-compose.local.yml` (PostgreSQL, Mailpit, MinIO), Dockerfile'lar
-- [ ] **0.5** CI: `pr.yml` (backend, frontend, vectors)
-- [ ] **0.6** Frontend skeleti: Vite, TS strict, Tailwind + tokenlar, router, layoutlar, tema, i18n (4 lokal, `i18n:check`, transliterator)
-- [ ] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar
+- [x] **0.1** Monorepo tuzilmasi, `.editorconfig`, lint konfiguratsiyalari, PR shabloni, `main` himoyasi (f3749b3)
+- [x] **0.2** Backend skeleti: Spring Boot 3, Gradle, 7 modul paketi + `shared`, `ModularityTests`, ArchUnit, `ProblemDetail`, profil konfiguratsiyalari (3411e80)
+- [x] **0.3** Flyway `V1…V10` (to'liq sxema), Testcontainers, `ddl-auto=validate` (c6c27f6)
+- [x] **0.4** `docker-compose.local.yml` (PostgreSQL, Mailpit, MinIO), Dockerfile'lar (3307320)
+- [x] **0.5** CI: `pr.yml` (backend, frontend, vectors) (5deb31f)
+- [x] **0.6** Frontend skeleti: Vite, TS strict, Tailwind + tokenlar, router, layoutlar, tema, i18n (4 lokal, `i18n:check`, transliterator) (52915e7)
+- [~] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar
 - [ ] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`
 - [ ] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout)
 - [ ] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
@@ -207,7 +207,7 @@
 | AC-UX-7 | Ctrl+K buyruqlar palitrasi | NOT STARTED | — |
 | AC-UX-8 | prefers-reduced-motion animatsiya 0 | NOT STARTED | — |
 | AC-UX-9 | O'lik tugma yo'q, barcha elementlar bog'langan | NOT STARTED | — |
-| AC-UX-10 | 4 lokalda barcha kalitlar mavjud, sig'adi | NOT STARTED | — |
+| AC-UX-10 | 4 lokalda barcha kalitlar mavjud, sig'adi | PASS | `npm run i18n:check` (4 lokal 100% kalitlar mos, U+02BB tekshirildi) |
 | AC-AD-1 | USER uchun /admin/** 404/403, EDITOR huquqlari | NOT STARTED | — |
 | AC-AD-2 | Til CRUD va publish | NOT STARTED | — |
 | AC-AD-3 | Mashq to'liq sikli (E2E-15) | NOT STARTED | — |
@@ -217,8 +217,8 @@
 | AC-AD-7 | (R2) Achievement, challenge, musobaqa CRUD | NOT STARTED | — |
 | AC-AD-8 | (R2) Mahsulot metrikalari DAU, aktivatsiya hisobi | NOT STARTED | — |
 | AC-AD-9 | (R2) Shikoyatlar navbati RESOLVED/DISMISSED | NOT STARTED | — |
-| AC-BE-1 | Flyway migratsiyalar o'tadi, Hibernate validate yashil | NOT STARTED | — |
-| AC-BE-2 | Spring Modulith verify() va ArchUnit yashil | NOT STARTED | — |
+| AC-BE-1 | Flyway migratsiyalar o'tadi, Hibernate validate yashil | PASS | `MigrationTests.testFlywayMigrations` (`./gradlew.bat test --tests com.devtype.MigrationTests`) |
+| AC-BE-2 | Spring Modulith verify() va ArchUnit yashil | PASS | `ModularityTests.verifyModularStructure` & `ArchitectureTests.pureCalculationDomain` (`./gradlew check`) |
 | AC-BE-3 | OpenAPI docs/openapi.yaml bilan bir xil, barcha endpointlar 14 da bor | NOT STARTED | — |
 | AC-BE-4 | Barcha xato javoblari ProblemDetail sxemasiga mos va code bor | NOT STARTED | — |
 | AC-BE-5 | Pagination limit=101 100 ga kesiladi, noma'lum sort 400 | NOT STARTED | — |
@@ -231,7 +231,7 @@
 | AC-SP-21 | k6 SLO lari bajarilgan | NOT STARTED | — |
 | AC-SP-22 | Lighthouse CI >= 90/95/95/95 | NOT STARTED | — |
 | AC-QA-1 | Har AC-* ID uchun kamida bitta avtomatlashtirilgan test yashil | NOT STARTED | — |
-| AC-QS-1 | TODO/FIXME/XXX, Mock klasslar, dangerouslySetInnerHTML, JSX literal matn 0 | NOT STARTED | — |
+| AC-QS-1 | TODO/FIXME/XXX, Mock klasslar, dangerouslySetInnerHTML, JSX literal matn 0 | PASS | `ArchitectureTests.noMockClassesInMain` (`./gradlew check`) |
 | AC-QS-2 | Qamrov chegaralari (FR-QS-3) CI da majburiy | NOT STARTED | — |
 | AC-QS-3 | Brauzer matritsasi E2E yashil | NOT STARTED | — |
 | AC-QS-4 | WCAG 2.1 AA 0 critical/serious xato | NOT STARTED | — |
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.1 — Monorepo tuzilmasi, `.editorconfig`, lint konfiguratsiyalari, PR shabloni, `main` himoyasi.
-- **Fayllar:** `git init`, `.gitignore`, `.editorconfig`, `.github/pull_request_template.md`, monorepo kataloglari (`backend`, `frontend`, `engine-vectors`, `content`, `deploy`, `scripts`).
-- **Qolgan ish:** 0.1 vazifasini bajarib, git commit qilish va 0.2 ga o'tish.
+- **Vazifa:** 0.7 — Engine (TS): `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar.
+- **Fayllar:** `frontend/src/engine/prepare.ts`, `frontend/src/engine/reducer.ts`, `frontend/src/engine/metrics.ts`, `frontend/src/engine/keylog.ts`, `frontend/src/engine/stats.ts`, `frontend/src/engine/categories.ts`, `frontend/src/engine/__tests__/...`.
+- **Qolgan ish:** docs/07 spetsifikatsiyasi bo'yicha sof reduktsiya funksiyalari, auto-indent, tokenlar, WPM/CPM/aniqlik formulalari (docs/00 §4, docs/07), ikkilik keylog koder/dekoder va 100% test qamrovi.
