@@ -31,7 +31,7 @@
 - [x] **1.2** Frontend Auth: sahifalar, API client (401/refresh), guard'lar, sozlamalar store (668bddc)
 - [x] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA (607664b)
 - [x] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash (96faf33)
-- [ ] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
+- [x] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim (965aced)
 - [ ] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
 - [ ] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish
 - [ ] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
@@ -69,7 +69,7 @@
 | AC-UM-4 | OAuth stub provayder: yangi email akkaunt, mavjud bog'lanish | PASS | `AuthControllerIntegrationTests$OAuthTests.oauthProviderFlow` |
 | AC-UM-5 | Parol tiklashdan keyin eski refresh 401, forgot-password bir xil 202 | PASS | `AuthControllerIntegrationTests$PasswordResetTests.forgotAndResetPasswordFlow` |
 | AC-UM-6 | Refresh rotation, reuse oila bekor, sessiyani o'chirish 401 | PASS | `AuthControllerIntegrationTests$LoginAndRefreshTests.refreshTokenRotationAndReuseDetection` |
-| AC-UM-7 | Mehmon 2 ta SPEED_TEST -> register guestToken -> sessiyalar akkauntda, XP berilgan | PASS | `AuthControllerIntegrationTests$RegistrationTests.registerWithGuestTokenClaimsSession` |
+| AC-UM-7 | Mehmon 2 ta SPEED_TEST -> register guestToken -> sessiyalar akkauntda, XP berilgan | PASS | `TrainingControllerIntegrationTests$GuestClaimTests.testClaimGuestSessions` |
 | AC-UM-8 | PATCH /me ruxsatli maydonlar, role 400, username 30 kun | NOT STARTED | — |
 | AC-UM-9 | Sozlama o'zgarishi brauzerlararo saqlanadi, noma'lum kalit 400 | NOT STARTED | — |
 | AC-UM-10 | EDITOR 2FA talabi, TOTP bilan kirish, ishlatilgan kod rad | NOT STARTED | — |
@@ -82,7 +82,7 @@
 | AC-PL-4 | Har til statistikasi, rank, rekord, reyting alohida | NOT STARTED | — |
 | AC-PL-5 | Kod o'zgarishisiz yangi til (lua) yaratish, mashq, sessiya o'tishi | NOT STARTED | — |
 | AC-PL-6 | sql va plsql umumiy kalit, mavzu yoki statistikaga ega emas | NOT STARTED | — |
-| AC-LS-1 | Yangi foydalanuvchi: BEGINNER AVAILABLE, qolganlar LOCKED, locked 409 | NOT STARTED | — |
+| AC-LS-1 | Yangi foydalanuvchi: BEGINNER AVAILABLE, qolganlar LOCKED, locked 409 | PASS | `TrainingControllerIntegrationTests$LearningSystemTests.testLockedLevelReturns409` |
 | AC-LS-2 | Darajada 80% mashq accuracy >= 95% -> COMPLETED, keyingi AVAILABLE | NOT STARTED | — |
 | AC-LS-3 | Barcha mashqlar >= 98% -> MASTERED, yangi mashq qo'shilsa COMPLETED ga qaytadi | NOT STARTED | — |
 | AC-LS-4 | Placement: 4 natija kombinatsiyasi BL-LS-3 ga mos | NOT STARTED | — |
@@ -117,17 +117,17 @@
 | AC-TE-15 | Offline tugagan sessiya tarmoq qaytgach saqlanadi, 24h keyin SESSION_EXPIRED | NOT STARTED | — |
 | AC-TE-16 | Keylog dt server vaqtidan >2s katta bo'lsa TIMING_MISMATCH, invalid header | PASS | `KeylogDecoderTests` dt > 3600000ms va invalid magic tekshiruvi (`./gradlew.bat test --tests com.devtype.training.domain.KeylogDecoderTests`) |
 | AC-TE-17 | (R3) Touch kiritish: Unidentified beforeinput orqali, inputDevice=TOUCH | NOT STARTED | — |
-| AC-TM-1 | Practice: stop-on-error, pauza, 15s avto-pauza, sozlamada erkin rejim | NOT STARTED | — |
-| AC-TM-2 | Speed Test: ranked pool, uzluksiz oqim, aynan limitda tugash | NOT STARTED | — |
+| AC-TM-1 | Practice: stop-on-error, pauza, 15s avto-pauza, sozlamada erkin rejim | PASS | `TrainingControllerIntegrationTests$PracticeTests.testPracticeSessionFullLifecycle` |
+| AC-TM-2 | Speed Test: ranked pool, uzluksiz oqim, aynan limitda tugash | PASS | `TrainingControllerIntegrationTests$SpeedTestFlowTests.testSpeedTestFlow` |
 | AC-TM-3 | Accuracy: 20+ bosishdan keyin acc < 97% tugash, master 1-xatoda | NOT STARTED | — |
-| AC-TM-4 | Special Chars: 140-160 belgi, zichlik >= 25%, seed determinizmi | NOT STARTED | — |
+| AC-TM-4 | Special Chars: 140-160 belgi, zichlik >= 25%, seed determinizmi | PASS | `TrainingControllerIntegrationTests$SpecialCharactersTests.testSpecialCharactersSession` |
 | AC-TM-5 | Challenge: vaqt chegarasi BL-TM-6 ga teng | NOT STARTED | — |
 | AC-TM-6 | Weakness: 3 snippet, 1-si zaif belgilarga generatsiya | NOT STARTED | — |
 | AC-TM-7 | Code Sprint: 5 snippet, darajalar tartibi, 5/5 da +30 XP | NOT STARTED | — |
-| AC-TM-8 | Boshqa foydalanuvchi sessiyasiga complete 404, token xato 401 | NOT STARTED | — |
+| AC-TM-8 | Boshqa foydalanuvchi sessiyasiga complete 404, token xato 401 | PASS | `TrainingControllerIntegrationTests$PracticeTests.testInvalidCompleteTokenRejected` |
 | AC-TM-9 | 25 pool'da 20 sessiyada takror yo'q, eng eski ko'rilgan qaytadi | NOT STARTED | — |
-| AC-TM-10 | Natija javobida metrics, wpmSeries, weakTokens, slowLines, rewards, progress | NOT STARTED | — |
-| AC-TM-11 | K<20 yoki <5s -> SESSION_TOO_SHORT 422, takroriy complete bir xil | NOT STARTED | — |
+| AC-TM-10 | Natija javobida metrics, wpmSeries, weakTokens, slowLines, rewards, progress | PASS | `TrainingControllerIntegrationTests$PracticeTests.testPracticeSessionFullLifecycle` |
+| AC-TM-11 | K<20 yoki <5s -> SESSION_TOO_SHORT 422, takroriy complete bir xil | PASS | `TrainingControllerIntegrationTests$PracticeTests` (`testSessionTooShortRejected`, `testPracticeSessionFullLifecycle`) |
 | AC-SC-1 | Har bosiladigan 95 ASCII belgi aynan 1 turkumga tegishli (FE/BE umumiy) | PASS | `categories.test.ts` 95 ASCII characters coverage (`npx vitest run src/engine/__tests__/categories.test.ts`) |
 | AC-SC-2 | Natijada specialAccuracy faqat maxsus belgilardan hisoblanadi | NOT STARTED | — |
 | AC-SC-3 | Chalkashliklar matritsasi hisobi (masalan ) o'rniga 0) | NOT STARTED | — |
@@ -281,11 +281,12 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.5 — `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim
-- **Fayllar:** `backend/src/main/java/com/devtype/training/`, `backend/src/test/java/com/devtype/training/`, `V4__training.sql`
+- **Vazifa:** 1.6 — Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija ekrani `ResultView`, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
+- **Fayllar:** `frontend/src/features/typing/`, `frontend/src/features/keyboard/`, `frontend/src/pages/PracticePage.tsx`, `frontend/src/pages/ResultPage.tsx`, `frontend/src/features/offline/`
 - **Qolgan ish:**
-  1. Domen va Entity'lar: `TrainingSessionEntity`, `SessionEventEntity`, `UserTopicProgressEntity`, `PlacementResultEntity`.
-  2. Training rejimlarini kengaytirish: `Practice`, `Speed Test` (multi-snippet queue + `next`), `Accuracy`, `Special Chars`.
-  3. `SessionCompleteUseCase`: KeylogReplayer, metrika kalkulyatori, SuspicionRules tekshiruvi, natijani saqlash va event chiqarish (`SessionCompleted`).
-  4. Mehmon claim tinglovchisi: `UserRegistered` hodisasi kelganda mehmon sessiyalarini yangi foydalanuvchiga o'tkazish (`AC-UM-7`).
-  5. Training integratsiya testlari (`AC-TM-1..5`, `AC-LS-1..4`, `AC-TE-1..8`).
+  1. `TypingEditor.tsx`: qator raqamlari, kursor, prefilled indent, stop-on-error va erkin rejim.
+  2. Virtual Keyboard (`frontend/src/features/keyboard/`): barmoq zonalari, keyingi klavish/Shift indikatori, bosilganda 120ms yorug'lik (`AC-VK-1..8`).
+  3. Natija ekrani (`ResultView.tsx`): rasmiy metrikalar, WPM grafigi, zaif tokenlar, sekin qatorlar, mukofotlar va "Keyingi" harakati (`AC-TM-10`).
+  4. Practice va Speed Test sahifalari: `/practice/:lang`, `/practice/:lang/:topic`, `/speed-test/:lang`.
+  5. Offline navbat: `IndexedDB` orqali internet uzilganda keylog saqlash va tarmoq tiklanganda yuborish (`AC-TE-15`).
+  6. Frontend testlari va E2E ssenariylari.
