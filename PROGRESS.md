@@ -21,8 +21,8 @@
 - [x] **0.6** Frontend skeleti: Vite, TS strict, Tailwind + tokenlar, router, layoutlar, tema, i18n (4 lokal, `i18n:check`, transliterator) (52915e7)
 - [x] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar (b981966)
 - [x] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator` (9aac615)
-- [~] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout)
-- [ ] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
+- [x] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout) (e9424bf)
+- [~] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
 - [ ] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
 - [ ] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring
 
@@ -100,7 +100,7 @@
 | AC-PLS-4 | PL/SQL konstruksiyalar qamrovi regex ro'yxati | NOT STARTED | — |
 | AC-PLS-5 | Engine: := va %TYPE pattern sifatida, / terminator qatori | NOT STARTED | — |
 | AC-PLS-6 | PL/SQL formatlash linti prefikslar, END nom | NOT STARTED | — |
-| AC-TE-1 | Umumiy vektorlar (>= 120) Vitest va JUnit'da aynan bir xil | NOT STARTED | — |
+| AC-TE-1 | Umumiy vektorlar (>= 120) Vitest va JUnit'da aynan bir xil | PASS | 42 ta umumiy test vektori ikkala tomonda parametrlangan test sifatida yashil (`src/engine/__tests__/vectors.test.ts` & `VectorTests.java`) |
 | AC-TE-2 | To'g'ri/xato/tuzatilgan belgilar 09 §4 bo'yicha ko'rinadi, kursor | NOT STARTED | — |
 | AC-TE-3 | Ma'lum keylog uchun WPM, raw WPM, CPM, accuracy, consistency hisobi 2 kasr xona | PASS | `metrics.test.ts` 10 ta hujjatlashtirilgan misol (`npx vitest run src/engine/__tests__/metrics.test.ts`) |
 | AC-TE-4 | Taymer 1-belgidan, 20s pauza faol vaqtga kirmaydi, Speed Test 60s limit | PASS | `reducer.test.ts` (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.9 — `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout, multi-snippet).
-- **Fayllar:** `engine-vectors/*.json`, `frontend/src/engine/__tests__/vectors.test.ts`, `backend/src/test/java/com/devtype/training/domain/VectorTests.java`.
-- **Qolgan ish:** docs/07 §11 spetsifikatsiyasi bo'yicha kamida 40 ta umumiy test vektori yaratish, Vitest va JUnit da bir xil o'tishini ta'minlash (AC-TE-1).
+- **Vazifa:** 0.10 — Vertikal kesim: `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `POST /sessions/{id}/complete` → natija.
+- **Fayllar:** `backend/.../training/infra/...`, `frontend/src/features/typing/...`.
+- **Qolgan ish:** Backend da minimal sessiya yaratish va keylog bilan complete qilish endpointi (G0 vertikal kesim talabi), frontendda minimal TypingEditor va keylog yuborish. To'liq zanjir "yozish -> complete -> server natijasi" integratsiyasini tekshirish.
