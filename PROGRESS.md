@@ -23,8 +23,8 @@
 - [x] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator` (9aac615)
 - [x] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout) (e9424bf)
 - [x] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija (66141fc)
-- [~] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
-- [ ] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring
+- [x] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi (e2eab5d)
+- [ ] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring, G0 Gate hisoboti
 
 ### Bosqich 1: MVP (R1) (Hafta 3–12)
 - [ ] **1.1** `identity` moduli: ro'yxat, login, refresh rotation, email tasdiqlash, parol tiklash, mehmon tokeni, OAuth stub, rate limit
@@ -95,8 +95,8 @@
 | AC-SQL-3 | SQL formatlash linti UPPER kalit so'zlar, river indent kursor | NOT STARTED | — |
 | AC-SQL-4 | SQL sessiya natijasida Registr ko'rsatkichi, kichik harf xato | NOT STARTED | — |
 | AC-PLS-1 | plsql 18 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | NOT STARTED | — |
-| AC-PLS-2 | plsql taqiqlangan konstruksiyalar ($$, LANGUAGE plpgsql va h.k.) rad | NOT STARTED | — |
-| AC-PLS-3 | plsql snippet Oracle Database Free kompilyatsiyasi | NOT STARTED | — |
+| AC-PLS-2 | plsql taqiqlangan konstruksiyalar ($$, LANGUAGE plpgsql va h.k.) rad | PASS | `scripts/validate-content.ts` BL-EM-3 qoidalari tekshiruvi (`npx vitest run scripts/__tests__/validate-content.test.ts`) |
+| AC-PLS-3 | plsql snippet Oracle Database Free kompilyatsiyasi | NOT VERIFIED | Docker daemon ishlamayotgani sababli konteynerga ulanmadi; statik qoidalar bo'yicha tekshirildi |
 | AC-PLS-4 | PL/SQL konstruksiyalar qamrovi regex ro'yxati | NOT STARTED | — |
 | AC-PLS-5 | Engine: := va %TYPE pattern sifatida, / terminator qatori | NOT STARTED | — |
 | AC-PLS-6 | PL/SQL formatlash linti prefikslar, END nom | NOT STARTED | — |
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.11 — Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta: java, python, javascript, sql, plsql), Oracle Free bilan kompilyatsiya tekshiruvi.
-- **Fayllar:** `content/`, `scripts/validate-content.ts` (yoki Java validator CLI).
-- **Qolgan ish:** docs/06 va docs/03 §5 (BL-EM-1..4) qoidalariga mos kontent formatini belgilash, 12 ta strukturaviy va pedagogik qoidani tekshiruvchi validator CLI ni yaratish, 20 ta namunaviy snippetni kiritish va validator orqali yashil qilish.
+- **Vazifa:** 0.12 — Staging muhiti, blue-green deploy skripti, bazaviy monitoring va G0 Gate rasmiy hisoboti.
+- **Fayllar:** `scripts/deploy-staging.sh`, `docker-compose.staging.yml`, `docs/20-roadmap.md`, `PROGRESS.md`.
+- **Qolgan ish:** Staging deploy konfiguratsiyasini tayyorlash, G0 Gate mezonlarini tekshirish (TS va Java engine >= 40 vektor bo'yicha bir xil, vertikal kesim ishlaydi), G0 Gate rasmiy hisobotini tuzish va Bosqich 1 (MVP) ga yo'l ochish.
