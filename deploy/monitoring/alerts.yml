@@ -1,0 +1,42 @@
+groups:
+  - name: devtype_critical_alerts
+    rules:
+      - alert: ApiSlow
+        expr: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[5m])) by (le)) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DevType API latency p95 > 500ms for 5 minutes"
+
+      - alert: High5xxRate
+        expr: sum(rate(http_server_requests_seconds_count{status=~"5.."}[5m])) / sum(rate(http_server_requests_seconds_count[5m])) > 0.01
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DevType 5xx error rate exceeds 1% for 5 minutes"
+
+      - alert: AppDown
+        expr: up{job=~"devtype-backend.*"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DevType application instance is down"
+
+      - alert: HighRejectedSessions
+        expr: sum(rate(devtype_sessions_completed_total{status="REJECTED"}[15m])) / sum(rate(devtype_sessions_completed_total[15m])) > 0.03
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Engine rejected sessions exceed 3% for 15 minutes (potential engine mismatch)"
+
+      - alert: EngineMismatchDetected
+        expr: increase(devtype_engine_mismatch_total[15m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Engine calculation mismatch detected between client and server"
