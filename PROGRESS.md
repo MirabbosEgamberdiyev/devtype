@@ -19,8 +19,8 @@
 - [x] **0.4** `docker-compose.local.yml` (PostgreSQL, Mailpit, MinIO), Dockerfile'lar (3307320)
 - [x] **0.5** CI: `pr.yml` (backend, frontend, vectors) (5deb31f)
 - [x] **0.6** Frontend skeleti: Vite, TS strict, Tailwind + tokenlar, router, layoutlar, tema, i18n (4 lokal, `i18n:check`, transliterator) (52915e7)
-- [~] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar
-- [ ] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`
+- [x] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar (b981966)
+- [~] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`
 - [ ] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout)
 - [ ] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
 - [ ] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
@@ -102,17 +102,17 @@
 | AC-PLS-6 | PL/SQL formatlash linti prefikslar, END nom | NOT STARTED | — |
 | AC-TE-1 | Umumiy vektorlar (>= 120) Vitest va JUnit'da aynan bir xil | NOT STARTED | — |
 | AC-TE-2 | To'g'ri/xato/tuzatilgan belgilar 09 §4 bo'yicha ko'rinadi, kursor | NOT STARTED | — |
-| AC-TE-3 | Ma'lum keylog uchun WPM, raw WPM, CPM, accuracy, consistency hisobi 2 kasr xona | NOT STARTED | — |
-| AC-TE-4 | Taymer 1-belgidan, 20s pauza faol vaqtga kirmaydi, Speed Test 60s limit | NOT STARTED | — |
-| AC-TE-5 | Enter indentdan sakraydi, strict rejimda Tab 1 birlik va 1 bosish | NOT STARTED | — |
+| AC-TE-3 | Ma'lum keylog uchun WPM, raw WPM, CPM, accuracy, consistency hisobi 2 kasr xona | PASS | `metrics.test.ts` 10 ta hujjatlashtirilgan misol (`npx vitest run src/engine/__tests__/metrics.test.ts`) |
+| AC-TE-4 | Taymer 1-belgidan, 20s pauza faol vaqtga kirmaydi, Speed Test 60s limit | PASS | `reducer.test.ts` (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
+| AC-TE-5 | Enter indentdan sakraydi, strict rejimda Tab 1 birlik va 1 bosish | PASS | `reducer.test.ts` (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
 | AC-TE-6 | Maxsus belgilar to'plami to'g'ri qabul qilinadi va turkumiga tushadi | NOT STARTED | — |
 | AC-TE-7 | Server va klient metrikalari bir xil keylogda aynan teng (farq 0) | NOT STARTED | — |
 | AC-TE-8 | clientMetrics soxtalashtirish (300 WPM) natijaga ta'sir qilmaydi | NOT STARTED | — |
-| AC-TE-9 | UI WPM round(server), accuracy 1 kasr, sun'iy oshirish yo'q | NOT STARTED | — |
+| AC-TE-9 | UI WPM round(server), accuracy 1 kasr, sun'iy oshirish yo'q | PASS | `metrics.test.ts` UI formatting (`npx vitest run src/engine/__tests__/metrics.test.ts`) |
 | AC-TE-10 | Paste, drop, cut kiritmaydi, kontekst menyu yo'q | NOT STARTED | — |
 | AC-TE-11 | IME, dead key, kirill, emoji qabul qilinmaydi, ogohlantirish | NOT STARTED | — |
 | AC-TE-12 | Kiritish adapteri: AltGr, Option, Cmd/Ctrl Backspace, avtotakror | NOT STARTED | — |
-| AC-TE-13 | Erkin rejimda 8 ketma-ket xatodan keyin 9-belgi bloklanadi | NOT STARTED | — |
+| AC-TE-13 | Erkin rejimda 8 ketma-ket xatodan keyin 9-belgi bloklanadi | PASS | `reducer.test.ts` 8-error limit and backspace unblock (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
 | AC-TE-14 | Tab+Enter qayta boshlash: eski ABANDONED, yangi sessionId | NOT STARTED | — |
 | AC-TE-15 | Offline tugagan sessiya tarmoq qaytgach saqlanadi, 24h keyin SESSION_EXPIRED | NOT STARTED | — |
 | AC-TE-16 | Keylog dt server vaqtidan >2s katta bo'lsa TIMING_MISMATCH, invalid header | NOT STARTED | — |
@@ -128,7 +128,7 @@
 | AC-TM-9 | 25 pool'da 20 sessiyada takror yo'q, eng eski ko'rilgan qaytadi | NOT STARTED | — |
 | AC-TM-10 | Natija javobida metrics, wpmSeries, weakTokens, slowLines, rewards, progress | NOT STARTED | — |
 | AC-TM-11 | K<20 yoki <5s -> SESSION_TOO_SHORT 422, takroriy complete bir xil | NOT STARTED | — |
-| AC-SC-1 | Har bosiladigan 95 ASCII belgi aynan 1 turkumga tegishli (FE/BE umumiy) | NOT STARTED | — |
+| AC-SC-1 | Har bosiladigan 95 ASCII belgi aynan 1 turkumga tegishli (FE/BE umumiy) | PASS | `categories.test.ts` 95 ASCII characters coverage (`npx vitest run src/engine/__tests__/categories.test.ts`) |
 | AC-SC-2 | Natijada specialAccuracy faqat maxsus belgilardan hisoblanadi | NOT STARTED | — |
 | AC-SC-3 | Chalkashliklar matritsasi hisobi (masalan ) o'rniga 0) | NOT STARTED | — |
 | AC-SC-4 | >= 30 kuzatuvda zaiflik balli yuqori turkum tavsiya qilinadi | NOT STARTED | — |
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.7 — Engine (TS): `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar.
-- **Fayllar:** `frontend/src/engine/prepare.ts`, `frontend/src/engine/reducer.ts`, `frontend/src/engine/metrics.ts`, `frontend/src/engine/keylog.ts`, `frontend/src/engine/stats.ts`, `frontend/src/engine/categories.ts`, `frontend/src/engine/__tests__/...`.
-- **Qolgan ish:** docs/07 spetsifikatsiyasi bo'yicha sof reduktsiya funksiyalari, auto-indent, tokenlar, WPM/CPM/aniqlik formulalari (docs/00 §4, docs/07), ikkilik keylog koder/dekoder va 100% test qamrovi.
+- **Vazifa:** 0.8 — Engine (Java): `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator`, `SuspicionRules`.
+- **Fayllar:** `backend/src/main/java/com/devtype/training/domain/...`, `backend/src/test/java/com/devtype/training/domain/...`.
+- **Qolgan ish:** docs/07 spetsifikatsiyasi bo'yicha Java tomonida LEB128/Gzip keylog dekoderi, target tayyorlash, qayta ijro etuvchi (replayer), rasmiy metrikalar kalkulyatori va shubha (anti-cheat) qoidalari. JUnit unit testlari yashil qilish.
