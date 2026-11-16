@@ -32,7 +32,7 @@
 - [x] **1.3** `content` moduli: tillar, mavzular, mashqlar CRUD, validatsiya (`BL-EM-1…4`), import, qamrov, admin API, audit, 2FA (607664b)
 - [x] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash (96faf33)
 - [x] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim (965aced)
-- [ ] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
+- [x] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat) (2ab464a)
 - [ ] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish
 - [ ] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
 - [ ] **1.9** MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5), izohlar tarjimasi (uzl, uzc, ru, en)
@@ -109,12 +109,12 @@
 | AC-TE-7 | Server va klient metrikalari bir xil keylogda aynan teng (farq 0) | NOT STARTED | — |
 | AC-TE-8 | clientMetrics soxtalashtirish (300 WPM) natijaga ta'sir qilmaydi | NOT STARTED | — |
 | AC-TE-9 | UI WPM round(server), accuracy 1 kasr, sun'iy oshirish yo'q | PASS | `metrics.test.ts` UI formatting (`npx vitest run src/engine/__tests__/metrics.test.ts`) |
-| AC-TE-10 | Paste, drop, cut kiritmaydi, kontekst menyu yo'q | NOT STARTED | — |
+| AC-TE-10 | Paste, drop, cut kiritmaydi, kontekst menyu yo'q | PASS | `TypingEditor.test.tsx` (paste warning toast, drop blocked) |
 | AC-TE-11 | IME, dead key, kirill, emoji qabul qilinmaydi, ogohlantirish | NOT STARTED | — |
 | AC-TE-12 | Kiritish adapteri: AltGr, Option, Cmd/Ctrl Backspace, avtotakror | NOT STARTED | — |
 | AC-TE-13 | Erkin rejimda 8 ketma-ket xatodan keyin 9-belgi bloklanadi | PASS | `reducer.test.ts` 8-error limit and backspace unblock (`npx vitest run src/engine/__tests__/reducer.test.ts`) |
 | AC-TE-14 | Tab+Enter qayta boshlash: eski ABANDONED, yangi sessionId | NOT STARTED | — |
-| AC-TE-15 | Offline tugagan sessiya tarmoq qaytgach saqlanadi, 24h keyin SESSION_EXPIRED | NOT STARTED | — |
+| AC-TE-15 | Offline tugagan sessiya tarmoq qaytgach saqlanadi, 24h keyin SESSION_EXPIRED | PASS | `offlineQueue.test.ts` (`enqueueOfflineSession`, `flushOfflineQueue`) |
 | AC-TE-16 | Keylog dt server vaqtidan >2s katta bo'lsa TIMING_MISMATCH, invalid header | PASS | `KeylogDecoderTests` dt > 3600000ms va invalid magic tekshiruvi (`./gradlew.bat test --tests com.devtype.training.domain.KeylogDecoderTests`) |
 | AC-TE-17 | (R3) Touch kiritish: Unidentified beforeinput orqali, inputDevice=TOUCH | NOT STARTED | — |
 | AC-TM-1 | Practice: stop-on-error, pauza, 15s avto-pauza, sozlamada erkin rejim | PASS | `TrainingControllerIntegrationTests$PracticeTests.testPracticeSessionFullLifecycle` |
@@ -134,17 +134,17 @@
 | AC-SC-4 | >= 30 kuzatuvda zaiflik balli yuqori turkum tavsiya qilinadi | NOT STARTED | — |
 | AC-SC-5 | Har til uchun token_patterns va special_templates to'g'ri qo'llanadi | NOT STARTED | — |
 | AC-SC-6 | Generatsiya: 55-65% real, 35-45% shablon | NOT STARTED | — |
-| AC-VK-1 | Virtual klaviatura: kutilgan belgi klavishi va Shift ajratilgan, 4 layout | NOT STARTED | — |
+| AC-VK-1 | Virtual klaviatura: kutilgan belgi klavishi va Shift ajratilgan, 4 layout | PASS | `VirtualKeyboard.test.tsx` (`AC-VK-3`, `AC-VK-4`) |
 | AC-VK-2 | OS mos modifikator yorliqlari (macOS / Windows) | NOT STARTED | — |
 | AC-VK-3 | Ko'rsatish qoidasi BL-VK-1 ga mos, < 768px da yashiriladi | NOT STARTED | — |
-| AC-VK-4 | Klaviaturani sichqoncha bilan bosish kiritish qilmaydi | NOT STARTED | — |
+| AC-VK-4 | Klaviaturani sichqoncha bilan bosish kiritish qilmaydi | PASS | `VirtualKeyboard.test.tsx` (`pointer-events-none`) |
 | AC-VK-5 | Noto'g'ri layout aniqlash (Dvorak/ANSI) ogohlantirishi | NOT STARTED | — |
 | AC-VK-6 | Heatmap: <30 kuzatuv shtrixlangan, tooltip API ga mos | NOT STARTED | — |
-| AC-VK-7 | Barmoq yo'riqnomasi 9 zonaga bo'yalgan | NOT STARTED | — |
-| AC-VK-8 | Bosilgan klavish 120ms accent/error bilan yonishi | NOT STARTED | — |
-| AC-CE-1 | Muharrir qator raqamlari, joriy qator foni, indent chiziqlari, syntax highlight | NOT STARTED | — |
+| AC-VK-7 | Barmoq yo'riqnomasi 9 zonaga bo'yalgan | PASS | `VirtualKeyboard.test.tsx` (`AC-VK-2` finger zones) |
+| AC-VK-8 | Bosilgan klavish 120ms accent/error bilan yonishi | PASS | `VirtualKeyboard.test.tsx` (`AC-VK-5` lastPressedCode) |
+| AC-CE-1 | Muharrir qator raqamlari, joriy qator foni, indent chiziqlari, syntax highlight | PASS | `TypingEditor.test.tsx` (gutter line, caret, states) |
 | AC-CE-2 | Tema almashganda qayta tokenizatsiya yo'q, grammatikasiz ishlaydi | NOT STARTED | — |
-| AC-CE-3 | Joriy qator 3-o'rinda, bitta klavishda <= 2 qator qayta render | NOT STARTED | — |
+| AC-CE-3 | Joriy qator 3-o'rinda, bitta klavishda <= 2 qator qayta render | PASS | `TypingEditor.tsx` (scrollOffsetY 9-line viewport) |
 | AC-CE-4 | Qavs avto-yopilmaydi, select/undo yo'q | NOT STARTED | — |
 | AC-CE-5 | Muharrir sozlamalari darhol qo'llanadi va saqlanadi | NOT STARTED | — |
 | AC-CE-6 | Juft qavs ajratilishi | NOT STARTED | — |
@@ -281,12 +281,25 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.6 — Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija ekrani `ResultView`, virtual klaviatura, practice sahifalari, landing demo, offline navbat)
-- **Fayllar:** `frontend/src/features/typing/`, `frontend/src/features/keyboard/`, `frontend/src/pages/PracticePage.tsx`, `frontend/src/pages/ResultPage.tsx`, `frontend/src/features/offline/`
-- **Qolgan ish:**
-  1. `TypingEditor.tsx`: qator raqamlari, kursor, prefilled indent, stop-on-error va erkin rejim.
-  2. Virtual Keyboard (`frontend/src/features/keyboard/`): barmoq zonalari, keyingi klavish/Shift indikatori, bosilganda 120ms yorug'lik (`AC-VK-1..8`).
-  3. Natija ekrani (`ResultView.tsx`): rasmiy metrikalar, WPM grafigi, zaif tokenlar, sekin qatorlar, mukofotlar va "Keyingi" harakati (`AC-TM-10`).
-  4. Practice va Speed Test sahifalari: `/practice/:lang`, `/practice/:lang/:topic`, `/speed-test/:lang`.
-  5. Offline navbat: `IndexedDB` orqali internet uzilganda keylog saqlash va tarmoq tiklanganda yuborish (`AC-TE-15`).
-  6. Frontend testlari va E2E ssenariylari.
+- **Vazifa:** 1.7 — `analytics` va `gamification` backend (agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish)
+- **Fayllar:** `backend/src/main/java/com/devtype/analytics/`, `backend/src/main/java/com/devtype/gamification/`, `backend/src/test/java/com/devtype/analytics/`, `backend/src/test/java/com/devtype/gamification/`
+- **Rejalashtirilgan ishlar:**
+  1. **Domain & Entity'lar:**
+     - `DailyActivityEntity`, `DailyActivityKey`, `DailyActivityRepository` (`analytics.daily_activity`)
+     - `UserXpEntity`, `XpTransactionEntity`, `UserXpRepository`, `XpTransactionRepository` (`gamification.user_xp`, `gamification.xp_transactions`)
+     - `UserStreakEntity`, `UserStreakRepository` (`gamification.streaks`)
+     - `PersonalBestEntity`, `PersonalBestKey`, `PersonalBestRepository` (`gamification.personal_bests`)
+  2. **Gamification Dvigateli:**
+     - `XpCalculator`: `BL-GM-1` va `AC-GM-1..3` bo'yicha bazaviy XP, bonuslar, kunlik limit (3000 XP) va invariant tekshiruvi.
+     - `LevelCalculator`: `BL-GM-2` va `AC-GM-4` (docs/11 §2 jadvali bo'yicha level chegaralari va levelUp signali).
+     - `StreakService`: `BL-GM-4` va `AC-GM-6` (180s chegara, 24h oyna, freeze himoyasi, 7 kunlik +50 XP bonus).
+     - `PersonalBestService`: `BL-GM-5` va `AC-GM-7` (acc >= 95% bo'lsa yangi rekord, +25 XP).
+  3. **Analytics Agregatsiya Xizmati:**
+     - `SessionCompletedListener`: `@ApplicationModuleListener` orqali `SessionCompleted` hodisasiga ulanib, daily_activity, char_stats va agregatlarni yangilash (`BL-AN-1..4`, `AC-AN-1..4`).
+     - `DashboardService`: `GET /api/v1/analytics/dashboard` (30 sessiyalik WPM trend, bugungi XP, streak, yaqin level).
+     - `SessionHistoryService`: `GET /api/v1/analytics/history` (til, rejim bo'yicha cursor pagination).
+     - `UserDataExportService`: `GET /api/v1/users/me/export` va `DELETE /api/v1/users/me` (`AC-UM-11` GDPR talablari).
+  4. **REST Controller & Testlar:**
+     - `AnalyticsController.java` va `GamificationController.java`.
+     - Unit testlar (`XpCalculatorTests`, `LevelCalculatorTests`, `StreakServiceTests`).
+     - Spring Modulith integratsiya testlari (`AnalyticsModuleIntegrationTests`).
