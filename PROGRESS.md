@@ -22,8 +22,8 @@
 - [x] **0.7** **Engine (TS):** `prepare`, `reducer`, `metrics`, `keylog` codec + unit/property testlar (b981966)
 - [x] **0.8** **Engine (Java):** `KeylogDecoder`, `TargetPreparer`, `KeylogReplayer`, `MetricsCalculator` (9aac615)
 - [x] **0.9** `engine-vectors/` — birinchi 40 vektor (har hodisa turi, indent, backspace, timeout) (e9424bf)
-- [~] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija
-- [ ] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
+- [x] **0.10** **Vertikal kesim:** `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `complete` → natija (66141fc)
+- [~] **0.11** Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta), Oracle Free bilan kompilyatsiya tekshiruvi
 - [ ] **0.12** Staging muhiti, blue-green deploy skripti, bazaviy monitoring
 
 ### Bosqich 1: MVP (R1) (Hafta 3–12)
@@ -248,6 +248,6 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 ---
 
 ## 5. KEYINGI QADAM
-- **Vazifa:** 0.10 — Vertikal kesim: `POST /sessions` (bitta fixture snippet) → minimal `TypingEditor` → `POST /sessions/{id}/complete` → natija.
-- **Fayllar:** `backend/.../training/infra/...`, `frontend/src/features/typing/...`.
-- **Qolgan ish:** Backend da minimal sessiya yaratish va keylog bilan complete qilish endpointi (G0 vertikal kesim talabi), frontendda minimal TypingEditor va keylog yuborish. To'liq zanjir "yozish -> complete -> server natijasi" integratsiyasini tekshirish.
+- **Vazifa:** 0.11 — Kontent formati, validator CLI (`content/`), 20 namunaviy snippet (har 1-reliz tilidan 4 ta: java, python, javascript, sql, plsql), Oracle Free bilan kompilyatsiya tekshiruvi.
+- **Fayllar:** `content/`, `scripts/validate-content.ts` (yoki Java validator CLI).
+- **Qolgan ish:** docs/06 va docs/03 §5 (BL-EM-1..4) qoidalariga mos kontent formatini belgilash, 12 ta strukturaviy va pedagogik qoidani tekshiruvchi validator CLI ni yaratish, 20 ta namunaviy snippetni kiritish va validator orqali yashil qilish.
