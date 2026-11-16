@@ -1,4 +1,5 @@
 @org.springframework.modulith.ApplicationModule(
-    displayName = "Identity Module"
+    displayName = "Identity Module",
+    allowedDependencies = {"shared"}
 )
 package com.devtype.identity;

@@ -45,5 +45,18 @@
     "retry": "Qayta urinish",
     "save": "Saqlash",
     "cancel": "Bekor qilish"
+  },
+  "typing": {
+    "pressAnyKey": "Yozishni boshlash uchun istalgan tugmani bosing...",
+    "completed": "Sessiya yakunlandi!",
+    "submitting": "Natijalar serverga yuborilmoqda...",
+    "serverResult": "Serverning rasmiy natijasi",
+    "clientResult": "Klient dastlabki koʻrinishi",
+    "elapsed": "Vaqt",
+    "status": "Holat",
+    "ranked": "Reytingli",
+    "notRanked": "Mashq (Reytingsiz)",
+    "tryAgain": "Qayta urinish",
+    "loading": "Sessiya yuklanmoqda..."
   }
 }

@@ -2,11 +2,11 @@ SET lock_timeout = '5s';
 
 INSERT INTO content.languages (slug, name, grammar_id, indent_style, indent_size, keyword_case, token_patterns, special_templates, forbidden_patterns, release, status, sort_order)
 VALUES
-  ('java', 'Java', 'java', 'SPACE', 4, 'LOWER', '["->", "::", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]", "({type}) {expr}"]}', '[]', 1, 'DRAFT', 1),
-  ('python', 'Python', 'python', 'SPACE', 4, 'LOWER', '["->", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 1, 'DRAFT', 2),
-  ('javascript', 'JavaScript', 'javascript', 'SPACE', 2, 'LOWER', '["=>", "===", "!==", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 1, 'DRAFT', 3),
-  ('sql', 'SQL', 'sql', 'SPACE', 4, 'UPPER', '["<=", ">=", "<>", "!="]', '{"BRACKETS": ["({query})"]}', '["\\$\\$", "LANGUAGE plpgsql", "RAISE NOTICE"]', 1, 'DRAFT', 4),
-  ('plsql', 'PL/SQL', 'plsql', 'SPACE', 4, 'UPPER', '[":=", "%TYPE", "%ROWTYPE", "<=", ">=", "<>", "!="]', '{"BRACKETS": ["({params})"]}', '["\\$\\$", "LANGUAGE plpgsql", "RAISE NOTICE", "RETURNS", "PERFORM", "DELIMITER", "DECLARE @"]', 1, 'DRAFT', 5),
+  ('java', 'Java', 'java', 'SPACE', 4, 'LOWER', '["->", "::", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]", "({type}) {expr}"]}', '[]', 1, 'PUBLISHED', 1),
+  ('python', 'Python', 'python', 'SPACE', 4, 'LOWER', '["->", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 1, 'PUBLISHED', 2),
+  ('javascript', 'JavaScript', 'javascript', 'SPACE', 2, 'LOWER', '["=>", "===", "!==", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 1, 'PUBLISHED', 3),
+  ('sql', 'SQL', 'sql', 'SPACE', 4, 'UPPER', '["<=", ">=", "<>", "!="]', '{"BRACKETS": ["({query})"]}', '["\\$\\$", "LANGUAGE plpgsql", "RAISE NOTICE"]', 1, 'PUBLISHED', 4),
+  ('plsql', 'PL/SQL', 'plsql', 'SPACE', 4, 'UPPER', '[":=", "%TYPE", "%ROWTYPE", "<=", ">=", "<>", "!="]', '{"BRACKETS": ["({params})"]}', '["\\$\\$", "LANGUAGE plpgsql", "RAISE NOTICE", "RETURNS", "PERFORM", "DELIMITER", "DECLARE @"]', 1, 'PUBLISHED', 5),
   ('typescript', 'TypeScript', 'typescript', 'SPACE', 2, 'LOWER', '["=>", "===", "!==", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 2, 'DRAFT', 6),
   ('csharp', 'C#', 'csharp', 'SPACE', 4, 'LOWER', '["=>", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 2, 'DRAFT', 7),
   ('go', 'Go', 'go', 'TAB', 1, 'LOWER', '[":=", "==", "!=", "<=", ">="]', '{"BRACKETS": ["{ident}[{n}]"]}', '[]', 2, 'DRAFT', 8),

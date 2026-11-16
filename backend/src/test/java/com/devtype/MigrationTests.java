@@ -38,12 +38,14 @@ class MigrationTests {
             stmt.execute("DROP SCHEMA IF EXISTS coach CASCADE");
             stmt.execute("DROP SCHEMA IF EXISTS admin CASCADE");
             stmt.execute("DROP TABLE IF EXISTS flyway_schema_history CASCADE");
+            stmt.execute("DROP TABLE IF EXISTS event_publication CASCADE");
         }
 
         Flyway flyway = Flyway.configure()
             .dataSource(JDBC_URL, USER, PASSWORD)
             .locations("classpath:db/migration")
             .placeholderReplacement(false)
+            .baselineOnMigrate(true)
             .cleanDisabled(false)
             .load();
 

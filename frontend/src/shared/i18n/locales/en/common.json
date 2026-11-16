@@ -45,5 +45,18 @@
     "retry": "Try Again",
     "save": "Save",
     "cancel": "Cancel"
+  },
+  "typing": {
+    "pressAnyKey": "Press any key or click here to start typing...",
+    "completed": "Session completed!",
+    "submitting": "Submitting results to server...",
+    "serverResult": "Official Server Result",
+    "clientResult": "Client Live Preview",
+    "elapsed": "Time",
+    "status": "Status",
+    "ranked": "Ranked",
+    "notRanked": "Practice (Not ranked)",
+    "tryAgain": "Try Again",
+    "loading": "Loading session..."
   }
 }
