@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "DevType",
+    "tagline": "Дастурчилар учун клавиатура тренажёри"
+  },
+  "nav": {
+    "dashboard": "Бошқарув панели",
+    "practice": "Машқ",
+    "speedTest": "Тезлик тести",
+    "leaderboard": "Етакчилар",
+    "analytics": "Таҳлил",
+    "coach": "AI Мураббий",
+    "settings": "Созламалар",
+    "login": "Кириш",
+    "register": "Рўйхатдан ўтиш",
+    "logout": "Чиқиш"
+  },
+  "modes": {
+    "practice": "Машқ",
+    "speedTest": "Тезлик тести",
+    "accuracy": "Аниқлик",
+    "challenge": "Синов",
+    "weakness": "Заиф томонлар машқи",
+    "specialChars": "Махсус белгилар",
+    "codeSprint": "Код спринти"
+  },
+  "levels": {
+    "beginner": "Бошланғич",
+    "intermediate": "Ўрта",
+    "advanced": "Юқори",
+    "expert": "Эксперт"
+  },
+  "metrics": {
+    "wpm": "WPM",
+    "cpm": "CPM",
+    "accuracy": "Аниқлик",
+    "consistency": "Барқарорлик",
+    "xp": "XP",
+    "streak": "Узлуксиз кунлар"
+  },
+  "actions": {
+    "start": "Бошлаш",
+    "restart": "Қайта бошлаш",
+    "next": "Кейинги машқ",
+    "retry": "Қайта уриниш",
+    "save": "Сақлаш",
+    "cancel": "Бекор қилиш"
+  }
+}

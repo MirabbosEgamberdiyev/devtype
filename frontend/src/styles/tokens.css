@@ -1,0 +1,48 @@
+/* DevType Design Tokens — docs/05 §1.1 */
+:root,
+:root[data-theme="dark"] {
+  --bg: #0B0D10;
+  --surface: #14171C;
+  --surface-2: #1B1F26;
+  --border: #232830;
+  --border-strong: #343B46;
+  --text: #E6E8EB;
+  --text-muted: #9AA1AC;
+  --text-faint: #5C6370;
+  --accent: #4ADE80;
+  --accent-fg: #052E16;
+  --error: #F87171;
+  --warning: #FBBF24;
+  --info: #60A5FA;
+  --focus-ring: #60A5FA;
+
+  /* Ranks */
+  --rank-bronze: #B87333;
+  --rank-silver: #A8B0BA;
+  --rank-gold: #E5B93C;
+  --rank-platinum: #7FD6D0;
+  --rank-diamond: #8AB4F8;
+}
+
+:root[data-theme="light"] {
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --surface-2: #F3F4F6;
+  --border: #E4E6EA;
+  --border-strong: #C9CDD4;
+  --text: #16181D;
+  --text-muted: #5C6370;
+  --text-faint: #9AA1AC;
+  --accent: #16A34A;
+  --accent-fg: #FFFFFF;
+  --error: #DC2626;
+  --warning: #D97706;
+  --info: #2563EB;
+  --focus-ring: #2563EB;
+
+  --rank-bronze: #B87333;
+  --rank-silver: #A8B0BA;
+  --rank-gold: #E5B93C;
+  --rank-platinum: #7FD6D0;
+  --rank-diamond: #8AB4F8;
+}

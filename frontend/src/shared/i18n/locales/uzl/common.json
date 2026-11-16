@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "DevType",
+    "tagline": "Dasturchilar uchun klaviatura trenajyori"
+  },
+  "nav": {
+    "dashboard": "Boshqaruv paneli",
+    "practice": "Mashq",
+    "speedTest": "Tezlik testi",
+    "leaderboard": "Yetakchilar",
+    "analytics": "Tahlil",
+    "coach": "AI Murabbiy",
+    "settings": "Sozlamalar",
+    "login": "Kirish",
+    "register": "Roʻyxatdan oʻtish",
+    "logout": "Chiqish"
+  },
+  "modes": {
+    "practice": "Mashq",
+    "speedTest": "Tezlik testi",
+    "accuracy": "Aniqlik",
+    "challenge": "Sinov",
+    "weakness": "Zaif tomonlar mashqi",
+    "specialChars": "Maxsus belgilar",
+    "codeSprint": "Kod sprinti"
+  },
+  "levels": {
+    "beginner": "Boshlangʻich",
+    "intermediate": "Oʻrta",
+    "advanced": "Yuqori",
+    "expert": "Ekspert"
+  },
+  "metrics": {
+    "wpm": "WPM",
+    "cpm": "CPM",
+    "accuracy": "Aniqlik",
+    "consistency": "Barqarorlik",
+    "xp": "XP",
+    "streak": "Uzluksiz kunlar"
+  },
+  "actions": {
+    "start": "Boshlash",
+    "restart": "Qayta boshlash",
+    "next": "Keyingi mashq",
+    "retry": "Qayta urinish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish"
+  }
+}

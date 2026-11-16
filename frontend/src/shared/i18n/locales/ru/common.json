@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "DevType",
+    "tagline": "Тренажер печати для разработчиков"
+  },
+  "nav": {
+    "dashboard": "Панель управления",
+    "practice": "Практика",
+    "speedTest": "Тест скорости",
+    "leaderboard": "Таблица лидеров",
+    "analytics": "Аналитика",
+    "coach": "AI Тренер",
+    "settings": "Настройки",
+    "login": "Вход",
+    "register": "Регистрация",
+    "logout": "Выход"
+  },
+  "modes": {
+    "practice": "Практика",
+    "speedTest": "Тест скорости",
+    "accuracy": "Точность",
+    "challenge": "Испытание",
+    "weakness": "Работа над слабыми местами",
+    "specialChars": "Спецсимволы",
+    "codeSprint": "Код-спринт"
+  },
+  "levels": {
+    "beginner": "Начальный",
+    "intermediate": "Средний",
+    "advanced": "Продвинутый",
+    "expert": "Эксперт"
+  },
+  "metrics": {
+    "wpm": "WPM",
+    "cpm": "CPM",
+    "accuracy": "Точность",
+    "consistency": "Стабильность",
+    "xp": "XP",
+    "streak": "Серия дней"
+  },
+  "actions": {
+    "start": "Начать",
+    "restart": "Начать заново",
+    "next": "Следующее упражнение",
+    "retry": "Попробовать снова",
+    "save": "Сохранить",
+    "cancel": "Отмена"
+  }
+}

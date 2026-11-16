@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "DevType",
+    "tagline": "Developer Typing Trainer"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "practice": "Practice",
+    "speedTest": "Speed Test",
+    "leaderboard": "Leaderboard",
+    "analytics": "Analytics",
+    "coach": "AI Coach",
+    "settings": "Settings",
+    "login": "Log in",
+    "register": "Sign up",
+    "logout": "Log out"
+  },
+  "modes": {
+    "practice": "Practice",
+    "speedTest": "Speed Test",
+    "accuracy": "Accuracy",
+    "challenge": "Challenge",
+    "weakness": "Weakness Training",
+    "specialChars": "Special Characters",
+    "codeSprint": "Code Sprint"
+  },
+  "levels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "metrics": {
+    "wpm": "WPM",
+    "cpm": "CPM",
+    "accuracy": "Accuracy",
+    "consistency": "Consistency",
+    "xp": "XP",
+    "streak": "Streak"
+  },
+  "actions": {
+    "start": "Start",
+    "restart": "Restart",
+    "next": "Next Exercise",
+    "retry": "Try Again",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}
