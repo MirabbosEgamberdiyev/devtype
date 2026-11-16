@@ -1,5 +1,6 @@
 package com.devtype.identity.infrastructure;
 
+import com.devtype.identity.api.GuestTokenVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class GuestTokenService {
+public class GuestTokenService implements GuestTokenVerifier {
 
     private static final String HMAC_ALGORITHM = "HmacSHA256";
     private final byte[] secretKey;

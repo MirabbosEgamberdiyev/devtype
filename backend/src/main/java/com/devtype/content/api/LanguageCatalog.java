@@ -7,6 +7,7 @@ public interface LanguageCatalog {
     List<String> getPublishedLanguageSlugs();
     boolean isLanguagePublished(String slug);
     Optional<LanguageView> getLanguage(String slug);
+    Optional<Short> findLanguageIdBySlug(String slug);
 
     record LanguageView(
         String slug,

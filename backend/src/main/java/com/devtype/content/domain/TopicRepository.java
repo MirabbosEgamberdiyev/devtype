@@ -14,4 +14,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
     List<TopicEntity> findByLanguageIdAndStatusOrderBySortOrderAsc(Short languageId, TopicStatus status);
 
     Optional<TopicEntity> findByLanguageIdAndSlug(Short languageId, String slug);
+
+    long countByLanguageIdAndStatus(Short languageId, TopicStatus status);
 }

@@ -41,8 +41,13 @@ public class ExerciseCatalogImpl implements ExerciseCatalog {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<ExerciseView> findById(Long id) {
+        return exerciseRepository.findById(id).map(this::toView);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<ExerciseView> findByTopicAndLevel(String topicKey, String level) {
-        // topicKey format: languageSlug:topicSlug or numeric id
         String[] parts = topicKey.split(":");
         if (parts.length != 2) {
             return Collections.emptyList();
@@ -79,6 +84,67 @@ public class ExerciseCatalogImpl implements ExerciseCatalog {
                 .stream()
                 .map(this::toView)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ExerciseView> findByLanguageAndLevel(String languageSlug, String level) {
+        Optional<LanguageEntity> lang = languageRepository.findBySlug(languageSlug.toLowerCase().trim());
+        if (lang.isEmpty()) return Collections.emptyList();
+
+        try {
+            DifficultyLevel difficulty = DifficultyLevel.valueOf(level.toUpperCase());
+            return exerciseRepository.findByLanguageIdAndDifficultyAndStatus(
+                    lang.get().getId(),
+                    difficulty,
+                    ExerciseStatus.PUBLISHED
+            ).stream().map(this::toView).toList();
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countPublishedByTopicAndDifficulty(Integer topicId, String level) {
+        try {
+            DifficultyLevel difficulty = DifficultyLevel.valueOf(level.toUpperCase());
+            return exerciseRepository.countByTopicIdAndDifficultyAndStatus(topicId, difficulty, ExerciseStatus.PUBLISHED);
+        } catch (IllegalArgumentException e) {
+            return 0;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UUID> findExerciseKeysByTopicAndDifficulty(Integer topicId, String level) {
+        try {
+            DifficultyLevel difficulty = DifficultyLevel.valueOf(level.toUpperCase());
+            return exerciseRepository.findByTopicIdAndDifficultyAndStatus(topicId, difficulty, ExerciseStatus.PUBLISHED)
+                    .stream()
+                    .map(ExerciseEntity::getExerciseKey)
+                    .toList();
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Integer> findTopicIdBySlug(String languageSlug, String topicSlug) {
+        Optional<LanguageEntity> lang = languageRepository.findBySlug(languageSlug.toLowerCase().trim());
+        if (lang.isEmpty()) return Optional.empty();
+
+        return topicRepository.findByLanguageIdAndSlug(lang.get().getId(), topicSlug.trim().toLowerCase())
+                .map(TopicEntity::getId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countPublishedTopicsByLanguage(String languageSlug) {
+        Optional<LanguageEntity> lang = languageRepository.findBySlug(languageSlug.toLowerCase().trim());
+        if (lang.isEmpty()) return 0;
+        return topicRepository.countByLanguageIdAndStatus(lang.get().getId(), TopicStatus.PUBLISHED);
     }
 
     private ExerciseView toView(ExerciseEntity e) {

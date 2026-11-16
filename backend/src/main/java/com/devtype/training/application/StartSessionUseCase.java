@@ -1,5 +1,8 @@
 package com.devtype.training.application;
 
+import com.devtype.content.api.ExerciseCatalog;
+import com.devtype.content.api.ExerciseView;
+import com.devtype.content.api.LanguageCatalog;
 import com.devtype.shared.Constants;
 import com.devtype.shared.error.DomainException;
 import com.devtype.training.infrastructure.*;
@@ -9,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class StartSessionUseCase {
@@ -18,19 +20,29 @@ public class StartSessionUseCase {
     private final SessionRepository sessionRepository;
     private final SessionExerciseRepository sessionExerciseRepository;
     private final CompleteTokenService completeTokenService;
-
-    // Vertikal kesim uchun kanonik fixture kod (docs/06 §2 ga mos Java klassi)
-    private static final String FIXTURE_JAVA_CODE =
-            "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, DevType!\");\n    }\n}";
-    private static final UUID FIXTURE_EXERCISE_KEY = UUID.fromString("0193a1f2-0000-7000-8000-000000000001");
+    private final LanguageCatalog languageCatalog;
+    private final ExerciseCatalog exerciseCatalog;
+    private final SnippetSelector snippetSelector;
+    private final TopicProgressService topicProgressService;
+    private final SpecialCharsGenerator specialCharsGenerator;
 
     public StartSessionUseCase(
             SessionRepository sessionRepository,
             SessionExerciseRepository sessionExerciseRepository,
-            CompleteTokenService completeTokenService) {
+            CompleteTokenService completeTokenService,
+            LanguageCatalog languageCatalog,
+            ExerciseCatalog exerciseCatalog,
+            SnippetSelector snippetSelector,
+            TopicProgressService topicProgressService,
+            SpecialCharsGenerator specialCharsGenerator) {
         this.sessionRepository = sessionRepository;
         this.sessionExerciseRepository = sessionExerciseRepository;
         this.completeTokenService = completeTokenService;
+        this.languageCatalog = languageCatalog;
+        this.exerciseCatalog = exerciseCatalog;
+        this.snippetSelector = snippetSelector;
+        this.topicProgressService = topicProgressService;
+        this.specialCharsGenerator = specialCharsGenerator;
     }
 
     @Transactional
@@ -40,55 +52,170 @@ public class StartSessionUseCase {
                 : "java";
 
         if (!Constants.ALL_SUPPORTED_LANGUAGES.contains(langSlug)) {
-            throw new DomainException("LANGUAGE_NOT_AVAILABLE", "Til mavjud emas: " + langSlug, HttpStatus.CONFLICT);
+            throw new DomainException("LANGUAGE_NOT_AVAILABLE", "Til qo'llab-quvvatlanmaydi: " + langSlug, HttpStatus.CONFLICT);
         }
 
-        String mode = (cmd.mode() != null && !cmd.mode().isBlank()) ? cmd.mode() : "PRACTICE";
-        String difficulty = cmd.difficulty() != null ? cmd.difficulty() : "BEGINNER";
-        boolean strictIndent = Boolean.TRUE.equals(cmd.strictIndent());
+        Short languageId = languageCatalog.findLanguageIdBySlug(langSlug).orElse((short) 1);
 
+        String mode = (cmd.mode() != null && !cmd.mode().isBlank()) ? cmd.mode().toUpperCase().trim() : "PRACTICE";
+        String difficulty = cmd.difficulty() != null ? cmd.difficulty().toUpperCase().trim() : "BEGINNER";
+        boolean isPlacement = Boolean.TRUE.equals(cmd.placement());
+        boolean strictIndent = Boolean.TRUE.equals(cmd.strictIndent());
+        boolean accuracyMaster = Boolean.TRUE.equals(cmd.accuracyMaster());
+
+        // Mehmon yoki User
+        Long userId = cmd.userId();
+        UUID guestId = (userId == null) ? (cmd.guestId() != null ? cmd.guestId() : UUID.randomUUID()) : null;
+
+        // 1. Bir foydalanuvchida ko'pi bilan 3 ta STARTED sessiya; 4-sida eng eskisi ABANDONED bo'ladi (BL-TM-2)
+        abandonOldSessionsIfNeeded(userId, guestId);
+
+        // 2. Daraja tekshiruvi (BL-LS-2)
+        Integer topicId = null;
+        if (cmd.topic() != null && !cmd.topic().isBlank()) {
+            topicId = exerciseCatalog.findTopicIdBySlug(langSlug, cmd.topic()).orElse(null);
+            if (topicId != null && !isPlacement && "PRACTICE".equals(mode)) {
+                topicProgressService.checkLevelAccessible(userId, topicId, difficulty);
+            }
+        }
+
+        // 3. Mashqlarni tanlash / generatsiya qilish
         UUID sessionId = UUID.randomUUID();
         Instant startedAt = Instant.now();
         Instant expiresAt = startedAt.plus(Constants.SESSION_EXPIRATION_HOURS, ChronoUnit.HOURS);
+        long seed = System.currentTimeMillis();
 
-        // Language config (docs/00 va docs/07 §2)
-        StartSessionResult.LanguageDto languageDto = resolveLanguage(langSlug);
+        List<StartSessionResult.ExerciseDto> exerciseDtos = new ArrayList<>();
+        List<SessionExerciseEntity> sessionExerciseEntities = new ArrayList<>();
 
-        // Session Entity saqlash
+        if ("SPECIAL_CHARS".equals(mode)) {
+            String genCode = specialCharsGenerator.generate(langSlug, cmd.specialCategory(), seed);
+            UUID genKey = UUID.randomUUID();
+
+            SessionExerciseEntity se = new SessionExerciseEntity();
+            se.setSessionId(sessionId);
+            se.setSeq((short) 0);
+            se.setGeneratedCode(genCode);
+            se.setStartedAt(startedAt);
+            sessionExerciseEntities.add(se);
+
+            exerciseDtos.add(new StartSessionResult.ExerciseDto(
+                    0,
+                    genKey,
+                    "Special Characters (" + (cmd.specialCategory() != null ? cmd.specialCategory() : "BRACKETS") + ")",
+                    "Maxsus belgilar mashqi",
+                    difficulty,
+                    genCode,
+                    genCode.length()
+            ));
+        } else if (isPlacement) {
+            // Placement testi: 3 ta snippet (BEGINNER, INTERMEDIATE, ADVANCED)
+            List<String> levels = List.of("BEGINNER", "INTERMEDIATE", "ADVANCED");
+            short seq = 0;
+            for (String lvl : levels) {
+                List<ExerciseView> list = snippetSelector.pick(userId, guestId, langSlug, languageId, "PRACTICE", null, lvl, null, 1);
+                if (list.isEmpty()) {
+                    throw new DomainException("NO_EXERCISES_AVAILABLE", "Placement mashqi topilmadi: " + lvl, HttpStatus.CONFLICT);
+                }
+                ExerciseView ev = list.get(0);
+                SessionExerciseEntity se = new SessionExerciseEntity();
+                se.setSessionId(sessionId);
+                se.setSeq(seq);
+                se.setExerciseId(ev.id());
+                se.setStartedAt(startedAt);
+                sessionExerciseEntities.add(se);
+
+                exerciseDtos.add(new StartSessionResult.ExerciseDto(
+                        seq,
+                        UUID.fromString(ev.exerciseKey()),
+                        ev.title(),
+                        "Placement " + lvl,
+                        lvl,
+                        ev.code(),
+                        ev.charCount()
+                ));
+                seq++;
+            }
+        } else if ("SPEED_TEST".equals(mode)) {
+            // SPEED_TEST: 3 ta snippet (boshlang'ich)
+            List<ExerciseView> picked = snippetSelector.pick(userId, guestId, langSlug, languageId, mode, null, difficulty, null, 3);
+            short seq = 0;
+            for (ExerciseView ev : picked) {
+                SessionExerciseEntity se = new SessionExerciseEntity();
+                se.setSessionId(sessionId);
+                se.setSeq(seq);
+                se.setExerciseId(ev.id());
+                se.setStartedAt(startedAt);
+                sessionExerciseEntities.add(se);
+
+                exerciseDtos.add(new StartSessionResult.ExerciseDto(
+                        seq,
+                        UUID.fromString(ev.exerciseKey()),
+                        ev.title(),
+                        "Speed Test",
+                        ev.level(),
+                        ev.code(),
+                        ev.charCount()
+                ));
+                seq++;
+            }
+        } else {
+            // PRACTICE, ACCURACY va boshqalar
+            List<ExerciseView> picked = snippetSelector.pick(
+                    userId, guestId, langSlug, languageId, mode, cmd.topic(), difficulty, cmd.exerciseKey(), 1);
+            ExerciseView ev = picked.get(0);
+
+            SessionExerciseEntity se = new SessionExerciseEntity();
+            se.setSessionId(sessionId);
+            se.setSeq((short) 0);
+            se.setExerciseId(ev.id());
+            se.setStartedAt(startedAt);
+            sessionExerciseEntities.add(se);
+
+            exerciseDtos.add(new StartSessionResult.ExerciseDto(
+                    0,
+                    UUID.fromString(ev.exerciseKey()),
+                    ev.title(),
+                    ev.topicKey() != null ? ev.topicKey() : "Practice",
+                    ev.level(),
+                    ev.code(),
+                    ev.charCount()
+            ));
+        }
+
+        // 4. Session Entity saqlash
         SessionEntity session = new SessionEntity();
         session.setId(sessionId);
         session.setStartedAt(startedAt);
-        session.setGuestId(UUID.randomUUID()); // Mehmon sifatida
-        session.setLanguageId((short) 1); // java
+        session.setUserId(userId);
+        session.setGuestId(guestId);
+        session.setLanguageId(languageId);
         session.setMode(mode);
+        session.setTopicId(topicId);
         session.setDifficulty(difficulty);
+        session.setAccuracyMaster(accuracyMaster);
+        session.setPlacement(isPlacement);
+        session.setSpecialCategory(cmd.specialCategory());
+        session.setGenSeed(seed);
+        session.setChallengeId(cmd.challengeId());
+        session.setCompetitionId(cmd.competitionId());
         session.setStrictIndent(strictIndent);
         session.setInputDevice(cmd.inputDevice() != null ? cmd.inputDevice() : "PHYSICAL");
         session.setEngineVersion("1.0.0");
         session.setStatus("STARTED");
 
+        if ("SPEED_TEST".equals(mode)) {
+            int dur = (cmd.duration() != null && (cmd.duration() == 30 || cmd.duration() == 60 || cmd.duration() == 120))
+                    ? cmd.duration()
+                    : 60;
+            session.setDurationLimitS((short) dur);
+        }
+
         sessionRepository.save(session);
-
-        // Session Exercise saqlash (generatedCode orqali)
-        SessionExerciseEntity exEntity = new SessionExerciseEntity();
-        exEntity.setSessionId(sessionId);
-        exEntity.setSeq((short) 0);
-        exEntity.setGeneratedCode(FIXTURE_JAVA_CODE);
-        exEntity.setStartedAt(startedAt);
-
-        sessionExerciseRepository.save(exEntity);
+        sessionExerciseRepository.saveAll(sessionExerciseEntities);
 
         String completeToken = completeTokenService.generateToken(sessionId, startedAt, expiresAt);
-
-        StartSessionResult.ExerciseDto exerciseDto = new StartSessionResult.ExerciseDto(
-                0,
-                FIXTURE_EXERCISE_KEY,
-                "Hello World",
-                "DevType da birinchi mashq",
-                difficulty,
-                FIXTURE_JAVA_CODE,
-                FIXTURE_JAVA_CODE.length()
-        );
+        StartSessionResult.LanguageDto languageDto = resolveLanguage(langSlug);
 
         return new StartSessionResult(
                 sessionId,
@@ -96,43 +223,64 @@ public class StartSessionUseCase {
                 expiresAt,
                 mode,
                 "STOP",
-                null,
+                session.getDurationLimitS() != null ? (int) session.getDurationLimitS() : null,
                 languageDto,
-                List.of(exerciseDto),
+                exerciseDtos,
                 completeToken
         );
     }
 
-    private StartSessionResult.LanguageDto resolveLanguage(String slug) {
-        if ("javascript".equals(slug) || "typescript".equals(slug) || "html".equals(slug) || "css".equals(slug) || "bash".equals(slug)) {
+    private void abandonOldSessionsIfNeeded(Long userId, UUID guestId) {
+        List<SessionEntity> activeSessions = (userId != null)
+                ? sessionRepository.findByUserIdAndStatusOrderByStartedAtAsc(userId, "STARTED")
+                : (guestId != null ? sessionRepository.findByGuestIdAndStatusOrderByStartedAtAsc(guestId, "STARTED") : List.of());
+
+        if (activeSessions.size() >= 3) {
+            // Eng eskilarini ABANDONED qilamiz
+            int toAbandon = activeSessions.size() - 2;
+            for (int i = 0; i < toAbandon; i++) {
+                SessionEntity s = activeSessions.get(i);
+                s.setStatus("ABANDONED");
+                sessionRepository.save(s);
+            }
+        }
+    }
+
+    private StartSessionResult.LanguageDto resolveLanguage(String langSlug) {
+        var viewOpt = languageCatalog.getLanguage(langSlug);
+        if (viewOpt.isPresent()) {
+            var v = viewOpt.get();
             return new StartSessionResult.LanguageDto(
-                    slug,
-                    slug,
-                    new StartSessionResult.IndentDto("SPACE", 2),
-                    List.of("=>", "===", "!==", "==", "!=", "<=", ">=")
-            );
-        } else if ("go".equals(slug)) {
-            return new StartSessionResult.LanguageDto(
-                    slug,
-                    slug,
-                    new StartSessionResult.IndentDto("TAB", 1),
-                    List.of(":=", "==", "!=", "<=", ">=")
-            );
-        } else if ("plsql".equals(slug) || "sql".equals(slug)) {
-            return new StartSessionResult.LanguageDto(
-                    slug,
-                    slug,
-                    new StartSessionResult.IndentDto("SPACE", 4),
-                    List.of(":=", "%TYPE", "%ROWTYPE", "<=", ">=", "<>", "!=")
-            );
-        } else {
-            // Java, Python, C++, C#, Kotlin, Rust, C, PHP
-            return new StartSessionResult.LanguageDto(
-                    slug,
-                    slug,
-                    new StartSessionResult.IndentDto("SPACE", 4),
-                    List.of("->", "::", "==", "!=", "<=", ">=")
+                    v.slug(),
+                    v.slug(),
+                    new StartSessionResult.IndentDto(v.indentStyle(), v.indentSize()),
+                    v.tokenPatterns()
             );
         }
+
+        int indentSize = 4;
+        String indentStyle = "SPACE";
+        List<String> patterns = List.of("->", "::", "==", "!=", "<=", ">=");
+
+        if ("plsql".equals(langSlug)) {
+            indentSize = 2;
+            patterns = List.of(":=", "=>", "||", "..", "%TYPE", "%ROWTYPE");
+        } else if ("sql".equals(langSlug)) {
+            indentSize = 2;
+            patterns = List.of("<>", "<=", ">=", "!=", "||", "::");
+        } else if ("python".equals(langSlug)) {
+            indentSize = 4;
+            patterns = List.of("->", "==", "!=", "<=", ">=", "**", "//");
+        } else if ("javascript".equals(langSlug) || "typescript".equals(langSlug)) {
+            indentSize = 2;
+            patterns = List.of("=>", "===", "!==", "??", "?.", "&&", "||");
+        }
+
+        return new StartSessionResult.LanguageDto(
+                langSlug,
+                langSlug,
+                new StartSessionResult.IndentDto(indentStyle, indentSize),
+                patterns
+        );
     }
 }

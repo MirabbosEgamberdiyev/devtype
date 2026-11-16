@@ -3,6 +3,8 @@ package com.devtype.training.application;
 import java.util.UUID;
 
 public record StartSessionCommand(
+        Long userId,
+        UUID guestId,
         String language,
         String mode,
         String topic,

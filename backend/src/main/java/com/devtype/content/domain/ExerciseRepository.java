@@ -25,5 +25,23 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Long> 
             ExerciseStatus status
     );
 
+    List<ExerciseEntity> findByLanguageIdAndDifficultyAndStatus(
+            Short languageId,
+            DifficultyLevel difficulty,
+            ExerciseStatus status
+    );
+
+    List<ExerciseEntity> findByTopicIdAndDifficultyAndStatus(
+            Integer topicId,
+            DifficultyLevel difficulty,
+            ExerciseStatus status
+    );
+
+    long countByTopicIdAndDifficultyAndStatus(
+            Integer topicId,
+            DifficultyLevel difficulty,
+            ExerciseStatus status
+    );
+
     List<ExerciseEntity> findByLanguageIdAndRankedPoolTrueAndStatus(Short languageId, ExerciseStatus status);
 }
