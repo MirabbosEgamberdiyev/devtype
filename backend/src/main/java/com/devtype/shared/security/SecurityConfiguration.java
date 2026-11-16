@@ -1,5 +1,6 @@
 package com.devtype.shared.security;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,11 +9,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
+
+    private final ObjectProvider<AuthTokenFilter> authTokenFilterProvider;
+
+    public SecurityConfiguration(ObjectProvider<AuthTokenFilter> authTokenFilterProvider) {
+        this.authTokenFilterProvider = authTokenFilterProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,8 +35,13 @@ public class SecurityConfiguration {
                     "/swagger-ui.html",
                     "/actuator/**"
                 ).permitAll()
-                .anyRequest().permitAll() // 0-bosqich vertikal kesimida ruxsat beriladi, keyingi bosqichlarda JWT filter bilan cheklanadi
+                .anyRequest().permitAll()
             );
+
+        AuthTokenFilter tokenFilter = authTokenFilterProvider.getIfAvailable();
+        if (tokenFilter != null) {
+            http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        }
 
         return http.build();
     }

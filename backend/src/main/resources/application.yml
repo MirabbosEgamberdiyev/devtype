@@ -53,6 +53,13 @@ springdoc:
     operations-sorter: method
 
 devtype:
+  auth:
+    jwt-secret: ${JWT_SECRET:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+    jwt-issuer: ${JWT_ISSUER:https://devtype.io}
+    access-token-expiration-seconds: 900
+    refresh-token-expiration-days: 30
+    guest-token-secret: ${HMAC_GUEST_TOKEN_KEY:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+    guest-token-expiration-days: 7
   modes:
     speed-test: ${DEVTYPE_MODES_SPEED_TEST:true}
     practice: ${DEVTYPE_MODES_PRACTICE:true}
