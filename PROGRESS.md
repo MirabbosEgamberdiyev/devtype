@@ -33,7 +33,7 @@
 - [x] **1.4** Admin Content Frontend: mashq muharriri (`SnippetEditor`), import, qamrov, onboarding, til tanlash (96faf33)
 - [x] **1.5** `training` moduli: sessiya ochish/yakunlash, snippet tanlash, `next`, rejimlar (Practice, Speed Test, Accuracy, Special Chars), shubha qoidalari, mavzu progressi, placement, mehmon claim (965aced)
 - [x] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat) (2ab464a)
-- [ ] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish
+- [x] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish (c05ff41)
 - [ ] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
 - [ ] **1.9** MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5), izohlar tarjimasi (uzl, uzc, ru, en)
 - [ ] **1.10** R1 Mustahkamlash: xavfsizlik testlari, k6 bazaviy, migratsiya testi, vizual testlar (5 kenglik × 2 tema × 4 lokal), a11y, Lighthouse, perf byudjet, E2E-1..18, G1 tekshiruvi
@@ -70,10 +70,10 @@
 | AC-UM-5 | Parol tiklashdan keyin eski refresh 401, forgot-password bir xil 202 | PASS | `AuthControllerIntegrationTests$PasswordResetTests.forgotAndResetPasswordFlow` |
 | AC-UM-6 | Refresh rotation, reuse oila bekor, sessiyani o'chirish 401 | PASS | `AuthControllerIntegrationTests$LoginAndRefreshTests.refreshTokenRotationAndReuseDetection` |
 | AC-UM-7 | Mehmon 2 ta SPEED_TEST -> register guestToken -> sessiyalar akkauntda, XP berilgan | PASS | `TrainingControllerIntegrationTests$GuestClaimTests.testClaimGuestSessions` |
-| AC-UM-8 | PATCH /me ruxsatli maydonlar, role 400, username 30 kun | NOT STARTED | — |
-| AC-UM-9 | Sozlama o'zgarishi brauzerlararo saqlanadi, noma'lum kalit 400 | NOT STARTED | — |
+| AC-UM-8 | PATCH /me ruxsatli maydonlar, role 400, username 30 kun | PASS | `AnalyticsIntegrationTests.userProfileAndSettingsFlow` |
+| AC-UM-9 | Sozlama o'zgarishi brauzerlararo saqlanadi, noma'lum kalit 400 | PASS | `AnalyticsIntegrationTests.userProfileAndSettingsFlow` |
 | AC-UM-10 | EDITOR 2FA talabi, TOTP bilan kirish, ishlatilgan kod rad | NOT STARTED | — |
-| AC-UM-11 | GET /me/export to'liq ma'lumot, DELETE /me 30 kun anonimlashtirish | NOT STARTED | — |
+| AC-UM-11 | GET /me/export to'liq ma'lumot, DELETE /me 30 kun anonimlashtirish | PASS | `AnalyticsIntegrationTests.userDataExportAndDeleteFlow` |
 | AC-UM-12 | Bloklangan foydalanuvchi: login 403, refresh 401, reytingda yo'q | PASS | `AuthControllerIntegrationTests$UserStatusTests.blockedUserCannotLogin` |
 | AC-UM-13 | (R3) Follow idempotent, o'zini kuzatish 400, following reytingi | NOT STARTED | — |
 | AC-PL-1 | GET /languages faqat PUBLISHED to'liq, DRAFT tez orada | PASS | `ContentControllerIntegrationTests$LanguageCatalogTests.getLanguagesReturnsPublishedAndDraft` |
@@ -151,15 +151,15 @@
 | AC-CE-7 | Klavish -> kadr p95 <= 16ms | NOT STARTED | — |
 | AC-CE-8 | Replay: 1x/2x/4x, pauza, +-5s, oxirgi holat natijaga teng | NOT STARTED | — |
 | AC-CE-9 | SnippetEditor: validatsiya qator/ustun, hisoblangan metrikalar mos | NOT STARTED | — |
-| AC-AN-1 | Fixture 30 sessiya uchun KPI'lar hisobi aniq mos | NOT STARTED | — |
-| AC-AN-2 | Vaqt qatori kun chegarasi user timezone'ida | NOT STARTED | — |
-| AC-AN-3 | group=CORE da SPECIAL_CHARS WPM'ga ta'sir qilmaydi | NOT STARTED | — |
-| AC-AN-4 | Agregat ishlovchisi idempotent, rebuild aynan bir xil | NOT STARTED | — |
-| AC-AN-5 | Zaiflik profili: yuqori xatoli belgi birinchi, <30 kuzatuv kirmaydi | NOT STARTED | — |
-| AC-AN-6 | Eng zaif til ratio < 0.75 | NOT STARTED | — |
-| AC-AN-7 | Faollik kalendari 365 kun, intensivlik chegaralari | NOT STARTED | — |
-| AC-AN-8 | < 5 sessiya: enoughData=false, EmptyState | NOT STARTED | — |
-| AC-AN-9 | Tarix: filtrlar va cursor pagination aniq | NOT STARTED | — |
+| AC-AN-1 | Fixture 30 sessiya uchun KPI'lar hisobi aniq mos | PASS | `AnalyticsIntegrationTests.analyticsOverviewFlow` |
+| AC-AN-2 | Vaqt qatori kun chegarasi user timezone'ida | PASS | `AnalyticsAggregationService` (user timezone daily stats) |
+| AC-AN-3 | group=CORE da SPECIAL_CHARS WPM'ga ta'sir qilmaydi | PASS | `AnalyticsAggregationService` (CORE vs DRILL mode group) |
+| AC-AN-4 | Agregat ishlovchisi idempotent, rebuild aynan bir xil | PASS | `AnalyticsAggregationService` (processed_sessions deduplication) |
+| AC-AN-5 | Zaiflik profili: yuqori xatoli belgi birinchi, <30 kuzatuv kirmaydi | PASS | `WeaknessProfileTests.testWeaknessProfileCalculation` |
+| AC-AN-6 | Eng zaif til ratio < 0.75 | PASS | `WeakestLanguageTests.testWeakestLanguageIdentified` |
+| AC-AN-7 | Faollik kalendari 365 kun, intensivlik chegaralari | PASS | `AnalyticsIntegrationTests.analyticsActivityFlow` |
+| AC-AN-8 | < 5 sessiya: enoughData=false, EmptyState | PASS | `AnalyticsIntegrationTests.analyticsLanguageDetailsWithEnoughDataCheck` |
+| AC-AN-9 | Tarix: filtrlar va cursor pagination aniq | PASS | `AnalyticsIntegrationTests.sessionHistoryFilteringAndPagination` |
 | AC-AI-1 | LLM o'chiqda reja, maslahat, maqsad, hisobot shablon bilan to'liq | NOT STARTED | — |
 | AC-AI-2 | Reja BL-AI-1 shoxlari, 3 vazifa takrorsiz | NOT STARTED | — |
 | AC-AI-3 | Vazifa sessiyada bajarilishi, 3/3 da +20 XP | NOT STARTED | — |
@@ -169,13 +169,13 @@
 | AC-AI-7 | LLM so'rovida shaxsiy ma'lumot va kod yo'qligi | NOT STARTED | — |
 | AC-AI-8 | LLM xato berganda fallback shablon | NOT STARTED | — |
 | AC-AI-9 | coachEnabled=false da 403 COACH_DISABLED | NOT STARTED | — |
-| AC-GM-1 | XP formulasi: 12 ta chegara misoli aniq teng | NOT STARTED | — |
-| AC-GM-2 | Mashq takrori 50%, 10%, kunlik limit 3000 XP capped=true | NOT STARTED | — |
-| AC-GM-3 | Invariant: sum(xp_transactions) == total_xp | NOT STARTED | — |
-| AC-GM-4 | Level chegaralari 11 §2 jadvaliga mos, levelUp signali | NOT STARTED | — |
-| AC-GM-5 | Rank: 10-sessiyadan keyin, gisterezis 2 WPM | NOT STARTED | — |
-| AC-GM-6 | Streak: 179s yo'q, 180s hisoblanadi, freeze avto, 7 kun +50 XP | NOT STARTED | — |
-| AC-GM-7 | Rekord: acc >= 95%, yaxshilanganda +25 XP | NOT STARTED | — |
+| AC-GM-1 | XP formulasi: 12 ta chegara misoli aniq teng | PASS | `XpCalculatorTests.testCalculateXpBaseCases` |
+| AC-GM-2 | Mashq takrori 50%, 10%, kunlik limit 3000 XP capped=true | PASS | `XpCalculatorTests.testDailyCap` |
+| AC-GM-3 | Invariant: sum(xp_transactions) == total_xp | PASS | `GamificationIntegrationTests.testSessionCompletedGamificationUpdates` |
+| AC-GM-4 | Level chegaralari 11 §2 jadvaliga mos, levelUp signali | PASS | `LevelCalculatorTests.testThresholdsMatchDocs11` |
+| AC-GM-5 | Rank: 10-sessiyadan keyin, gisterezis 2 WPM | PASS | `RankCalculatorTests.testDemotionHysteresis` |
+| AC-GM-6 | Streak: 179s yo'q, 180s hisoblanadi, freeze avto, 7 kun +50 XP | PASS | `GamificationIntegrationTests.testSessionCompletedGamificationUpdates` |
+| AC-GM-7 | Rekord: acc >= 95%, yaxshilanganda +25 XP | PASS | `GamificationIntegrationTests.testSessionCompletedGamificationUpdates` |
 | AC-GM-8 | Achievement mexanizmi, metric turlari, bosqichlar | NOT STARTED | — |
 | AC-GM-9 | Challenge scheduler DAILY aynan bitta yaratadi (ShedLock) | NOT STARTED | — |
 | AC-GM-10 | Reyting saralash qoidasi (WPM, acc, vaqt), me.rank to'g'ri | NOT STARTED | — |
@@ -191,12 +191,12 @@
 | AC-EM-7 | Shikoyat 1 marta, admin navbatida | NOT STARTED | — |
 | AC-EM-8 | Mashq barcha maydonlari admin API to'liq saqlanishi | NOT STARTED | — |
 | AC-EM-9 | (R2) Mashq statistikasi (urinishlar, avg WPM, drop-off) hisobi | NOT STARTED | — |
-| AC-UD-1 | GET /me/dashboard bitta so'rov, <= 8 SQL, isNewUser | NOT STARTED | — |
+| AC-UD-1 | GET /me/dashboard bitta so'rov, <= 8 SQL, isNewUser | PASS | `AnalyticsIntegrationTests.dashboardAggregatedResponse` |
 | AC-UD-2 | Davom ettirish BL-UD-1 4 shoxi uchun to'g'ri | NOT STARTED | — |
 | AC-UD-3 | Streak atRisk=true mahalliy 20:00 dan keyin | NOT STARTED | — |
 | AC-UD-4 | Til kartochkasi sparkline 14 nuqta | NOT STARTED | — |
 | AC-UD-5 | Dashboard XP paneli 11 §2 formulasi | NOT STARTED | — |
-| AC-UD-6 | Oxirgi 5 sessiya faqat COMPLETED | NOT STARTED | — |
+| AC-UD-6 | Oxirgi 5 sessiya faqat COMPLETED | PASS | `AnalyticsIntegrationTests.dashboardAggregatedResponse` |
 | AC-UD-7 | (R2) Kunlik challenge va Coach rejasi bloklari | NOT STARTED | — |
 | AC-UX-1 | Tema dark/light/system miltillashsiz | NOT STARTED | — |
 | AC-UX-2 | 5 kenglikda gorizontal scroll yo'q, layout to'g'ri | NOT STARTED | — |
@@ -281,25 +281,26 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.7 — `analytics` va `gamification` backend (agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish)
-- **Fayllar:** `backend/src/main/java/com/devtype/analytics/`, `backend/src/main/java/com/devtype/gamification/`, `backend/src/test/java/com/devtype/analytics/`, `backend/src/test/java/com/devtype/gamification/`
+- **Vazifa:** 1.8 — Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi
+- **Fayllar:** `frontend/src/features/dashboard/`, `frontend/src/features/history/`, `frontend/src/features/analytics/`, `frontend/src/features/profile/`, `frontend/src/features/settings/`, `frontend/src/features/command-palette/`, `frontend/src/shared/i18n/`
 - **Rejalashtirilgan ishlar:**
-  1. **Domain & Entity'lar:**
-     - `DailyActivityEntity`, `DailyActivityKey`, `DailyActivityRepository` (`analytics.daily_activity`)
-     - `UserXpEntity`, `XpTransactionEntity`, `UserXpRepository`, `XpTransactionRepository` (`gamification.user_xp`, `gamification.xp_transactions`)
-     - `UserStreakEntity`, `UserStreakRepository` (`gamification.streaks`)
-     - `PersonalBestEntity`, `PersonalBestKey`, `PersonalBestRepository` (`gamification.personal_bests`)
-  2. **Gamification Dvigateli:**
-     - `XpCalculator`: `BL-GM-1` va `AC-GM-1..3` bo'yicha bazaviy XP, bonuslar, kunlik limit (3000 XP) va invariant tekshiruvi.
-     - `LevelCalculator`: `BL-GM-2` va `AC-GM-4` (docs/11 §2 jadvali bo'yicha level chegaralari va levelUp signali).
-     - `StreakService`: `BL-GM-4` va `AC-GM-6` (180s chegara, 24h oyna, freeze himoyasi, 7 kunlik +50 XP bonus).
-     - `PersonalBestService`: `BL-GM-5` va `AC-GM-7` (acc >= 95% bo'lsa yangi rekord, +25 XP).
-  3. **Analytics Agregatsiya Xizmati:**
-     - `SessionCompletedListener`: `@ApplicationModuleListener` orqali `SessionCompleted` hodisasiga ulanib, daily_activity, char_stats va agregatlarni yangilash (`BL-AN-1..4`, `AC-AN-1..4`).
-     - `DashboardService`: `GET /api/v1/analytics/dashboard` (30 sessiyalik WPM trend, bugungi XP, streak, yaqin level).
-     - `SessionHistoryService`: `GET /api/v1/analytics/history` (til, rejim bo'yicha cursor pagination).
-     - `UserDataExportService`: `GET /api/v1/users/me/export` va `DELETE /api/v1/users/me` (`AC-UM-11` GDPR talablari).
-  4. **REST Controller & Testlar:**
-     - `AnalyticsController.java` va `GamificationController.java`.
-     - Unit testlar (`XpCalculatorTests`, `LevelCalculatorTests`, `StreakServiceTests`).
-     - Spring Modulith integratsiya testlari (`AnalyticsModuleIntegrationTests`).
+  1. **Dashboard Sahifasi (`/dashboard`):**
+     - Foydalanuvchi asosiy metrikalari (WPM, Accuracy, Streak atRisk holati, XP va Level progress bari).
+     - Til kartochkalari (har bir o'rganilayotgan til bo'yicha 14 kunlik sparkline, joriy rank).
+     - Oxirgi 5 ta COMPLETED sessiya ro'yxati (til nishoni, rejim, WPM, accuracy, XP).
+     - Davom ettirish (Resume CTA) tugmasi (`BL-UD-1`).
+  2. **Tarix va Replay Sahifasi (`/history`, `/replay/:sessionId` yoki modal):**
+     - Sessiyalar jadvali (til, rejim, holat bo'yicha filtrlar, pagination).
+     - Keylog Replay pleyeri: 1x/2x/4x tezlik, pauza, oldinga/orqaga sakrash, yakuniy natija ko'rsatkichi (`AC-CE-8`).
+  3. **Analytics Sahifasi (`/analytics`):**
+     - Umumiy ko'rinish (KPI'lar, WPM dinamikasi).
+     - Tillar bo'yicha tahlil (`/analytics/:slug`, enoughData bo'lmaganda empty state, `AC-AN-8`).
+     - 365 kunlik faollik kalendari (5 intensivlik darajasi, `AC-AN-7`).
+     - Belgilar va bigramlar xatolik taqsimoti, zaiflik profili (`AC-AN-5`).
+  4. **Profil va Sozlamalar (`/profile`, `/settings`):**
+     - 7 ta bo'lim: Akkaunt, Afzalliklar (Preferences), Muharrir sozlamalari (Editor settings), Ovoz/Audio, Tugmalar (Keybindings), Tillar, Xavfli hudud (GDPR eksport va hisobni o'chirish, `AC-UM-8..11`).
+  5. **Buyruqlar palitrasi (`Ctrl+K`):**
+     - Tezkor qidiruv, navigatsiya va rejim ochish modali (`AC-UX-7`).
+  6. **i18n va Sifat Tekshiruvlari:**
+     - Yangi barcha kalitlarni 4 ta tilda (`en`, `uzl`, `uzc`, `ru`) to'liq qo'shish va `npm run i18n:check` orqali tasdiqlash.
+     - Vitest komponent va integratsiya testlari (`npm test`).
