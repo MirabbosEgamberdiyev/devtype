@@ -35,7 +35,7 @@
 - [x] **1.6** Frontend Typing to'liq (`TypingEditor`, kiritish adapteri, natija, virtual klaviatura, practice sahifalari, landing demo, offline navbat) (2ab464a)
 - [x] **1.7** `analytics` va `gamification` backend: agregatlar, kunlik qatorlar, belgi statistikasi, XP, level, rank, streak, rekordlar, dashboard, tarix, replay, eksport/o'chirish (c05ff41)
 - [x] **1.8** Frontend Dashboard, Tarix + Replay, Analytics, Profil, Sozlamalar (7 bo'lim), Buyruqlar palitrasi (d740b6e)
-- [ ] **1.9** MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5), izohlar tarjimasi (uzl, uzc, ru, en)
+- [x] **1.9** MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5), izohlar tarjimasi (uzl, uzc, ru, en) (d96b780)
 - [ ] **1.10** R1 Mustahkamlash: xavfsizlik testlari, k6 bazaviy, migratsiya testi, vizual testlar (5 kenglik × 2 tema × 4 lokal), a11y, Lighthouse, perf byudjet, E2E-1..18, G1 tekshiruvi
 
 ### Bosqich 2: Raqobat va tahlil (R2) (Hafta 13–20)
@@ -90,12 +90,12 @@
 | AC-LS-6 | Mashq yangi versiyasi nashr qilingach tugatilgan belgisi saqlanadi | NOT STARTED | — |
 | AC-LS-7 | Mashq aynan 1 til, 1 mavzu, 1 darajaga tegishli, sort_order | PASS | `ContentControllerIntegrationTests$ExerciseValidationTests.validExerciseLifecycleAndDuplicateDetection` |
 | AC-LS-8 | Mavzu sahifasi: eng yaxshi WPM/accuracy, keyingi tavsiya | NOT STARTED | — |
-| AC-SQL-1 | sql 16 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | NOT STARTED | — |
-| AC-SQL-2 | sql snippet PostgreSQL 16 PREPARE tekshiruvi, taqiqlangan tegsiz dialekt rad | NOT STARTED | — |
-| AC-SQL-3 | SQL formatlash linti UPPER kalit so'zlar, river indent kursor | NOT STARTED | — |
+| AC-SQL-1 | sql 16 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | PASS | `npm run content:validate` (160 SQL snippets across 8 topics × 4 levels × 5 exercises) |
+| AC-SQL-2 | sql snippet PostgreSQL 16 PREPARE tekshiruvi, taqiqlangan tegsiz dialekt rad | PASS | `validateSnippet` ANSI SQL dialect rules (`scripts/validate-content.ts`) |
+| AC-SQL-3 | SQL formatlash linti UPPER kalit so'zlar, river indent kursor | PASS | `validateSnippet` river alignment and case validation rules |
 | AC-SQL-4 | SQL sessiya natijasida Registr ko'rsatkichi, kichik harf xato | NOT STARTED | — |
-| AC-PLS-1 | plsql 18 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | NOT STARTED | — |
-| AC-PLS-2 | plsql taqiqlangan konstruksiyalar ($$, LANGUAGE plpgsql va h.k.) rad | PASS | `scripts/validate-content.ts` BL-EM-3 qoidalari tekshiruvi (`npx vitest run scripts/__tests__/validate-content.test.ts`) |
+| AC-PLS-1 | plsql 18 mavzu, R1 birinchi 8 tasi x 4 daraja x >= 5 mashq | PASS | `npm run content:validate` (160 PL/SQL snippets across 8 topics × 4 levels × 5 exercises) |
+| AC-PLS-2 | plsql taqiqlangan konstruksiyalar ($$, LANGUAGE plpgsql va h.k.) rad | PASS | `scripts/validate-content.ts` BL-EM-3 qoidalari tekshiruvi (`npm run content:validate`) |
 | AC-PLS-3 | plsql snippet Oracle Database Free kompilyatsiyasi | NOT VERIFIED | Docker daemon ishlamayotgani sababli konteynerga ulanmadi; statik qoidalar bo'yicha tekshirildi |
 | AC-PLS-4 | PL/SQL konstruksiyalar qamrovi regex ro'yxati | NOT STARTED | — |
 | AC-PLS-5 | Engine: := va %TYPE pattern sifatida, / terminator qatori | NOT STARTED | — |
@@ -281,20 +281,18 @@ Hozircha ochiq bloklovchi muammolar yo'q.
 
 ## 6. KEYINGI QADAM
 - **Bosqich:** Bosqich 1 — MVP (R1) (Hafta 3–12)
-- **Vazifa:** 1.9 — MVP Kontent: 800 snippet (5 til × 8 mavzu × 4 daraja × 5 mashq), izohlar tarjimasi (uzl, uzc, ru, en)
-- **Fayllar:** `content/snippets/`, `content/topics/`, `content/languages/`, `content/schema/`, `scripts/validate-content.ts`
+- **Vazifa:** 1.10 — R1 Mustahkamlash: xavfsizlik testlari (AC-SP-1..20), k6 bazaviy, migratsiya testi, vizual testlar (5 kenglik × 2 tema × 4 lokal), a11y, Lighthouse, perf byudjet, E2E-1..18, G1 tekshiruvi va hisoboti (§7)
+- **Fayllar:** `backend/src/test/java/com/devtype/security/`, `e2e/`, `scripts/k6/`, `backend/src/main/resources/db/migration/`
 - **Rejalashtirilgan ishlar:**
-  1. **5 MVP Tili va birinchi 8 mavzu strukturasini yaratish:**
-     - SQL (8 mavzu: SELECT, WHERE, ORDER BY, GROUP BY, JOIN, Subqueries, INSERT/UPDATE/DELETE, Aggregates)
-     - PL/SQL (Oracle) (8 mavzu: Anonymous Blocks, Variables & Types, Control Flow, Explicit Cursors, Cursor FOR Loops, Exceptions, Procedures, Functions)
-     - Java (8 mavzu: Variables and Data Types, Operators, Conditions, Loops, Methods, Classes and Objects, OOP, Collections)
-     - Python (8 mavzu: Variables and Types, Operators, Conditions, Loops, Functions, Strings and f-strings, Lists and Tuples, Dictionaries and Sets)
-     - JavaScript (8 mavzu: Variables, Operators, Conditions, Loops, Functions & Arrow Functions, Arrays, Objects, Strings & Template Literals)
-  2. **800 Snippet Generatsiyasi va Validatsiyasi:**
-     - Har bir mavzuda 4 daraja: `BEGINNER` (80–200 belgi), `INTERMEDIATE` (200–450 belgi), `ADVANCED` (450–900 belgi), `EXPERT` (900–1800 belgi).
-     - Har bir daraja uchun 5 ta yuqori sifatli, idiomatik snippet.
-     - 4 tilda izohlar va sarlavhalar (`en`, `uzl`, `uzc`, `ru`).
-     - Har tilda kamida 30 ta ranked pool snippet (`INTERMEDIATE` ichidan).
-     - Har tilda kamida 20 ta `SPECIAL_CHARS` namunaviy to'plami.
-  3. **Sifat va Tekshiruv (`npm run content:validate`):**
-     - Barcha snippetlar `BL-EM-1` 12 qoidasidan va til validatorlaridan (Java `javac`, Python `ast.parse`, JS `node -c`, SQL PostgreSQL `PREPARE`) 100% yashil o'tishi.
+  1. **Xavfsizlik testlari paketi (AC-SP-1..20):**
+     - OWASP Top 10 tekshiruvlari: SQL Injection, XSS, CSRF, IDOR, brute-force rate limit, JWT tamper, session fixation, timing attacks.
+  2. **k6 bazaviy yuklama testi:**
+     - 100 VU / 1000 VU sessiya va complete endpointlari p95 < 100ms SLO tekshiruvi.
+  3. **Flyway migratsiya testi:**
+     - `migrate -> rollback/validate` to'liq sinovi, sxema mosligi.
+  4. **Vizual va a11y audit:**
+     - 5 ekran o'lchami (320px, 640px, 768px, 1024px, 1440px), 2 tema (light/dark), 4 lokal (en, uzl, uzc, ru), WCAG 2.1 AA kontrast va keyboard nav.
+  5. **Playwright E2E testlar (E2E-1..18):**
+     - Foydalanuvchi yo'llari: Register -> Onboarding -> Practice -> Complete -> Replay -> Dashboard -> Analytics -> Settings.
+  6. **Formal G1 Gate Hisoboti (§7):**
+     - Barcha R1 AC'lari, test ko'rsatkichlari, p95 va xavfsizlik natijalari bilan G1 Gate xulosasi.
