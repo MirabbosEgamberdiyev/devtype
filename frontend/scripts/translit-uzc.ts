@@ -18,10 +18,16 @@ function translitObj(obj: unknown): unknown {
   return obj;
 }
 
-const uzlPath = path.resolve(__dirname, '../src/shared/i18n/locales/uzl/common.json');
-const uzcPath = path.resolve(__dirname, '../src/shared/i18n/locales/uzc/common.json');
+const files = ['common.json', 'auth.json'];
 
-const uzl = JSON.parse(fs.readFileSync(uzlPath, 'utf8'));
-const uzc = translitObj(uzl);
-fs.writeFileSync(uzcPath, JSON.stringify(uzc, null, 2), 'utf8');
-console.log('uzc/common.json successfully generated from uzl/common.json');
+for (const file of files) {
+  const uzlPath = path.resolve(__dirname, `../src/shared/i18n/locales/uzl/${file}`);
+  const uzcPath = path.resolve(__dirname, `../src/shared/i18n/locales/uzc/${file}`);
+
+  if (fs.existsSync(uzlPath)) {
+    const uzl = JSON.parse(fs.readFileSync(uzlPath, 'utf8'));
+    const uzc = translitObj(uzl);
+    fs.writeFileSync(uzcPath, JSON.stringify(uzc, null, 2), 'utf8');
+    console.log(`Generated uzc/${file} from uzl/${file}`);
+  }
+}

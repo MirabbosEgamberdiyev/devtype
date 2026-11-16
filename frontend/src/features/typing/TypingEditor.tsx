@@ -38,6 +38,7 @@ export const TypingEditor: React.FC<TypingEditorProps> = ({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const lastActiveRef = useRef<number>(Date.now());
   const sessionStartRef = useRef<number>(Date.now());
+  const pressedTimeoutRef = useRef<number | null>(null);
 
   // Dvigatelni ishga tushirish
   useEffect(() => {
@@ -68,6 +69,9 @@ export const TypingEditor: React.FC<TypingEditorProps> = ({
 
     return () => {
       unsubscribe();
+      if (pressedTimeoutRef.current) {
+        clearTimeout(pressedTimeoutRef.current);
+      }
     };
   }, [code, mode, strictIndent, stopOnError, durationLimitS, onComplete]);
 
@@ -107,7 +111,10 @@ export const TypingEditor: React.FC<TypingEditorProps> = ({
     setLastPressedCode(e.code);
 
     // 120ms dan keyin pressed effekti o'chadi
-    window.setTimeout(() => setLastPressedCode(null), 120);
+    if (pressedTimeoutRef.current) {
+      clearTimeout(pressedTimeoutRef.current);
+    }
+    pressedTimeoutRef.current = window.setTimeout(() => setLastPressedCode(null), 120);
 
     if (isPaused) {
       resumeFromPause();
